@@ -1,0 +1,625 @@
+<html>
+    <head>
+        <title>Demo</title>
+        <style type="text/css">
+            body {
+                max-width: 1200px;
+                margin: 2em auto 0;
+            }
+            main {
+            }
+            aside {
+            }
+            /* aside svg {
+                widows: 100%;
+            } */
+            .flex-form {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .flex-form,
+            .flex-form * {
+                font-size: 20px;
+                color: purple;
+            }
+            .flex-form .group,
+            .flex-form .field {
+                box-sizing: border-box;
+            }
+            .flex-form .group {
+                display: flex;
+                flex-direction: column;
+            }
+            .flex-form > :nth-child(4n + 0) {
+                border: solid 1px rgb(168, 168, 168);
+                background: rgb(226, 226, 226);
+            }
+            .flex-form > :nth-child(4n + 1) {
+                border: solid 1px rgb(129, 129, 129);
+                background: rgb(209, 209, 209);
+            }
+            .flex-form > :nth-child(4n + 2) {
+                border: solid 1px rgb(220, 202, 250);
+                background: rgb(244, 236, 255);
+            }
+            .flex-form > :nth-child(4n + 3) {
+                border: solid 1px rgb(208, 180, 252);
+                background: rgb(232, 215, 252);
+            }
+            .flex-form .field {
+                position: relative;
+                min-width: 15em;
+                max-width: 30em;
+                padding: 0.3em 1em;
+            }
+            .flex-form > .group,
+            .flex-form > .field {
+                flex-grow: 1;
+                flex-basis: 15em;
+            }
+            .flex-form .field label {
+            }
+            .flex-form .field input:not([type="radio"]) {
+                width: 5.7em;
+                padding: 0 0.4em;
+                float: right;
+                border-radius: 0.4em;
+                border: solid 0;
+                background: transparent;
+                box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) inset, rgba(255, 255, 255, 0.7) 1px 1px 2px;
+            }
+            .flex-form .field fieldset :not(:first-of-type) {
+                margin-left: -0.25em;
+            }
+            .flex-form .field fieldset {
+                padding: 0;
+                overflow: hidden;
+                border: 1px solid purple;
+                background: rgb(201, 177, 212);
+                border-radius: 1em;
+                float: right;
+            }
+            .flex-form .field fieldset label {
+                padding: 0.6em;
+                line-height: 1.7em;
+                text-align: super;
+                color: rgb(165, 106, 192);
+            }
+            .flex-form .field fieldset input {
+                display: none;
+            }
+            .flex-form .field fieldset input:checked + label {
+                background: rgb(165, 106, 192);
+                text-shadow: rebeccapurple 1px 1px;
+                color: rgb(240, 236, 241);
+            }
+            .flex-form .field abbr {
+                position: absolute;
+                right: 2.3em;
+            }
+            .flex-form .field.spacer {
+                visibility: hidden;
+            }
+            .flex-form .command {
+                display: flex;
+                flex-wrap: wrap-reverse;
+                justify-content: space-evenly;
+                background: transparent;
+                border: transparent;
+            }
+            .flex-form .command button,
+            .flex-form .command a {
+                flex-grow: 0;
+                height: 1.8em;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <main>
+            <div class="flex-form">
+                <div class="field">
+                    <label for="WidthTotal" title="Outer Width">Width</label><abbr>mm</abbr>
+                    <input id="WidthTotal" type="number" value="140" min="40" max="400" title="Outer Width" />
+                </div>
+                <div class="field">
+                    <label for="LengthTotal" title="Outer Length">Length</label><abbr>mm</abbr>
+                    <input id="LengthTotal" type="number" value="229" min="40" max="600" title="Outer Length" />
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="Pouch can stand on end?">Gusset</label>
+                        <fieldset>
+                            <input id="IncludeGusset" name="Gusset" type="radio" value="true" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDeptSection" />
+                            <label for="IncludeGusset" title="Pouch can stand on end?">yes</label>
+                            <input id="ExcludeGusset" name="Gusset" type="radio" value="false" checked title="No gusset on the pouch" data-hide="#GussetDeptSection" />
+                            <label for="ExcludeGusset" title="Pouch can stand on end?">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="GussetDeptSection" class="field">
+                        <label for="GussetDepth" title="Gusset overal size from front face to back face including seal">Size</label><abbr>mm</abbr>
+                        <input id="GussetDepth" type="number" value="76" min="10" max="400" title="Gusset depth including seal" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="How pouch will be sealed">Seal Placement</label>
+                        <fieldset>
+                            <input id="SealTop" name="SealPlacement" type="radio" value="Top" title="Top and sides will be sealed" />
+                            <label for="SealTop" title="Apply a top seal?">top</label>
+                            <input id="SealBottom" name="SealPlacement" type="radio" value="Bottom" checked title="Bottom and sides will be sealed" />
+                            <label for="SealBottom" title="Apply a bottom seal?">bottom</label>
+                        </fieldset>
+                    </div>
+                    <div class="field">
+                        <label for="SealSize" title="The amount of edge material used for sealing the pouch">Seal Size</label>
+                        <abbr>mm</abbr><input id="SealSize" type="number" value="7.5" min="5" step="0.1" title="The amount of edge material used for sealing the pouch" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="Include a zipper for reclosing the pouch?">Zipper</label>
+                        <fieldset>
+                            <input id="IncludeZipper" name="Zipper" type="radio" value="true" title="Include a zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" />
+                            <label for="IncludeZipper" title="Adds a zipper to the pouch">yes</label>
+                            <input id="ExcludeZipper" name="Zipper" type="radio" value="false" checked title="No zipper for reclosing the pouch?" data-hide="#ZipperOffsetSection" />
+                            <label for="ExcludeZipper" title="No zipper on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="ZipperOffsetSection" class="field">
+                        <label for="ZipperOffset" title="The distance from the edge of the pouch to the top of the zipper">Zipper Offset</label><abbr>mm</abbr>
+                        <input id="ZipperOffset" type="number" value="25" title="The distance from the edge of the pouch to the top of the zipper" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label for="" title="Include a tear notch for easy pouch opening?">Tear Notch</label>
+                        <fieldset>
+                            <input id="IncludeNotch" name="Notch" type="radio" value="true" title="Include a tear notch for easy pouch opening?" data-show="#NotchOffsetSection" />
+                            <label for="IncludeNotch" title="Adds a tear notch to the pouch">yes</label>
+                            <input id="ExcludeNotch" name="Notch" type="radio" value="false" checked title="No tear notch for easy opening of the pouch?" data-hide="#NotchOffsetSection" />
+                            <label for="ExcludeNotch" title="No tear notch on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="NotchOffsetSection" class="field">
+                        <label for="NotchOffset" title="The distance from the edge of the pouch to the center of the tear notch">Notch Offset</label>
+                        <abbr>mm</abbr>
+                        <input id="NotchOffset" type="number" value="20" title="he distance from the edge of the pouch to the center of the tear notch" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="Include a hang hole for easy pouch opening?">Hang Hole</label>
+                        <fieldset>
+                            <input id="IncludeHole" name="Hole" type="radio" value="true" title="Include a hole for hanging the pouch?" data-show="#HoleOffsetSection" />
+                            <label for="IncludeHole" title="Adds a hang hole to the pouch">yes</label>
+                            <input id="ExcludeHole" name="Hole" type="radio" value="false" checked title="No hole for hanging the pouch?" data-hide="#HoleOffsetSection" />
+                            <label for="ExcludeHole" title="No hang hole on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="HoleOffsetSection" class="field">
+                        <label for="HoleOffset" title="The distance from the edge of the pouch to the center of the hang hole">Hang Hole Offset</label><abbr>mm</abbr>
+                        <input id="HoleOffset" type="number" value="8" min="6" max="40" title="he distance from the edge of the pouch to the center of the hang hole" />
+                    </div>
+                </div>
+                <div class="field command">
+                    <button id="Download">Download</button>
+                </div>
+                <div class="spacer field">
+                    <label></label>
+                    <fieldset></fieldset>
+                </div>
+                <div class="spacer field">
+                    <label></label>
+                    <fieldset></fieldset>
+                </div>
+                <div class="spacer field">
+                    <label></label>
+                    <fieldset></fieldset>
+                </div>
+            </div>
+        </main>
+        <aside></aside>
+        <script type="module">
+            import { PouchTemplate } from "./js/templates/PouchTemplate.js";
+            import { Placement } from "./js/enums/Placement.js";
+
+            let pouch = PouchTemplate.getDefault(UpdateSvg);
+
+            //radio event binding
+            $("[data-hide]").on("change", function (ev) {
+                let $t = $(ev.target).filter(":checked");
+                if ($t.length) HideByData($t.data("hide"));
+            });
+            $("[data-show]").on("change", function (ev) {
+                let $t = $(ev.target).filter(":checked");
+                if ($t.length) ShowByData($t.data("show"));
+            });
+
+            //initialize show/hide based on current checks
+            $("[data-hide]:checked").each((i, el) => {
+                HideByData($(el).data("hide"));
+            });
+            $("[data-show]:checked").each((i, el) => {
+                ShowByData($(el).data("show"));
+            });
+
+            function HideByData(selector) {
+                $(selector).css("visibility", "hidden");
+            }
+            function ShowByData(selector) {
+                $(selector).css("visibility", "visible");
+            }
+
+            //--load svg--//
+            $.get("dyeline-templates/templates/PouchTemplate.svg", function (xmlDoc) {
+                $("aside").append(xmlDoc.rootElement);
+                console.log(pouch); //TODO: remove
+                UpdateSvg(); //trigger update after svg is loaded
+            });
+
+            //--bindings--//
+            $("#WidthTotal").on("change", function (ev) {
+                pouch.face.width.value = ev.target.value * 1;
+            });
+            $("#LengthTotal").on("change", function (ev) {
+                pouch.face.height.value = ev.target.value * 1;
+            });
+            $("#IncludeGusset").on("change", function (ev) {
+                pouch.gusset.included = ev.target.checked;
+            });
+            $("#GussetDepth").on("change", function (ev) {
+                pouch.gusset.depth.value = ev.target.value * 1;
+            });
+            $("#SealSize").on("change", function (ev) {
+                pouch.seal.width.value = ev.target.value * 1;
+            });
+            $("#SealBottom").on("change", function (ev) {
+                pouch.seal.placement = ev.target.checked ? Placement.Bottom : Placement.Top;
+            });
+            $("#IncludeZipper").on("change", function (ev) {
+                pouch.zipper.included = ev.target.checked;
+            });
+            $("#ZipperOffset").on("change", function (ev) {
+                pouch.zipper.offset.value = ev.target.value * 1;
+            });
+            $("#IncludeNotch").on("change", function (ev) {
+                pouch.notch.included = ev.target.checked;
+            });
+            $("#NotchOffset").on("change", function (ev) {
+                pouch.notch.offset.value = ev.target.value * 1;
+            });
+            $("#IncludeHole").on("change", function (ev) {
+                pouch.hanger.included = ev.target.checked;
+            });
+            $("#HoleOffset").on("change", function (ev) {
+                pouch.hanger.offset.value = ev.target.value * 1;
+            });
+
+            //--periodic model updating--//
+            let w = $("#WidthTotal")[0],
+                h = $("#LengthTotal")[0],
+                yesGusset = $("#IncludeGusset")[0],
+                gusset = $("#GussetDepth")[0],
+                seal = $("#SealSize")[0],
+                sealPlacement = $("#SealBottom")[0],
+                yesZipper = $("#IncludeZipper")[0],
+                zipper = $("#ZipperOffset")[0],
+                yesNotch = $("#IncludeNotch")[0],
+                notch = $("#NotchOffset")[0],
+                yesHanger = $("#IncludeHole")[0],
+                hanger = $("#HoleOffset")[0];
+            (function UpdateModel() {
+                pouch.face.width.value = w.value * 1;
+                pouch.face.height.value = h.value * 1;
+                pouch.gusset.included = yesGusset.checked;
+                pouch.gusset.depth.value = gusset.value * 1;
+                pouch.seal.width.value = seal.value * 1;
+                pouch.seal.placement = sealPlacement.checked ? Placement.Bottom : Placement.Top;
+                pouch.zipper.included = yesZipper.checked;
+                pouch.zipper.offset.value = zipper.value * 1;
+                pouch.notch.included = yesNotch.checked;
+                pouch.notch.offset.value = notch.value * 1;
+                pouch.hanger.included = yesHanger.checked;
+                pouch.hanger.offset.value = hanger.value * 1;
+                setTimeout(UpdateModel, 100);
+            })();
+
+            //--adjust svg--//
+            function UpdateSvg() {
+                let $svg = $("aside>svg");
+                if ($svg.length) {
+                    //mm to pixel ratio//
+                    //width:   2.8166428571428571428571428571429
+                    //height:  2.8236244541484716157205240174672
+                    //average: 2.8201336556456643792888334373051
+                    let unitRatio = 2.8201336556456643792888334373051;
+                    UpdateSvgViewBox($svg, unitRatio);
+                    UpdateSvgFront($svg, unitRatio);
+                    UpdateSvgBack($svg, unitRatio);
+                    UpdateSvgGusset($svg, unitRatio);
+                }
+            }
+            function UpdateSvgViewBox($svg, ratio) {
+                let gussetDepth = pouch.gusset.included ? 30 + pouch.gusset.depth.value * ratio : 0;
+                $svg.attr("viewBox", `${450 - pouch.face.width.value * ratio} ${175} ${pouch.face.width.value * 2 * ratio + 380} ${300 + pouch.face.height.value * ratio + gussetDepth}`);
+            }
+            function UpdateSvgFront($svg, ratio) {
+                let top = 405.35;
+                let right = 569.69;
+                let widthChange = pouch.face.width.value - pouch.face.width.initial;
+                let heightChange = pouch.face.height.value - pouch.face.height.initial;
+                let zipperOffsetChange = pouch.zipper.offset.value - pouch.zipper.offset.initial;
+                let notchOffsetChange = pouch.notch.offset.value - pouch.notch.offset.initial;
+                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2);
+
+                //conditional elements//
+                if (pouch.zipper.included || pouch.notch.included) $("#Front .top.offset.mark").show();
+                //shows shared mark if zipper or notch is included
+                else $("#Front .top.offset.mark").hide();
+                if (pouch.zipper.included) $("#Front .zipper").show();
+                else $("#Front .zipper").hide();
+                if (pouch.notch.included) $("#Front .notch").show();
+                else $("#Front .notch").hide();
+                if (pouch.hanger.included) $("#Front .hanger").show();
+                else $("#Front .hanger").hide();
+                if (pouch.hanger.included && pouch.seal.placement == Placement.Top) $("#Front .bottom.seal.size.text").hide();
+                //hides label if hanger is in the way
+                else $("#Front .bottom.seal.size.text").show();
+
+                //face//
+                $("#Front .face.outline")
+                    .attr("height", pouch.face.height.value * ratio)
+                    .attr("x", right - pouch.face.width.value * ratio)
+                    .attr("width", pouch.face.width.value * ratio);
+
+                //face height guides//
+                $("#Front .face.height.text")
+                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 27} ${top + (pouch.face.height.value * ratio) / 2 + 28})`)
+                    .text(pouch.face.height.value + " mm");
+                $("#Front .face.height.top.arrow, #Front .face.height.top.mark").attr("transform", `translate(${-widthChange * ratio}, 0)`);
+                $("#Front .face.height.line")
+                    .attr("x1", right - pouch.face.width.value * ratio - 14)
+                    .attr("x2", right - pouch.face.width.value * ratio - 14)
+                    .attr("y1", top + 14)
+                    .attr("y2", top + pouch.face.height.value * ratio - 14);
+                $("#Front .face.height.bottom.arrow, #Front .face.height.bottom.mark").attr("transform", `translate(${-widthChange * ratio}, ${heightChange * ratio})`);
+
+                //face width guides//
+                $("#Front .face.width.text")
+                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 28} 383.7047)`)
+                    .text(pouch.face.width.value + " mm");
+                $("#Front .face.width.left.arrow, #Front .face.width.left.mark").attr("transform", `translate(${-widthChange * ratio}, 0)`);
+                $("#Front .face.width.line")
+                    .attr("x1", right - pouch.face.width.value * ratio + 10)
+                    .attr("x2", right - 10);
+
+                //header label//
+                $("#Front .face.label.background")
+                    .attr("x", 104.07 - widthChange * ratio)
+                    .attr("width", 516.11 + widthChange * ratio);
+                $("#Front .face.label.left.text").attr("x", -widthChange * ratio);
+                $("#Front .face.label.center.text").attr("x", 23.5 + (-widthChange / 2) * ratio);
+
+                //hanger//
+                pouch.hanger.height.value = 6;
+                var hangerArrowsXTranslation = -212 - ((widthChange - pouch.hanger.height.value) * ratio) / 2 + 10;
+                $("#Front .hanger.outline")
+                    .attr("cx", right - (pouch.face.width.value / 2) * ratio)
+                    .attr("cy", top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio)
+                    .attr("r", (pouch.hanger.height.value / 2) * ratio);
+                $("#Front .hanger.offset.text")
+                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value / 2) * ratio + 3})`)
+                    .text(pouch.hanger.offset.value + " mm");
+                $("#Front .hanger.height.text")
+                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio + 3})`)
+                    .text(pouch.hanger.height.value + " mm");
+
+                $("#Front .hanger.offset.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175})`);
+                $("#Front .hanger.offset.line")
+                    .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("y1", top + 4)
+                    .attr("y2", top + pouch.hanger.offset.value * ratio - 4);
+                $("#Front .hanger.offset.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + (pouch.hanger.offset.value * ratio) / 0.7})`);
+                $("#Front .hanger.offset.bottom.mark")
+                    .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
+                    .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
+                    .attr("y1", top + pouch.hanger.offset.value * ratio)
+                    .attr("y2", top + pouch.hanger.offset.value * ratio);
+
+                $("#Front .hanger.height.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + (pouch.hanger.offset.value * ratio) / 0.7})`);
+                $("#Front .hanger.height.line")
+                    .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("y1", top + pouch.hanger.offset.value * ratio + 4)
+                    .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio - 4);
+                $("#Front .hanger.height.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + pouch.hanger.height.value) * ratio) / 0.7})`);
+                $("#Front .hanger.height.bottom.mark")
+                    .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
+                    .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
+                    .attr("y1", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio)
+                    .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio);
+
+                //zipper//
+                $("#Front .zipper.offset.text")
+                    .attr("transform", `matrix(0 1 -1 0 607.9297  ${top + (pouch.zipper.offset.value / 2) * ratio - 15})`)
+                    .text(pouch.zipper.offset.value + " mm");
+
+                $("#Front .zipper.height.text")
+                    .attr("transform", `matrix(0 1 -1 0 590.6973 ${top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 15})`)
+                    .text(pouch.zipper.height.value + " mm");
+                $(`
+                #Front .zipper.bottom.offset.mark,
+                #Front .zipper.offset.bottom.arrow,
+                #Front .zipper.height.top.arrow,
+                #Front .zipper.height.line,
+                #Front .zipper.height.bottom.arrow,
+                #Front .zipper.bottom.height.mark`).attr("transform", `translate(0, ${zipperOffsetChange * ratio})`);
+                $("#Front .zipper.offset.line").attr("y2", top + pouch.zipper.offset.value * ratio - 5);
+                $("#Front .zipper.part").attr("x1", right - pouch.face.width.value * ratio);
+                $("#Front .zipper.part")
+                    .eq(0)
+                    .attr("y1", top + pouch.zipper.offset.value * ratio)
+                    .attr("y2", top + pouch.zipper.offset.value * ratio);
+                $("#Front .zipper.part")
+                    .eq(1)
+                    .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 5)
+                    .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 5);
+                $("#Front .zipper.part")
+                    .eq(2)
+                    .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio + 5)
+                    .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio + 5);
+                $("#Front .zipper.part")
+                    .eq(3)
+                    .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value) * ratio)
+                    .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value) * ratio);
+
+                //notch//
+                $("#Front .notch.offset.text")
+                    .attr("transform", `matrix(0 1 -1 0 589.251 ${top + (pouch.notch.offset.value / 2) * ratio - 15})`)
+                    .text(pouch.notch.offset.value + " mm");
+                $("#Front .left.notch").attr("transform", `translate(${-widthChange * ratio}, ${notchOffsetChange * ratio})`);
+                $("#Front .right.notch, #Front .notch.offset.mark, #Front .notch.offset.bottom.arrow").attr("transform", `translate(0, ${notchOffsetChange * ratio})`);
+                $("#Front .notch.offset.line")
+                    .attr("y1", top + 4)
+                    .attr("y2", top + pouch.notch.offset.value * ratio - 10);
+
+                //seal//
+                $("#Front .seal .bottom.size.text").text(pouch.seal.width.value + " mm");
+                $("#Front .seal .left.size.text")
+                    .attr("transform", `matrix(0 1 -1 0 ${right - (pouch.face.width.value - pouch.seal.width.value / 2) * ratio - 3} ${top + (pouch.face.height.value * ratio) / 2} )`)
+                    .text(pouch.seal.width.value + " mm");
+                let points = [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                ];
+                points[2][0] = points[3][0] = right - pouch.seal.width.value * ratio; //right
+                points[0][0] = points[1][0] = right - (pouch.face.width.value - pouch.seal.width.value) * ratio; //left
+                if (pouch.seal.placement == Placement.Bottom) {
+                    points[3][1] = points[0][1] = top; //top
+                    points[1][1] = points[2][1] = top + (pouch.face.height.value - pouch.seal.width.value) * ratio; //bottom
+                    $("#Front .seal .bottom.size.text")
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 12} ${top + (pouch.face.height.value - pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .text(pouch.seal.width.value + " mm");
+                } else if (pouch.seal.placement == Placement.Top) {
+                    points[1][1] = points[2][1] = top + pouch.seal.width.value * ratio; //top
+                    points[3][1] = points[0][1] = top + pouch.face.height.value * ratio; //bottom
+                    $("#Front .seal .bottom.size.text")
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 12} ${top + (pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .text(pouch.seal.width.value + " mm");
+                } else throw "Placement type is not implemented, type: " + pouch.seal.placement;
+                $("#Front .seal .outline").attr("points", points.map((xy) => xy.join(",")).join(" "));
+
+                $("#Front .seal .curve").attr(
+                    "d",
+                    CreateHorizontalBezierArc(right - (pouch.face.width.value - pouch.seal.width.value) * ratio, right - pouch.seal.width.value * ratio, top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio, (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio)
+                );
+
+                //meridian//
+                $("#Front .meridian .meridian")
+                    .attr("x1", right - pouch.face.width.value * ratio)
+                    .attr("x2", right)
+                    .attr("y1", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio)
+                    .attr("y2", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio);
+                $("#Front .meridian .offset .top.mark, #Front .meridian .offset .top.arrow").attr("transform", `translate(0, ${meridianChange * ratio})`);
+                $("#Front .meridian .offset .line")
+                    .attr("x1", right + 15)
+                    .attr("x2", right + 15)
+                    .attr("y1", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio + 6)
+                    .attr("y2", top + pouch.face.height.value * ratio - 6);
+                $("#Front .meridian .offset .text")
+                    .attr("transform", `matrix(0 1 -1 0 593.584 ${top + (pouch.face.height.value - pouch.gusset.depth.value / 4) * ratio - 10})`)
+                    .text(pouch.gusset.depth.value / 2 + " mm");
+                $("#Front .meridian .offset .bottom.arrow, #Front .meridian .offset .bottom.mark").attr("transform", `translate(0, ${heightChange * ratio})`);
+            }
+            function CreateHorizontalBezierArc(x1, x2, y, radius) {
+                return `M ${x1} ${y} C ${x1} ${y + radius * 1.32536445942915653}, ${x2} ${y + radius * 1.32536445942915653}, ${x2} ${y}`;
+            }
+            function UpdateSvgBack($svg, ratio) {
+                let $back = $("#Back");
+                $back.children().remove();
+                $back.attr("transform", `translate(${160 + pouch.face.width.value * ratio}, 0)`);
+                $("#Front").clone().appendTo($back);
+                $back.find(".face.label.left.text").text("BACK");
+            }
+            function UpdateSvgGusset($svg, ratio) {
+                let top = 405.35 + pouch.face.height.value * ratio + 28;
+                let right = 569.69;
+                let widthChange = pouch.face.width.value - pouch.face.width.initial;
+                let frontHeightChange = pouch.face.height.value - pouch.face.height.initial;
+                let meridianChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial) / 2;
+                let gussetChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial);
+
+                //conditional elements//
+                if (pouch.gusset.included) $("#Front .meridian, #Front .seal .curve, #Gusset").show();
+                else $("#Front .meridian, #Front .seal .curve, #Gusset").hide();
+
+                //face//
+                $("#Gusset .face .outline")
+                    .attr("x", right - pouch.face.width.value * ratio)
+                    .attr("y", top)
+                    .attr("width", pouch.face.width.value * ratio)
+                    .attr("height", pouch.gusset.depth.value * ratio);
+                $("#Gusset .meridian .meridian")
+                    .attr("x1", right - pouch.face.width.value * ratio)
+                    .attr("x2", right)
+                    .attr("y1", top + (pouch.gusset.depth.value / 2) * ratio)
+                    .attr("y2", top + (pouch.gusset.depth.value / 2) * ratio);
+
+                //seal//
+                $("#Gusset .seal .outline")
+                    .attr("x", right - (pouch.face.width.value - pouch.seal.width.value) * ratio)
+                    .attr("y", top + pouch.seal.width.value * ratio)
+                    .attr("width", (pouch.face.width.value - pouch.seal.width.value * 2) * ratio)
+                    .attr("height", (pouch.gusset.depth.value - pouch.seal.width.value * 2) * ratio);
+                $("#Gusset .seal .curve")
+                    .attr("cx", right - (pouch.face.width.value / 2) * ratio)
+                    .attr("cy", top + (pouch.gusset.depth.value / 2) * ratio)
+                    .attr("rx", (pouch.face.width.value / 2 - pouch.seal.width.value) * ratio)
+                    .attr("ry", (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio);
+
+                //heights//
+                $("#Gusset .face .height .top.mark, #Gusset .face .height .top.arrow").attr("transform", `translate(${-widthChange * ratio}, ${frontHeightChange * ratio})`);
+                $("#Gusset .face .height .line")
+                    .attr("x1", right - pouch.face.width.value * ratio - 13)
+                    .attr("x2", right - pouch.face.width.value * ratio - 13)
+                    .attr("y1", top + 6)
+                    .attr("y2", top + pouch.gusset.depth.value * ratio - 6);
+                $("#Gusset .face .height .text")
+                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 25} ${top + (pouch.gusset.depth.value / 2) * ratio + 11})`)
+                    .text(pouch.gusset.depth.value / 2 + " mm");
+                $("#Gusset .face .height .bottom.arrow, #Gusset .face .height .bottom.mark").attr("transform", `translate(${-widthChange * ratio}, ${gussetChange * ratio})`);
+
+                $("#Gusset .meridian .offset .top.mark, #Gusset .meridian .offset .top.arrow").attr("transform", `translate(0, ${frontHeightChange * ratio})`);
+                $("#Gusset .meridian .offset .line")
+                    .attr("x1", right + 15)
+                    .attr("x2", right + 15)
+                    .attr("y1", top + 6)
+                    .attr("y2", top + (pouch.gusset.depth.value / 2) * ratio - 6);
+                $("#Gusset .meridian .offset .text")
+                    .attr("transform", `matrix(0 1 -1 0 593.584 ${top + (pouch.gusset.depth.value / 4) * ratio - 10})`)
+                    .text(pouch.gusset.depth.value / 2 + " mm");
+                $("#Gusset .meridian .offset .bottom.arrow, #Gusset .meridian .offset .bottom.mark").attr("transform", `translate(0, ${meridianChange * ratio - 1})`);
+            }
+        </script>
+
+        <script id="Downloader">
+            function downloadSvg(filename, svgElement) {
+                var el = document.createElement("a");
+                el.setAttribute("href", "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgElement.outerHTML));
+                el.setAttribute("download", filename);
+                el.style.display = "none";
+                document.body.appendChild(el);
+                el.click();
+                document.body.removeChild(el);
+            }
+
+            $("#Download").on("click", function () {
+                downloadSvg("pouch-dyeline.svg", $("aside>svg")[0]);
+            });
+        </script>
+    </body>
+</html>
