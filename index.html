@@ -267,12 +267,35 @@
             });
             $("#IncludeGusset").on("change", function (ev) {
                 pouch.gusset.included = ev.target.checked;
+                if (ev.target.checked) {
+                    $("[for=SealTop]")
+                        .css("text-decoration", "line-through 2px #777")
+                        .on("click", function () {
+                            alert("Cannot place a top seal when a gusset is included");
+                            return false;
+                        });
+                    $("#SealBottom").click();
+                }
             });
+            $("#ExcludeGusset").on("change", function (ev) {
+                pouch.gusset.included = !ev.target.checked;
+                if (ev.target.checked) {
+                    $("[for=SealTop]").css("text-decoration", "").off("click");
+                }
+            });
+            if ($("#IncludeGusset")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ExcludeGusset").click();
+                $("#IncludeGusset").click();
+            }
             $("#GussetDepth").on("change", function (ev) {
                 pouch.gusset.depth.value = ev.target.value * 1;
             });
             $("#SealSize").on("change", function (ev) {
                 pouch.seal.width.value = ev.target.value * 1;
+            });
+            $("#SealTop").on("change", function (ev) {
+                pouch.seal.placement = ev.target.checked ? Placement.Top : Placement.Bottom;
             });
             $("#SealBottom").on("change", function (ev) {
                 pouch.seal.placement = ev.target.checked ? Placement.Bottom : Placement.Top;
@@ -280,17 +303,26 @@
             $("#IncludeZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
             });
+            $("#ExcludeZipper").on("change", function (ev) {
+                pouch.zipper.included = !ev.target.checked;
+            });
             $("#ZipperOffset").on("change", function (ev) {
                 pouch.zipper.offset.value = ev.target.value * 1;
             });
             $("#IncludeNotch").on("change", function (ev) {
                 pouch.notch.included = ev.target.checked;
             });
+            $("#ExcludeNotch").on("change", function (ev) {
+                pouch.notch.included = !ev.target.checked;
+            });
             $("#NotchOffset").on("change", function (ev) {
                 pouch.notch.offset.value = ev.target.value * 1;
             });
             $("#IncludeHole").on("change", function (ev) {
                 pouch.hanger.included = ev.target.checked;
+            });
+            $("#ExcludeHole").on("change", function (ev) {
+                pouch.hanger.included = !ev.target.checked;
             });
             $("#HoleOffset").on("change", function (ev) {
                 pouch.hanger.offset.value = ev.target.value * 1;
@@ -341,17 +373,18 @@
                 }
             }
             function UpdateSvgViewBox($svg, ratio) {
-                let gussetDepth = pouch.gusset.included ? 30 + pouch.gusset.depth.value * ratio : 0;
-                $svg.attr("viewBox", `${450 - pouch.face.width.value * ratio} ${175} ${pouch.face.width.value * 2 * ratio + 380} ${300 + pouch.face.height.value * ratio + gussetDepth}`);
+                let gussetDepth = pouch.gusset.included ? 183 + pouch.gusset.depth.value * ratio : 0; //header and space + gusset
+                $svg.attr("viewBox", `${450 - pouch.face.width.value * ratio} ${175} ${pouch.face.width.value * 2 * ratio + 380} ${170 + pouch.face.height.value * ratio + gussetDepth}`);
             }
             function UpdateSvgFront($svg, ratio) {
-                let top = 405.35;
+                let originalTop = 405.35;
+                let top = originalTop - 80;
                 let right = 569.69;
                 let widthChange = pouch.face.width.value - pouch.face.width.initial;
-                let heightChange = pouch.face.height.value - pouch.face.height.initial;
+                let heightChange = pouch.face.height.value - pouch.face.height.initial + (top - originalTop) / ratio;
                 let zipperOffsetChange = pouch.zipper.offset.value - pouch.zipper.offset.initial;
                 let notchOffsetChange = pouch.notch.offset.value - pouch.notch.offset.initial;
-                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2);
+                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2) + (top - originalTop) / ratio;
 
                 //conditional elements//
                 if (pouch.zipper.included || pouch.notch.included) $("#Front .top.offset.mark").show();
@@ -371,13 +404,14 @@
                 $("#Front .face.outline")
                     .attr("height", pouch.face.height.value * ratio)
                     .attr("x", right - pouch.face.width.value * ratio)
-                    .attr("width", pouch.face.width.value * ratio);
+                    .attr("width", pouch.face.width.value * ratio)
+                    .attr("y", top);
 
                 //face height guides//
                 $("#Front .face.height.text")
                     .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 27} ${top + (pouch.face.height.value * ratio) / 2 + 28})`)
                     .text(pouch.face.height.value + " mm");
-                $("#Front .face.height.top.arrow, #Front .face.height.top.mark").attr("transform", `translate(${-widthChange * ratio}, 0)`);
+                $("#Front .face.height.top.arrow, #Front .face.height.top.mark").attr("transform", `translate(${-widthChange * ratio}, ${top - 405})`);
                 $("#Front .face.height.line")
                     .attr("x1", right - pouch.face.width.value * ratio - 14)
                     .attr("x2", right - pouch.face.width.value * ratio - 14)
@@ -387,12 +421,16 @@
 
                 //face width guides//
                 $("#Front .face.width.text")
-                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 28} 383.7047)`)
+                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 28} ${top - 21.6453})`)
                     .text(pouch.face.width.value + " mm");
-                $("#Front .face.width.left.arrow, #Front .face.width.left.mark").attr("transform", `translate(${-widthChange * ratio}, 0)`);
+                $("#Front .face.width.left.arrow, #Front .face.width.left.mark").attr("transform", `translate(${-widthChange * ratio}, ${top - 405})`);
                 $("#Front .face.width.line")
                     .attr("x1", right - pouch.face.width.value * ratio + 10)
-                    .attr("x2", right - 10);
+                    .attr("x2", right - 10)
+                    .attr("y1", top - 12)
+                    .attr("y2", top - 12);
+
+                $("#Front .face.width.right.arrow, #Front .face.width.right.mark").attr("transform", `translate(0, ${top - 405})`);
 
                 //header label//
                 $("#Front .face.label.background")
@@ -546,16 +584,29 @@
                 $back.find(".face.label.left.text").text("BACK");
             }
             function UpdateSvgGusset($svg, ratio) {
-                let top = 405.35 + pouch.face.height.value * ratio + 28;
+                let originalTop = 405.35 + pouch.face.height.value * ratio + 28;
+                let top = 15 + originalTop;
                 let right = 569.69;
                 let widthChange = pouch.face.width.value - pouch.face.width.initial;
-                let frontHeightChange = pouch.face.height.value - pouch.face.height.initial;
+                let frontHeightChange = pouch.face.height.value - pouch.face.height.initial + (top - originalTop) / ratio;
                 let meridianChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial) / 2;
                 let gussetChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial);
 
                 //conditional elements//
                 if (pouch.gusset.included) $("#Front .meridian, #Front .seal .curve, #Gusset").show();
                 else $("#Front .meridian, #Front .seal .curve, #Gusset").hide();
+
+                //header label//
+                $("#Gusset .header-label .background")
+                    .attr("x", 104.07 - widthChange * ratio)
+                    .attr("width", 516.11 + widthChange * ratio)
+                    .attr("y", top - 57.1606);
+                $("#Gusset .header-label .left.text")
+                    .attr("x", right - pouch.face.width.value * ratio - 49.8712882)
+                    .attr("y", top - 36.1606);
+                $("#Gusset .header-label .right.text")
+                    .attr("x", 528)
+                    .attr("y", top - 36.1606);
 
                 //face//
                 $("#Gusset .face .outline")

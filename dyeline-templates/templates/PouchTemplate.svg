@@ -116,6 +116,11 @@
 
 
     <g id="Gusset">
+        <g class="header-label">
+            <rect x="104.07" y="1157" class="st4 face label background" width="516.11" height="25.75"/>
+            <text x="125" y="1178" class="st9 st10 st11 face label left text">BOTTOM</text>
+            <text x="527" y="1178" class="st9 st10 st11 face label right text">GUSSET</text>
+        </g>
         <g class="face">
             <rect class="st16 outline" x="175.36" y="1079.26" width="394.33" height="214.69"/>
             <g class="height">
