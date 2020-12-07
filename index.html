@@ -377,14 +377,18 @@
                 $svg.attr("viewBox", `${450 - pouch.face.width.value * ratio} ${175} ${pouch.face.width.value * 2 * ratio + 380} ${170 + pouch.face.height.value * ratio + gussetDepth}`);
             }
             function UpdateSvgFront($svg, ratio) {
+                //NOTE: The following variables unit is px!
                 let originalTop = 405.35;
                 let top = originalTop - 80;
                 let right = 569.69;
+
+                //NOTE: The following xxxxChange variables unit is mm!
+                let topChange = (top - originalTop) / ratio;
                 let widthChange = pouch.face.width.value - pouch.face.width.initial;
-                let heightChange = pouch.face.height.value - pouch.face.height.initial + (top - originalTop) / ratio;
-                let zipperOffsetChange = pouch.zipper.offset.value - pouch.zipper.offset.initial;
-                let notchOffsetChange = pouch.notch.offset.value - pouch.notch.offset.initial;
-                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2) + (top - originalTop) / ratio;
+                let heightChange = pouch.face.height.value - pouch.face.height.initial + topChange;
+                let zipperOffsetChange = pouch.zipper.offset.value - pouch.zipper.offset.initial + topChange;
+                let notchOffsetChange = pouch.notch.offset.value - pouch.notch.offset.initial + topChange;
+                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2) + topChange;
 
                 //conditional elements//
                 if (pouch.zipper.included || pouch.notch.included) $("#Front .top.offset.mark").show();
@@ -453,33 +457,41 @@
                     .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio + 3})`)
                     .text(pouch.hanger.height.value + " mm");
 
-                $("#Front .hanger.offset.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175})`);
+                $("#Front .hanger.offset.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + (topChange * ratio) / 0.7})`);
                 $("#Front .hanger.offset.line")
                     .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("y1", top + 4)
                     .attr("y2", top + pouch.hanger.offset.value * ratio - 4);
-                $("#Front .hanger.offset.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + (pouch.hanger.offset.value * ratio) / 0.7})`);
+                $("#Front .hanger.offset.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.offset.bottom.mark")
                     .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
                     .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
                     .attr("y1", top + pouch.hanger.offset.value * ratio)
                     .attr("y2", top + pouch.hanger.offset.value * ratio);
 
-                $("#Front .hanger.height.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + (pouch.hanger.offset.value * ratio) / 0.7})`);
+                $("#Front .hanger.height.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + ((pouch.hanger.offset.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.height.line")
                     .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("y1", top + pouch.hanger.offset.value * ratio + 4)
                     .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio - 4);
-                $("#Front .hanger.height.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + pouch.hanger.height.value) * ratio) / 0.7})`);
+                $("#Front .hanger.height.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + pouch.hanger.height.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.height.bottom.mark")
                     .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
                     .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
                     .attr("y1", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio)
                     .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio);
 
+                //zipper/notch shared top mark//
+                $("#Front .top.offset.mark")
+                    .attr("x1", right + 2.38)
+                    .attr("x2", right + 39.74)
+                    .attr("y1", 405 + top - originalTop)
+                    .attr("y2", 405 + top - originalTop);
+
                 //zipper//
+                $("#Front .zipper.offset.top.arrow").attr("transform", `translate(0, ${topChange * ratio})`);
                 $("#Front .zipper.offset.text")
                     .attr("transform", `matrix(0 1 -1 0 607.9297  ${top + (pouch.zipper.offset.value / 2) * ratio - 15})`)
                     .text(pouch.zipper.offset.value + " mm");
@@ -494,7 +506,9 @@
                 #Front .zipper.height.line,
                 #Front .zipper.height.bottom.arrow,
                 #Front .zipper.bottom.height.mark`).attr("transform", `translate(0, ${zipperOffsetChange * ratio})`);
-                $("#Front .zipper.offset.line").attr("y2", top + pouch.zipper.offset.value * ratio - 5);
+                $("#Front .zipper.offset.line")
+                    .attr("y1", top + 5)
+                    .attr("y2", top + pouch.zipper.offset.value * ratio - 5);
                 $("#Front .zipper.part").attr("x1", right - pouch.face.width.value * ratio);
                 $("#Front .zipper.part")
                     .eq(0)
@@ -518,6 +532,7 @@
                     .attr("transform", `matrix(0 1 -1 0 589.251 ${top + (pouch.notch.offset.value / 2) * ratio - 15})`)
                     .text(pouch.notch.offset.value + " mm");
                 $("#Front .left.notch").attr("transform", `translate(${-widthChange * ratio}, ${notchOffsetChange * ratio})`);
+                $("#Front .notch.offset.top.arrow").attr("transform", `translate(0, ${topChange * ratio})`);
                 $("#Front .right.notch, #Front .notch.offset.mark, #Front .notch.offset.bottom.arrow").attr("transform", `translate(0, ${notchOffsetChange * ratio})`);
                 $("#Front .notch.offset.line")
                     .attr("y1", top + 4)
