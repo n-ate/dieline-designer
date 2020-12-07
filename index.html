@@ -252,7 +252,7 @@
             }
 
             //--load svg--//
-            $.get("dyeline-templates/templates/PouchTemplate.svg", function (xmlDoc) {
+            $.get("dieline-templates/templates/PouchTemplate.svg", function (xmlDoc) {
                 $("aside").append(xmlDoc.rootElement);
                 console.log(pouch); //TODO: remove
                 UpdateSvg(); //trigger update after svg is loaded
@@ -684,7 +684,7 @@
             }
 
             $("#Download").on("click", function () {
-                downloadSvg("pouch-dyeline.svg", $("aside>svg")[0]);
+                downloadSvg("pouch-dieline.svg", $("aside>svg")[0]);
             });
         </script>
     </body>
