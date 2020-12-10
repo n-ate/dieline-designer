@@ -656,7 +656,7 @@
                     .attr("y2", top + pouch.gusset.depth.value * ratio - 6);
                 $("#Gusset .face .height .text")
                     .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 25} ${top + (pouch.gusset.depth.value / 2) * ratio + 11})`)
-                    .text(pouch.gusset.depth.value + " mm");
+                    .text(pouch.gusset.depth.value / 2 + " mm");
                 $("#Gusset .face .height .bottom.arrow, #Gusset .face .height .bottom.mark").attr("transform", `translate(${-widthChange * ratio}, ${gussetChange * ratio})`);
 
                 $("#Gusset .meridian .offset .top.mark, #Gusset .meridian .offset .top.arrow").attr("transform", `translate(0, ${frontHeightChange * ratio})`);
