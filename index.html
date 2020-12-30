@@ -59,6 +59,12 @@
             }
             .flex-form .field label {
             }
+            .flex-form .field em {
+                width: 5.7em;
+                padding: 0 0.4em;
+                float: right;
+                text-align: right;
+            }
             .flex-form .field input:not([type="radio"]) {
                 width: 5.7em;
                 padding: 0 0.4em;
@@ -118,27 +124,45 @@
     <body>
         <main>
             <div class="flex-form">
-                <div class="field">
-                    <label for="WidthTotal" title="Outer Width">Width</label><abbr>mm</abbr>
-                    <input id="WidthTotal" type="number" value="140" min="40" max="400" title="Outer Width" />
-                </div>
-                <div class="field">
-                    <label for="LengthTotal" title="Outer Length">Length</label><abbr>mm</abbr>
-                    <input id="LengthTotal" type="number" value="229" min="40" max="600" title="Outer Length" />
+                <div class="group">
+                    <div class="field">
+                        <label for="WidthTotal" title="Outer Width">Width</label><abbr>mm</abbr>
+                        <input id="WidthTotal" type="number" value="140" min="40" max="400" title="Outer Width" />
+                    </div>
+                    <div class="field">
+                        <label for="LengthTotal" title="Outer Length">Length</label><abbr>mm</abbr>
+                        <input id="LengthTotal" type="number" value="229" min="40" max="600" title="Outer Length" />
+                    </div>
                 </div>
                 <div class="group">
                     <div class="field">
                         <label title="Pouch can stand on end?">Gusset</label>
                         <fieldset>
-                            <input id="IncludeGusset" name="Gusset" type="radio" value="true" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDeptSection" />
+                            <input id="IncludeGusset" name="Gusset" type="radio" value="true" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDepthSection, #SidesWidthSection>em" data-vanish="#SidesWidthSection>input,#SidesWidthSection>abbr" />
                             <label for="IncludeGusset" title="Pouch can stand on end?">yes</label>
-                            <input id="ExcludeGusset" name="Gusset" type="radio" value="false" checked title="No gusset on the pouch" data-hide="#GussetDeptSection" />
+                            <input id="ExcludeGusset" name="Gusset" type="radio" value="false" checked title="No gusset on the pouch" data-hide="#GussetDepthSection" data-show="#SidesWidthSection>input,#SidesWidthSection>abbr" data-vanish="#SidesWidthSection>em" />
                             <label for="ExcludeGusset" title="Pouch can stand on end?">no</label>
                         </fieldset>
                     </div>
-                    <div id="GussetDeptSection" class="field">
+                    <div id="GussetDepthSection" class="field">
                         <label for="GussetDepth" title="Gusset overal size from front face to back face including seal">Size</label><abbr>mm</abbr>
                         <input id="GussetDepth" type="number" value="76" min="10" max="400" title="Gusset depth including seal" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="Include pouch sides?">Sides</label>
+                        <fieldset>
+                            <input id="IncludeSides" name="Sides" type="radio" value="true" title="Include left and right sides on the pouch?" data-show="#SidesWidthSection" />
+                            <label for="IncludeSides" title="Adds a left and right side to the pouch">yes</label>
+                            <input id="ExcludeSides" name="Sides" type="radio" value="false" checked title="No left and right sides on the pouch?" data-hide="#SidesWidthSection" />
+                            <label for="ExcludeSides" title="No left and right side on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="SidesWidthSection" class="field">
+                        <label for="SideWidth" title="The width of each pouch side from the front of the pouch to the back">Width</label><abbr>mm</abbr>
+                        <input id="SideWidth" type="number" value="70" min="40" max="600" title="The width of each pouch side" />
+                        <em title="Side widths are matched to gusset size; change the gusset size or turn off gusset to adjust widths">see gusset</em>
                     </div>
                 </div>
                 <div class="group">
@@ -198,12 +222,27 @@
                         </fieldset>
                     </div>
                     <div id="HoleOffsetSection" class="field">
-                        <label for="HoleOffset" title="The distance from the edge of the pouch to the center of the hang hole">Hang Hole Offset</label><abbr>mm</abbr>
-                        <input id="HoleOffset" type="number" value="8" min="6" max="40" title="he distance from the edge of the pouch to the center of the hang hole" />
+                        <label for="HoleOffset" title="The distance from the edge of the pouch to the top of the hang hole">Hang Hole Offset</label><abbr>mm</abbr>
+                        <input id="HoleOffset" type="number" value="8" min="6" max="40" title="The distance from the edge of the pouch to the top of the hang hole" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
+                        <label title="Include a degasser valve?">Degas Valve</label>
+                        <fieldset>
+                            <input id="IncludeDegasser" name="Degasser" type="radio" value="true" title="Include a degasser valve?" data-show="#DegasserOffsetSection" />
+                            <label for="IncludeDegasser" title="Adds a degasser valve to the pouch">yes</label>
+                            <input id="ExcludeDegasser" name="Degasser" type="radio" value="false" checked title="No degasser valve?" data-hide="#DegasserOffsetSection" />
+                            <label for="ExcludeDegasser" title="No degasser valve on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="DegasserOffsetSection" class="field">
+                        <label for="DegasserOffset" title="The distance from the edge of the pouch to the top of the hang hole">Degas Valve Offset</label><abbr>mm</abbr>
+                        <input id="DegasserOffset" type="number" value="60" min="18" max="400" title="The distance from the edge of the pouch to the top of the degasser valve" />
                     </div>
                 </div>
                 <div class="field command">
-                    <button id="Download">Download</button>
+                    <button id="Download" style="margin-top: 1em">Download</button>
                 </div>
                 <div class="spacer field">
                     <label></label>
@@ -227,29 +266,51 @@
             let pouch = PouchTemplate.getDefault(UpdateSvg);
 
             //radio event binding
-            $("[data-hide]").on("change", function (ev) {
-                let $t = $(ev.target).filter(":checked");
-                if ($t.length) HideByData($t.data("hide"));
-            });
             $("[data-show]").on("change", function (ev) {
                 let $t = $(ev.target).filter(":checked");
-                if ($t.length) ShowByData($t.data("show"));
+                if ($t.length) showByData($t.data("show"));
+            });
+            $("[data-hide]").on("change", function (ev) {
+                //hidden is visibility:hidden;
+                let $t = $(ev.target).filter(":checked");
+                if ($t.length) hideByData($t.data("hide"));
+            });
+            $("[data-vanish]").on("change", function (ev) {
+                //vanished is display:none;
+                let $t = $(ev.target).filter(":checked");
+                if ($t.length) vanishByData($t.data("vanish"));
             });
 
-            //initialize show/hide based on current checks
-            $("[data-hide]:checked").each((i, el) => {
-                HideByData($(el).data("hide"));
-            });
-            $("[data-show]:checked").each((i, el) => {
-                ShowByData($(el).data("show"));
-            });
+            function ensureShown() {
+                $("[data-show]:checked").each((i, el) => {
+                    showByData($(el).data("show"));
+                });
+            }
+            function ensureHidden() {
+                $("[data-hide]:checked").each((i, el) => {
+                    hideByData($(el).data("hide"));
+                });
+            }
+            function ensureVanished() {
+                $("[data-vanish]:checked").each((i, el) => {
+                    vanishByData($(el).data("vanish"));
+                });
+            }
 
-            function HideByData(selector) {
+            function showByData(selector) {
+                $(selector).css("visibility", "").css("display", "");
+                ensureHidden();
+                ensureVanished();
+            }
+            function hideByData(selector) {
                 $(selector).css("visibility", "hidden");
             }
-            function ShowByData(selector) {
-                $(selector).css("visibility", "visible");
+            function vanishByData(selector) {
+                $(selector).css("display", "none");
             }
+
+            //initialize show/hide based on current checks (show before hide i.e. (show + show == show, show + hide == hide, hide + hide == hide))
+            ensureShown();
 
             //--load svg--//
             $.get("dieline-templates/templates/PouchTemplate.svg", function (xmlDoc) {
@@ -260,10 +321,10 @@
 
             //--bindings--//
             $("#WidthTotal").on("change", function (ev) {
-                pouch.face.width.value = ev.target.value * 1;
+                pouch.front.width.value = ev.target.value * 1;
             });
             $("#LengthTotal").on("change", function (ev) {
-                pouch.face.height.value = ev.target.value * 1;
+                pouch.front.height.value = ev.target.value * 1;
             });
             $("#IncludeGusset").on("change", function (ev) {
                 pouch.gusset.included = ev.target.checked;
@@ -290,6 +351,12 @@
             }
             $("#GussetDepth").on("change", function (ev) {
                 pouch.gusset.depth.value = ev.target.value * 1;
+            });
+            $("#IncludeSides").on("change", function (ev) {
+                pouch.left.included = ev.target.checked;
+            });
+            $("#ExcludeSides").on("change", function (ev) {
+                pouch.right.included = !ev.target.checked;
             });
             $("#SealSize").on("change", function (ev) {
                 pouch.seal.width.value = ev.target.value * 1;
@@ -327,12 +394,23 @@
             $("#HoleOffset").on("change", function (ev) {
                 pouch.hanger.offset.value = ev.target.value * 1;
             });
+            $("#IncludeDegasser").on("change", function (ev) {
+                pouch.degasser.included = ev.target.checked;
+            });
+            $("#ExcludeDegasser").on("change", function (ev) {
+                pouch.degasser.included = !ev.target.checked;
+            });
+            $("#DegasserOffset").on("change", function (ev) {
+                pouch.degasser.offset.value = ev.target.value * 1;
+            });
 
             //--periodic model updating--//
             let w = $("#WidthTotal")[0],
                 h = $("#LengthTotal")[0],
                 yesGusset = $("#IncludeGusset")[0],
                 gusset = $("#GussetDepth")[0],
+                yesSides = $("#IncludeSides")[0],
+                sides = $("#SideWidth")[0],
                 seal = $("#SealSize")[0],
                 sealPlacement = $("#SealBottom")[0],
                 yesZipper = $("#IncludeZipper")[0],
@@ -340,12 +418,16 @@
                 yesNotch = $("#IncludeNotch")[0],
                 notch = $("#NotchOffset")[0],
                 yesHanger = $("#IncludeHole")[0],
-                hanger = $("#HoleOffset")[0];
+                hanger = $("#HoleOffset")[0],
+                yesDegasser = $("#IncludeDegasser")[0],
+                degasser = $("#DegasserOffset")[0];
             (function UpdateModel() {
-                pouch.face.width.value = w.value * 1;
-                pouch.face.height.value = h.value * 1;
+                pouch.front.width.value = w.value * 1;
+                pouch.front.height.value = h.value * 1;
                 pouch.gusset.included = yesGusset.checked;
                 pouch.gusset.depth.value = gusset.value * 1;
+                pouch.left.included = yesSides.checked;
+                pouch.left.width.value = yesGusset.checked ? gusset.value * 1 : sides.value * 1; // width is from gusset if the gusset is on
                 pouch.seal.width.value = seal.value * 1;
                 pouch.seal.placement = sealPlacement.checked ? Placement.Bottom : Placement.Top;
                 pouch.zipper.included = yesZipper.checked;
@@ -354,6 +436,8 @@
                 pouch.notch.offset.value = notch.value * 1;
                 pouch.hanger.included = yesHanger.checked;
                 pouch.hanger.offset.value = hanger.value * 1;
+                pouch.degasser.included = yesDegasser.checked;
+                pouch.degasser.offset.value = degasser.value * 1;
                 setTimeout(UpdateModel, 100);
             })();
 
@@ -370,11 +454,15 @@
                     UpdateSvgFront($svg, unitRatio);
                     UpdateSvgBack($svg, unitRatio);
                     UpdateSvgGusset($svg, unitRatio);
+                    UpdateSvgRight($svg, unitRatio);
+                    UpdateSvgLeft($svg, unitRatio);
                 }
             }
             function UpdateSvgViewBox($svg, ratio) {
                 let gussetDepth = pouch.gusset.included ? 183 + pouch.gusset.depth.value * ratio : 0; //header and space + gusset
-                $svg.attr("viewBox", `${450 - pouch.face.width.value * ratio} ${175} ${pouch.face.width.value * 2 * ratio + 380} ${170 + pouch.face.height.value * ratio + gussetDepth}`);
+                let frontBackWidth = (pouch.front.width.value + pouch.back.width.value) * ratio + 380;
+                let leftRightWidth = pouch.left.included && pouch.right.included ? (pouch.right.width.value + pouch.left.width.value) * ratio + 380 : 0;
+                $svg.attr("viewBox", `${450 - pouch.front.width.value * ratio} ${175} ${frontBackWidth + leftRightWidth} ${170 + pouch.front.height.value * ratio + gussetDepth}`);
             }
             function UpdateSvgFront($svg, ratio) {
                 //NOTE: The following variables unit is px!
@@ -384,11 +472,11 @@
 
                 //NOTE: The following xxxxChange variables unit is mm!
                 let topChange = (top - originalTop) / ratio;
-                let widthChange = pouch.face.width.value - pouch.face.width.initial;
-                let heightChange = pouch.face.height.value - pouch.face.height.initial + topChange;
+                let widthChange = pouch.front.width.value - pouch.front.width.initial;
+                let heightChange = pouch.front.height.value - pouch.front.height.initial + topChange;
                 let zipperOffsetChange = pouch.zipper.offset.value - pouch.zipper.offset.initial + topChange;
                 let notchOffsetChange = pouch.notch.offset.value - pouch.notch.offset.initial + topChange;
-                let meridianChange = pouch.face.height.value - pouch.gusset.depth.value / 2 - (pouch.face.height.initial - pouch.gusset.depth.initial / 2) + topChange;
+                let meridianChange = pouch.front.height.value - pouch.gusset.depth.value / 2 - (pouch.front.height.initial - pouch.gusset.depth.initial / 2) + topChange;
 
                 //conditional elements//
                 if (pouch.zipper.included || pouch.notch.included) $("#Front .top.offset.mark").show();
@@ -396,40 +484,49 @@
                 else $("#Front .top.offset.mark").hide();
                 if (pouch.zipper.included) $("#Front .zipper").show();
                 else $("#Front .zipper").hide();
-                if (pouch.notch.included) $("#Front .notch").show();
-                else $("#Front .notch").hide();
+                if (pouch.notch.included) {
+                    $("#Front .notch").show();
+                    $("#Front .zipper .wishbone").hide(); //the type of zipper is dependent on notch presence
+                    $("#Front .zipper .straight").show();
+                } else {
+                    $("#Front .notch").hide();
+                    $("#Front .zipper .wishbone").show(); //the type of zipper is dependent on notch presence
+                    $("#Front .zipper .straight").hide();
+                }
                 if (pouch.hanger.included) $("#Front .hanger").show();
                 else $("#Front .hanger").hide();
+                if (pouch.degasser.included) $("#Front .degasser").show();
+                else $("#Front .degasser").hide();
                 if (pouch.hanger.included && pouch.seal.placement == Placement.Top) $("#Front .bottom.seal.size.text").hide();
                 //hides label if hanger is in the way
                 else $("#Front .bottom.seal.size.text").show();
 
                 //face//
                 $("#Front .face.outline")
-                    .attr("height", pouch.face.height.value * ratio)
-                    .attr("x", right - pouch.face.width.value * ratio)
-                    .attr("width", pouch.face.width.value * ratio)
+                    .attr("height", pouch.front.height.value * ratio)
+                    .attr("x", right - pouch.front.width.value * ratio)
+                    .attr("width", pouch.front.width.value * ratio)
                     .attr("y", top);
 
                 //face height guides//
                 $("#Front .face.height.text")
-                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 27} ${top + (pouch.face.height.value * ratio) / 2 + 28})`)
-                    .text(pouch.face.height.value + " mm");
+                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.front.width.value * ratio - 27} ${top + (pouch.front.height.value * ratio) / 2 + 28})`)
+                    .text(pouch.front.height.value + " mm");
                 $("#Front .face.height.top.arrow, #Front .face.height.top.mark").attr("transform", `translate(${-widthChange * ratio}, ${top - 405})`);
                 $("#Front .face.height.line")
-                    .attr("x1", right - pouch.face.width.value * ratio - 14)
-                    .attr("x2", right - pouch.face.width.value * ratio - 14)
+                    .attr("x1", right - pouch.front.width.value * ratio - 14)
+                    .attr("x2", right - pouch.front.width.value * ratio - 14)
                     .attr("y1", top + 14)
-                    .attr("y2", top + pouch.face.height.value * ratio - 14);
+                    .attr("y2", top + pouch.front.height.value * ratio - 14);
                 $("#Front .face.height.bottom.arrow, #Front .face.height.bottom.mark").attr("transform", `translate(${-widthChange * ratio}, ${heightChange * ratio})`);
 
                 //face width guides//
                 $("#Front .face.width.text")
-                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 28} ${top - 21.6453})`)
-                    .text(pouch.face.width.value + " mm");
+                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.front.width.value / 2) * ratio - 28} ${top - 21.6453})`)
+                    .text(pouch.front.width.value + " mm");
                 $("#Front .face.width.left.arrow, #Front .face.width.left.mark").attr("transform", `translate(${-widthChange * ratio}, ${top - 405})`);
                 $("#Front .face.width.line")
-                    .attr("x1", right - pouch.face.width.value * ratio + 10)
+                    .attr("x1", right - pouch.front.width.value * ratio + 10)
                     .attr("x2", right - 10)
                     .attr("y1", top - 12)
                     .attr("y2", top - 12);
@@ -441,47 +538,83 @@
                     .attr("x", 104.07 - widthChange * ratio)
                     .attr("width", 516.11 + widthChange * ratio);
                 $("#Front .face.label.left.text").attr("x", -widthChange * ratio);
-                $("#Front .face.label.center.text").attr("x", 23.5 + (-widthChange / 2) * ratio);
+                if (pouch.seal.placement == Placement.Top) {
+                    $("#Front .face.label.center.text")
+                        .attr("x", 3.5 + (-widthChange / 2) * ratio)
+                        .text("(SEALED TOP)");
+                } else if (pouch.seal.placement == Placement.Bottom) {
+                    $("#Front .face.label.center.text")
+                        .attr("x", 23.5 + (-widthChange / 2) * ratio)
+                        .text("(OPENING)");
+                } else throw "unexpected placement lcation";
 
                 //hanger//
-                pouch.hanger.height.value = 6;
                 var hangerArrowsXTranslation = -212 - ((widthChange - pouch.hanger.height.value) * ratio) / 2 + 10;
                 $("#Front .hanger.outline")
-                    .attr("cx", right - (pouch.face.width.value / 2) * ratio)
+                    .attr("cx", right - (pouch.front.width.value / 2) * ratio)
                     .attr("cy", top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio)
                     .attr("r", (pouch.hanger.height.value / 2) * ratio);
                 $("#Front .hanger.offset.text")
-                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value / 2) * ratio + 3})`)
+                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value / 2) * ratio + 3})`)
                     .text(pouch.hanger.offset.value + " mm");
                 $("#Front .hanger.height.text")
-                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio + 3})`)
+                    .attr("transform", `matrix(1 0 0 1 ${right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 16 + pouch.hanger.height.value / 5} ${top + (pouch.hanger.offset.value + pouch.hanger.height.value / 2) * ratio + 3})`)
                     .text(pouch.hanger.height.value + " mm");
 
                 $("#Front .hanger.offset.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + (topChange * ratio) / 0.7})`);
                 $("#Front .hanger.offset.line")
-                    .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
-                    .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x1", right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x2", right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("y1", top + 4)
                     .attr("y2", top + pouch.hanger.offset.value * ratio - 4);
                 $("#Front .hanger.offset.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.offset.bottom.mark")
-                    .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
-                    .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
+                    .attr("x1", right - (pouch.front.width.value / 2) * ratio + 6.5)
+                    .attr("x2", right - (pouch.front.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
                     .attr("y1", top + pouch.hanger.offset.value * ratio)
                     .attr("y2", top + pouch.hanger.offset.value * ratio);
 
                 $("#Front .hanger.height.top.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${175 + ((pouch.hanger.offset.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.height.line")
-                    .attr("x1", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
-                    .attr("x2", right - ((pouch.face.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x1", right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
+                    .attr("x2", right - ((pouch.front.width.value - pouch.hanger.height.value) / 2) * ratio + 10)
                     .attr("y1", top + pouch.hanger.offset.value * ratio + 4)
                     .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio - 4);
                 $("#Front .hanger.height.bottom.arrow").attr("transform", `scale(1, 0.7) translate(${hangerArrowsXTranslation}, ${65 + ((pouch.hanger.offset.value + pouch.hanger.height.value + topChange) * ratio) / 0.7})`);
                 $("#Front .hanger.height.bottom.mark")
-                    .attr("x1", right - (pouch.face.width.value / 2) * ratio + 6.5)
-                    .attr("x2", right - (pouch.face.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
+                    .attr("x1", right - (pouch.front.width.value / 2) * ratio + 6.5)
+                    .attr("x2", right - (pouch.front.width.value / 2) * ratio + 12 + pouch.hanger.height.value * 2)
                     .attr("y1", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio)
                     .attr("y2", top + (pouch.hanger.offset.value + pouch.hanger.height.value) * ratio);
+
+                //degasser//
+                var degasserArrowsXTranslation = -202 - ((widthChange + pouch.degasser.height.value) * ratio) / 2 - 10;
+                $("#Front .degasser .outer")
+                    .attr("cx", right - (pouch.front.width.value / 2) * ratio)
+                    .attr("cy", top + (pouch.degasser.offset.value + pouch.degasser.height.value / 2) * ratio)
+                    .attr("r", (pouch.degasser.height.value / 2) * ratio);
+                $("#Front .degasser .inner")
+                    .attr("cx", right - (pouch.front.width.value / 2) * ratio)
+                    .attr("cy", top + (pouch.degasser.offset.value + pouch.degasser.height.value / 2) * ratio)
+                    .attr("r", (pouch.degasser.height.value / 2) * ratio - 6);
+                $("#Front .degasser .offset .text")
+                    .attr("transform", `matrix(0 -1 1 0 ${right - ((pouch.front.width.value + pouch.degasser.height.value) / 2) * ratio - 3 - pouch.degasser.height.value / 5} ${top + pouch.degasser.offset.value * 0.8 * ratio + 3})`)
+                    .text(pouch.degasser.offset.value + " mm");
+                $("#Front .degasser .offset .top.arrow").attr("transform", `translate(${degasserArrowsXTranslation}, ${-538 + topChange * ratio})`);
+                $("#Front .degasser .offset .line")
+                    .attr("x1", right - ((pouch.front.width.value + pouch.degasser.height.value) / 2) * ratio - 0)
+                    .attr("x2", right - ((pouch.front.width.value + pouch.degasser.height.value) / 2) * ratio - 0)
+                    .attr("y1", top + 4)
+                    .attr("y2", top + pouch.degasser.offset.value * ratio - 4);
+                $("#Front .degasser .offset .bottom.arrow").attr("transform", `translate(${degasserArrowsXTranslation}, ${-648 + (pouch.degasser.offset.value + topChange) * ratio})`);
+                $("#Front .degasser .offset .bottom.mark")
+                    .attr("x1", right - (pouch.front.width.value / 2) * ratio - 14)
+                    .attr("x2", right - (pouch.front.width.value / 2) * ratio - 2 - pouch.degasser.height.value * 2)
+                    .attr("y1", top + pouch.degasser.offset.value * ratio)
+                    .attr("y2", top + pouch.degasser.offset.value * ratio);
+
+                // $("#Front .meridian .offset .top.mark, #Front .meridian .offset .top.arrow").attr("transform", `translate(0, ${meridianChange * ratio})`);
+                // $("#Front .meridian .offset .bottom.arrow, #Front .meridian .offset .bottom.mark").attr("transform", `translate(0, ${heightChange * ratio})`);
 
                 //zipper/notch shared top mark//
                 $("#Front .top.offset.mark")
@@ -491,41 +624,66 @@
                     .attr("y2", 405 + top - originalTop);
 
                 //zipper//
-                $("#Front .zipper.offset.top.arrow").attr("transform", `translate(0, ${topChange * ratio})`);
-                $("#Front .zipper.offset.text")
+                $("#Front .zipper .offset.top.arrow").attr("transform", `translate(0, ${topChange * ratio})`);
+                $("#Front .zipper .offset.text")
                     .attr("transform", `matrix(0 1 -1 0 607.9297  ${top + (pouch.zipper.offset.value / 2) * ratio - 15})`)
                     .text(pouch.zipper.offset.value + " mm");
 
-                $("#Front .zipper.height.text")
+                $("#Front .zipper .height.text")
                     .attr("transform", `matrix(0 1 -1 0 590.6973 ${top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 15})`)
                     .text(pouch.zipper.height.value + " mm");
                 $(`
-                #Front .zipper.bottom.offset.mark,
-                #Front .zipper.offset.bottom.arrow,
-                #Front .zipper.height.top.arrow,
-                #Front .zipper.height.line,
-                #Front .zipper.height.bottom.arrow,
-                #Front .zipper.bottom.height.mark`).attr("transform", `translate(0, ${zipperOffsetChange * ratio})`);
-                $("#Front .zipper.offset.line")
+                #Front .zipper .bottom.offset.mark,
+                #Front .zipper .offset.bottom.arrow,
+                #Front .zipper .height.top.arrow,
+                #Front .zipper .height.line,
+                #Front .zipper .height.bottom.arrow,
+                #Front .zipper .bottom.height.mark`).attr("transform", `translate(0, ${zipperOffsetChange * ratio})`);
+                $("#Front .zipper .offset.line")
                     .attr("y1", top + 5)
                     .attr("y2", top + pouch.zipper.offset.value * ratio - 5);
-                $("#Front .zipper.part").attr("x1", right - pouch.face.width.value * ratio);
-                $("#Front .zipper.part")
+                //zipper straight//
+                $("#Front .zipper .straight .part").attr("x1", right - pouch.front.width.value * ratio);
+                $("#Front .zipper .straight .part")
                     .eq(0)
                     .attr("y1", top + pouch.zipper.offset.value * ratio)
                     .attr("y2", top + pouch.zipper.offset.value * ratio);
-                $("#Front .zipper.part")
+                $("#Front .zipper .straight .part")
                     .eq(1)
                     .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 5)
                     .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio - 5);
-                $("#Front .zipper.part")
+                $("#Front .zipper .straight .part")
                     .eq(2)
                     .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio + 5)
                     .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value / 2) * ratio + 5);
-                $("#Front .zipper.part")
+                $("#Front .zipper .straight .part")
                     .eq(3)
                     .attr("y1", top + (pouch.zipper.offset.value + pouch.zipper.height.value) * ratio)
                     .attr("y2", top + (pouch.zipper.offset.value + pouch.zipper.height.value) * ratio);
+                //zipper wishbone//
+                let zipperOffsetLeft = 7;
+                let zipperPealWidth = pouch.front.width.value * ratio - 29 - zipperOffsetLeft;
+                $("#Front .zipper .wishbone .peal.top").attr("d", `M${right} ${top + pouch.zipper.offset.value * ratio - 0.4 /*122.1*/}H${right - zipperPealWidth}c-2.16 0-9.99-.54-10.935-5.67v-5.805c0-5.265-4.32-9.585-9.585-9.585-3.915 0-7.29 2.295-8.775 5.67`);
+                $("#Front .zipper .wishbone .peal.bottom").attr(
+                    "d",
+                    `M${right - pouch.front.width.value * ratio + zipperOffsetLeft} ${top + pouch.zipper.offset.value * ratio + 32}c1.755 2.295 4.59 3.915 7.695 3.915 5.265 0 9.585-4.32 9.585-9.585v-5.805c.945-5.13 8.775-5.67 10.935-5.67h${zipperPealWidth}`
+                );
+                $("#Front .zipper .wishbone .outline")
+                    .attr("x", right - pouch.front.width.value * ratio + zipperOffsetLeft)
+                    .attr("y", top + pouch.zipper.offset.value * ratio - 1) //121.5
+                    .attr("width", pouch.front.width.value * ratio - zipperOffsetLeft)
+                    .attr("height", pouch.zipper.height.value * ratio);
+                $("#Front .zipper .wishbone .heat-line .vertical").attr("d", `M${right - pouch.front.width.value * ratio + 42.6} ${top}V${top + pouch.zipper.offset.value * ratio + 100}c0 4.1-2.5 7.4-5.7 7.4h-36.9`);
+                $("#Front .zipper .wishbone .heat-line .horizontal.top")
+                    .attr("x1", right - pouch.front.width.value * ratio)
+                    .attr("x2", right)
+                    .attr("y1", top + pouch.zipper.offset.value * ratio + 23)
+                    .attr("y2", top + pouch.zipper.offset.value * ratio + 23);
+                $("#Front .zipper .wishbone .heat-line .horizontal.bottom")
+                    .attr("x1", right - pouch.front.width.value * ratio)
+                    .attr("x2", right)
+                    .attr("y1", top + (pouch.zipper.offset.value + 16) * ratio + 23)
+                    .attr("y2", top + (pouch.zipper.offset.value + 16) * ratio + 23);
 
                 //notch//
                 $("#Front .notch.offset.text")
@@ -541,7 +699,7 @@
                 //seal//
                 $("#Front .seal .bottom.size.text").text(pouch.seal.width.value + " mm");
                 $("#Front .seal .left.size.text")
-                    .attr("transform", `matrix(0 1 -1 0 ${right - (pouch.face.width.value - pouch.seal.width.value / 2) * ratio - 3} ${top + (pouch.face.height.value * ratio) / 2} )`)
+                    .attr("transform", `matrix(0 1 -1 0 ${right - (pouch.front.width.value - pouch.seal.width.value / 2) * ratio - 3} ${top + (pouch.front.height.value * ratio) / 2} )`)
                     .text(pouch.seal.width.value + " mm");
                 let points = [
                     [0, 0],
@@ -550,41 +708,41 @@
                     [0, 0],
                 ];
                 points[2][0] = points[3][0] = right - pouch.seal.width.value * ratio; //right
-                points[0][0] = points[1][0] = right - (pouch.face.width.value - pouch.seal.width.value) * ratio; //left
+                points[0][0] = points[1][0] = right - (pouch.front.width.value - pouch.seal.width.value) * ratio; //left
                 if (pouch.seal.placement == Placement.Bottom) {
                     points[3][1] = points[0][1] = top; //top
-                    points[1][1] = points[2][1] = top + (pouch.face.height.value - pouch.seal.width.value) * ratio; //bottom
+                    points[1][1] = points[2][1] = top + (pouch.front.height.value - pouch.seal.width.value) * ratio; //bottom
                     $("#Front .seal .bottom.size.text")
-                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 12} ${top + (pouch.face.height.value - pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.front.width.value / 2) * ratio - 12} ${top + (pouch.front.height.value - pouch.seal.width.value / 2) * ratio + 3.5} )`)
                         .text(pouch.seal.width.value + " mm");
                 } else if (pouch.seal.placement == Placement.Top) {
                     points[1][1] = points[2][1] = top + pouch.seal.width.value * ratio; //top
-                    points[3][1] = points[0][1] = top + pouch.face.height.value * ratio; //bottom
+                    points[3][1] = points[0][1] = top + pouch.front.height.value * ratio; //bottom
                     $("#Front .seal .bottom.size.text")
-                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.face.width.value / 2) * ratio - 12} ${top + (pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.front.width.value / 2) * ratio - 12} ${top + (pouch.seal.width.value / 2) * ratio + 3.5} )`)
                         .text(pouch.seal.width.value + " mm");
                 } else throw "Placement type is not implemented, type: " + pouch.seal.placement;
                 $("#Front .seal .outline").attr("points", points.map((xy) => xy.join(",")).join(" "));
 
                 $("#Front .seal .curve").attr(
                     "d",
-                    CreateHorizontalBezierArc(right - (pouch.face.width.value - pouch.seal.width.value) * ratio, right - pouch.seal.width.value * ratio, top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio, (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio)
+                    CreateHorizontalBezierArc(right - (pouch.front.width.value - pouch.seal.width.value) * ratio, right - pouch.seal.width.value * ratio, top + (pouch.front.height.value - pouch.gusset.depth.value / 2) * ratio, (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio)
                 );
 
                 //meridian//
                 $("#Front .meridian .meridian")
-                    .attr("x1", right - pouch.face.width.value * ratio)
+                    .attr("x1", right - pouch.front.width.value * ratio)
                     .attr("x2", right)
-                    .attr("y1", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio)
-                    .attr("y2", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio);
+                    .attr("y1", top + (pouch.front.height.value - pouch.gusset.depth.value / 2) * ratio)
+                    .attr("y2", top + (pouch.front.height.value - pouch.gusset.depth.value / 2) * ratio);
                 $("#Front .meridian .offset .top.mark, #Front .meridian .offset .top.arrow").attr("transform", `translate(0, ${meridianChange * ratio})`);
                 $("#Front .meridian .offset .line")
                     .attr("x1", right + 15)
                     .attr("x2", right + 15)
-                    .attr("y1", top + (pouch.face.height.value - pouch.gusset.depth.value / 2) * ratio + 6)
-                    .attr("y2", top + pouch.face.height.value * ratio - 6);
+                    .attr("y1", top + (pouch.front.height.value - pouch.gusset.depth.value / 2) * ratio + 6)
+                    .attr("y2", top + pouch.front.height.value * ratio - 6);
                 $("#Front .meridian .offset .text")
-                    .attr("transform", `matrix(0 1 -1 0 593.584 ${top + (pouch.face.height.value - pouch.gusset.depth.value / 4) * ratio - 10})`)
+                    .attr("transform", `matrix(0 1 -1 0 593.584 ${top + (pouch.front.height.value - pouch.gusset.depth.value / 4) * ratio - 10})`)
                     .text(pouch.gusset.depth.value / 2 + " mm");
                 $("#Front .meridian .offset .bottom.arrow, #Front .meridian .offset .bottom.mark").attr("transform", `translate(0, ${heightChange * ratio})`);
             }
@@ -592,24 +750,130 @@
                 return `M ${x1} ${y} C ${x1} ${y + radius * 1.32536445942915653}, ${x2} ${y + radius * 1.32536445942915653}, ${x2} ${y}`;
             }
             function UpdateSvgBack($svg, ratio) {
+                let rightSideOffset = pouch.right.included ? 160 + pouch.right.width.value * ratio : 0;
                 let $back = $("#Back");
                 $back.children().remove();
-                $back.attr("transform", `translate(${160 + pouch.face.width.value * ratio}, 0)`);
-                $("#Front").clone().appendTo($back);
+                $back.attr("transform", `translate(${rightSideOffset + 160 + pouch.front.width.value * ratio}, 0)`);
+                $("#Front").children().clone().appendTo($back);
                 $back.find(".face.label.left.text").text("BACK");
             }
+            function UpdateSvgLeft($svg, ratio) {
+                if (pouch.left.included) $("#Left").show();
+                else $("#Left").hide();
+                let rightOffset = 160 + pouch.right.width.value * ratio;
+                let backOffset = 160 + pouch.back.width.value * ratio;
+                let $left = $("#Left");
+                $left.children().remove();
+                $left.attr("transform", `translate(${rightOffset + backOffset}, 0)`); //TODO: implement
+                $("#Right").children().clone().appendTo($left);
+                $left.find(".header .label.left.text").text("LEFT"); //TODO: implement
+            }
+            function UpdateSvgRight($svg, ratio) {
+                if (pouch.right.included) $("#Right").show();
+                else $("#Right").hide();
+                //NOTE: The following variables unit is px!
+                let originalTop = 405.35;
+                let top = originalTop - 80;
+                let originalRight = 569.69;
+                let right = 160 + originalRight + pouch.right.width.value * ratio;
+
+                //NOTE: The following xxxxChange variables unit is mm!
+                let topChange = (top - originalTop) / ratio;
+                let rightChange = (right - originalRight) / ratio;
+                let widthChange = pouch.right.width.value - pouch.right.width.initial;
+                let heightChange = pouch.right.height.value - pouch.right.height.initial + topChange;
+
+                //conditional elements//
+
+                //face//
+                $("#Right .face .outline")
+                    .attr("height", pouch.right.height.value * ratio)
+                    .attr("x", right - pouch.right.width.value * ratio)
+                    .attr("width", pouch.right.width.value * ratio)
+                    .attr("y", top);
+
+                //face height guides//
+                $("#Right .face .height.text")
+                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.right.width.value * ratio - 27} ${top + (pouch.right.height.value * ratio) / 2 + 28})`)
+                    .text(pouch.right.height.value + " mm");
+                $("#Right .face .height.top.arrow, #Right .face .height.top.mark").attr("transform", `translate(${(-widthChange + rightChange) * ratio}, ${top - 405})`);
+                $("#Right .face .height.line")
+                    .attr("x1", right - pouch.right.width.value * ratio - 14)
+                    .attr("x2", right - pouch.right.width.value * ratio - 14)
+                    .attr("y1", top + 14)
+                    .attr("y2", top + pouch.right.height.value * ratio - 14);
+                $("#Right .face .height.bottom.arrow, #Right .face .height.bottom.mark").attr("transform", `translate(${(-widthChange + rightChange) * ratio}, ${heightChange * ratio})`);
+
+                //face width guides//
+                $("#Right .face .width.text")
+                    .attr("transform", `matrix(1 0 0 1 ${right - (pouch.right.width.value / 2) * ratio - 28} ${top - 21.6453})`)
+                    .text(pouch.right.width.value + " mm");
+                $("#Right .face .width.left.arrow, #Right .face .width.left.mark").attr("transform", `translate(${(-widthChange + rightChange) * ratio}, ${top - 405})`);
+                $("#Right .face .width.right.arrow, #Right .face .width.right.mark").attr("transform", `translate(${rightChange * ratio}, ${top - 405})`);
+                $("#Right .face .width.line")
+                    .attr("x1", right - pouch.right.width.value * ratio + 10)
+                    .attr("x2", right - 10)
+                    .attr("y1", top - 12)
+                    .attr("y2", top - 12);
+
+                //header label//
+                $("#Right .header .label.background")
+                    .attr("x", 104.07 + (-widthChange + rightChange) * ratio)
+                    .attr("width", 516.11 + widthChange * ratio);
+                $("#Right .header .label.left.text").attr("x", right - 45 - pouch.right.width.value * ratio); // -widthChange + rightChange) * ratio);
+                //$("#Right .header .label.center.text").attr("x", 23.5 + (-widthChange / 2 + rightChange) * ratio);
+                $("#Right .header .label.right.text").attr("x", right - 10);
+
+                //seal//
+                $("#Right .seal .bottom.size.text").text(pouch.seal.width.value + " mm");
+                $("#Right .seal .left.size.text")
+                    .attr("transform", `matrix(0 1 -1 0 ${right - (pouch.right.width.value - pouch.seal.width.value / 2) * ratio - 3} ${top + (pouch.right.height.value * ratio) / 2} )`)
+                    .text(pouch.seal.width.value + " mm");
+                let points = [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                ];
+                points[2][0] = points[3][0] = right - pouch.seal.width.value * ratio; //right
+                points[0][0] = points[1][0] = right - (pouch.right.width.value - pouch.seal.width.value) * ratio; //left
+                if (pouch.seal.placement == Placement.Bottom) {
+                    points[3][1] = points[0][1] = top; //top
+                    points[1][1] = points[2][1] = top + (pouch.right.height.value - pouch.seal.width.value) * ratio; //bottom
+                    $("#Right .seal .bottom.size.text")
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.right.width.value / 2) * ratio - 12} ${top + (pouch.right.height.value - pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .text(pouch.seal.width.value + " mm");
+                } else if (pouch.seal.placement == Placement.Top) {
+                    points[1][1] = points[2][1] = top + pouch.seal.width.value * ratio; //top
+                    points[3][1] = points[0][1] = top + pouch.right.height.value * ratio; //bottom
+                    $("#Right .seal .bottom.size.text")
+                        .attr("transform", `matrix(1 0 0 1 ${right - (pouch.right.width.value / 2) * ratio - 12} ${top + (pouch.seal.width.value / 2) * ratio + 3.5} )`)
+                        .text(pouch.seal.width.value + " mm");
+                } else throw "Placement type is not implemented, type: " + pouch.seal.placement;
+                $("#Right .seal .outline").attr("points", points.map((xy) => xy.join(",")).join(" "));
+
+                $("#Right .seal .curve").attr(
+                    "d",
+                    CreateHorizontalBezierArc(right - (pouch.right.width.value - pouch.seal.width.value) * ratio, right - pouch.seal.width.value * ratio, top + (pouch.right.height.value - pouch.gusset.depth.value / 2) * ratio, (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio)
+                );
+            }
             function UpdateSvgGusset($svg, ratio) {
-                let originalTop = 405.35 + pouch.face.height.value * ratio + 28;
+                //NOTE: The following variables unit is px!
+                let originalTop = 405.35 + pouch.front.height.value * ratio + 28;
                 let top = 15 + originalTop;
                 let right = 569.69;
-                let widthChange = pouch.face.width.value - pouch.face.width.initial;
-                let frontHeightChange = pouch.face.height.value - pouch.face.height.initial + (top - originalTop) / ratio;
+
+                //NOTE: The following xxxxChange variables unit is mm!
+                let widthChange = pouch.front.width.value - pouch.front.width.initial;
+                let frontHeightChange = pouch.front.height.value - pouch.front.height.initial + (top - originalTop) / ratio;
                 let meridianChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial) / 2;
                 let gussetChange = frontHeightChange + (pouch.gusset.depth.value - pouch.gusset.depth.initial);
 
                 //conditional elements//
-                if (pouch.gusset.included) $("#Front .meridian, #Front .seal .curve, #Gusset").show();
-                else $("#Front .meridian, #Front .seal .curve, #Gusset").hide();
+                if (pouch.gusset.included && !pouch.left.included) $(".meridian, .seal .curve").show();
+                else $(".meridian, .seal .curve").hide();
+                if (pouch.gusset.included) $("#Gusset").show();
+                else $("#Gusset").hide();
 
                 //header label//
                 $("#Gusset .header-label .background")
@@ -617,7 +881,7 @@
                     .attr("width", 516.11 + widthChange * ratio)
                     .attr("y", top - 57.1606);
                 $("#Gusset .header-label .left.text")
-                    .attr("x", right - pouch.face.width.value * ratio - 49.8712882)
+                    .attr("x", right - pouch.front.width.value * ratio - 49.8712882)
                     .attr("y", top - 36.1606);
                 $("#Gusset .header-label .right.text")
                     .attr("x", 528)
@@ -625,37 +889,37 @@
 
                 //face//
                 $("#Gusset .face .outline")
-                    .attr("x", right - pouch.face.width.value * ratio)
+                    .attr("x", right - pouch.front.width.value * ratio)
                     .attr("y", top)
-                    .attr("width", pouch.face.width.value * ratio)
+                    .attr("width", pouch.front.width.value * ratio)
                     .attr("height", pouch.gusset.depth.value * ratio);
                 $("#Gusset .meridian .meridian")
-                    .attr("x1", right - pouch.face.width.value * ratio)
+                    .attr("x1", right - pouch.front.width.value * ratio)
                     .attr("x2", right)
                     .attr("y1", top + (pouch.gusset.depth.value / 2) * ratio)
                     .attr("y2", top + (pouch.gusset.depth.value / 2) * ratio);
 
                 //seal//
                 $("#Gusset .seal .outline")
-                    .attr("x", right - (pouch.face.width.value - pouch.seal.width.value) * ratio)
+                    .attr("x", right - (pouch.front.width.value - pouch.seal.width.value) * ratio)
                     .attr("y", top + pouch.seal.width.value * ratio)
-                    .attr("width", (pouch.face.width.value - pouch.seal.width.value * 2) * ratio)
+                    .attr("width", (pouch.front.width.value - pouch.seal.width.value * 2) * ratio)
                     .attr("height", (pouch.gusset.depth.value - pouch.seal.width.value * 2) * ratio);
                 $("#Gusset .seal .curve")
-                    .attr("cx", right - (pouch.face.width.value / 2) * ratio)
+                    .attr("cx", right - (pouch.front.width.value / 2) * ratio)
                     .attr("cy", top + (pouch.gusset.depth.value / 2) * ratio)
-                    .attr("rx", (pouch.face.width.value / 2 - pouch.seal.width.value) * ratio)
+                    .attr("rx", (pouch.front.width.value / 2 - pouch.seal.width.value) * ratio)
                     .attr("ry", (pouch.gusset.depth.value / 2 - pouch.seal.width.value) * ratio);
 
                 //heights//
                 $("#Gusset .face .height .top.mark, #Gusset .face .height .top.arrow").attr("transform", `translate(${-widthChange * ratio}, ${frontHeightChange * ratio})`);
                 $("#Gusset .face .height .line")
-                    .attr("x1", right - pouch.face.width.value * ratio - 13)
-                    .attr("x2", right - pouch.face.width.value * ratio - 13)
+                    .attr("x1", right - pouch.front.width.value * ratio - 13)
+                    .attr("x2", right - pouch.front.width.value * ratio - 13)
                     .attr("y1", top + 6)
                     .attr("y2", top + pouch.gusset.depth.value * ratio - 6);
                 $("#Gusset .face .height .text")
-                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.face.width.value * ratio - 25} ${top + (pouch.gusset.depth.value / 2) * ratio + 11})`)
+                    .attr("transform", `matrix(0 -1 1 0 ${right - pouch.front.width.value * ratio - 25} ${top + (pouch.gusset.depth.value / 2) * ratio + 11})`)
                     .text(pouch.gusset.depth.value + " mm");
                 $("#Gusset .face .height .bottom.arrow, #Gusset .face .height .bottom.mark").attr("transform", `translate(${-widthChange * ratio}, ${gussetChange * ratio})`);
 

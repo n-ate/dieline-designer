@@ -2,150 +2,212 @@
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1255.83 1131.17" style="enable-background:new 0 0 2055.83 1331.17;" xml:space="preserve">
     <style type="text/css">
-	.st0{fill:none;stroke:#00A650;stroke-width:1.0632;}
-	.st1{fill:none;stroke:#00A650;stroke-width:1.588;}
-	.st2{fill:none;stroke:#00A650;stroke-width:1.2624;}
-	.st3{fill:none;stroke:#00A650;stroke-width:1.641;}
-	.st4{fill:#00A650;}
-	.st5{font-family:'ArialNarrow';}
-	.st6{font-size:20.1001px;}
-	.st7{fill:none;stroke:#00A650;stroke-width:1.7174;}
-	.st8{fill:none;stroke:#00A650;stroke-width:1.1013;}
-	.st9{fill:#FFFFFF;}
-	.st10{font-family:'Arial-Black';}
-	.st11{font-size:20.028px;}
-	.st12{font-size:10px;}
-	.st13{font-size:20.1255px;}
-	.st14{fill:none;stroke:#00A650;stroke-width:1.4496;}
-	.st15{fill:none;stroke:#00A650;stroke-width:1.3463;stroke-dasharray:10.7705,10.7705;}
-	.st16{fill:none;stroke:#00A650;stroke-width:2.4005;stroke-miterlimit:10;}
-	.st17{fill:none;stroke:#00A650;stroke-width:0.8541;}
-    #Hide{display:none;}
+        text{ font-family:'Arial-Black'; }
+        
+        text.small{ font-size:10px; }
+        text,
+        text.medium{ font-size:20px; }
+        text.large{ font-size:30px; }
+    
+        .continuous,
+        .dashed,
+        .dotted{ fill:none; stroke:#00A650; }
+    
+	    .continuous.small{ stroke-width:0.85; }
+        .continuous,
+	    .continuous.medium{ stroke-width:1.50; }
+	    .continuous.large{ stroke-width:2.25; }
+    
+	    .dashed.small{ stroke-width:1; stroke-dasharray:5,5; }
+        .dashed,
+	    .dashed.medium{ stroke-width:1.35; stroke-dasharray:10,10; }
+	    .dashed.large{ stroke-width:1.70; stroke-dasharray:10,10; }
+    
+	    .dotted.small{ stroke-width:0.8; stroke-dasharray:0.8,0.8; }
+        .dotted,
+	    .dotted.medium{ stroke-width:1; stroke-dasharray:1,1; }
+	    .dotted.large{ stroke-width:1; stroke-dasharray:2,2; }
+    
+        .fill,
+	    .fill.dark{ fill:#00A650; }    
+	    .fill.light{ fill:#FFFFFF; }
     </style>
     <g id="Front">
         <g id="HeaderLabel">
-            <rect x="104.07" y="233.94" class="st4 face label background" width="516.11" height="25.75"/>
-            <text transform="matrix(1 0 0 1 125.3208 255.7201)" class="st9 st10 st11 face label left text">FRONT</text>
-            <text transform="matrix(1 0 0 1 311.1207 255.7201)" class="st9 st10 st11 face label center text">OPENING</text>
-            <text transform="matrix(1 0 0 1 567.5797 255.7201)" class="st9 st10 st11 face label right text">TOP</text>
+            <rect x="104.07" y="233.94" class="fill dark face label background" width="516.11" height="25.75"/>
+            <text transform="matrix(1 0 0 1 125.3208 255.7201)" class="fill light medium face label left text">FRONT</text>
+            <text transform="matrix(1 0 0 1 311.1207 255.7201)" class="fill light medium face label center text">OPENING</text>
+            <text transform="matrix(1 0 0 1 567.5797 255.7201)" class="fill light medium face label right text">TOP</text>
         </g>
         <g id="Face">
-            <text transform="matrix(0 -1 1 0 149.8129 778.2101)" class="st4 st5 st6 face height text">229 mm</text>
-            <text transform="matrix(1 0 0 1 337.3824 383.7047)" class="st4 st5 st6 face width text">140 mm </text>
-            <line class="st0 face top height mark" x1="171.63" y1="403.73" x2="150.06" y2="403.73"/>
-            <line class="st0 face height bottom mark" x1="171.39" y1="1051.74" x2="149.81" y2="1051.74"/>
-            <line class="st3 face height line" x1="160.58" y1="417.28" x2="160.58" y2="1037.53"/>
-            <line class="st7 face width line" x1="186.26" y1="393.06" x2="561.05" y2="393.06"/>
-            <line class="st8 face width left mark" x1="174.63" y1="399.06" x2="174.63" y2="383.7"/>
-            <line class="st8 face width right mark" x1="569.06" y1="397.46" x2="569.06" y2="382.1"/>
-            <path class="st4 face top height arrow" d="M158.91,412.97c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C160.47,407.1,159.84,409.89,158.91,412.97"/>
-            <path class="st4 face height bottom arrow" d="M162.49,1042.21c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C160.93,1048.08,161.56,1045.29,162.49,1042.21"/>
-            <path class="st4 face width left arrow" d="M185.57,394.43c2.87,0.87,4.74,1.67,7.05,2.59v-8.77c-0.83,0.39-4.18,1.73-7.05,2.59c-3.08,0.93-5.87,1.57-7.68,1.79C179.7,392.86,182.49,393.5,185.57,394.43"/>
-            <path class="st4 face width right arrow" d="M560.74,394.43c-2.87,0.87-4.74,1.67-7.05,2.59v-8.77c0.83,0.39,4.18,1.73,7.05,2.59c3.08,0.93,5.87,1.57,7.68,1.79C566.6,392.86,563.82,393.5,560.74,394.43"/>
-            <rect x="175.36" y="405.35" class="st16 face outline" width="394.33" height="646.61"/>
+            <text transform="matrix(0 -1 1 0 149.8129 778.2101)" class="fill dark medium face height text">229 mm</text>
+            <text transform="matrix(1 0 0 1 337.3824 383.7047)" class="fill dark medium face width text">140 mm </text>
+            <line class="continuous medium face top height mark" x1="171.63" y1="403.73" x2="150.06" y2="403.73"/>
+            <line class="continuous medium face height bottom mark" x1="171.39" y1="1051.74" x2="149.81" y2="1051.74"/>
+            <line class="continuous medium face height line" x1="160.58" y1="417.28" x2="160.58" y2="1037.53"/>
+            <line class="continuous medium face width line" x1="186.26" y1="393.06" x2="561.05" y2="393.06"/>
+            <line class="continuous medium face width left mark" x1="174.63" y1="399.06" x2="174.63" y2="383.7"/>
+            <line class="continuous medium face width right mark" x1="569.06" y1="397.46" x2="569.06" y2="382.1"/>
+            <path class="fill dark face top height arrow" d="M158.91,412.97c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C160.47,407.1,159.84,409.89,158.91,412.97"/>
+            <path class="fill dark face height bottom arrow" d="M162.49,1042.21c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C160.93,1048.08,161.56,1045.29,162.49,1042.21"/>
+            <path class="fill dark face width left arrow" d="M185.57,394.43c2.87,0.87,4.74,1.67,7.05,2.59v-8.77c-0.83,0.39-4.18,1.73-7.05,2.59c-3.08,0.93-5.87,1.57-7.68,1.79C179.7,392.86,182.49,393.5,185.57,394.43"/>
+            <path class="fill dark face width right arrow" d="M560.74,394.43c-2.87,0.87-4.74,1.67-7.05,2.59v-8.77c0.83,0.39,4.18,1.73,7.05,2.59c3.08,0.93,5.87,1.57,7.68,1.79C566.6,392.86,563.82,393.5,560.74,394.43"/>
+            <rect x="175.36" y="405.35" class="continuous large face outline" width="394.33" height="646.61"/>
         </g>
         <g id="Hanger">
-            <text transform="matrix(1 0 0 1 380 419)" class="st4 st5 st12 hanger offset text">8 mm</text>
-            <text transform="matrix(1 0 0 1 380 441)" class="st4 st5 st12 hanger height text">6 mm</text>
-            <circle class="st4 hanger outline" cx="346.49" cy="436.371" r="8.46"></circle>
+            <text transform="matrix(1 0 0 1 380 419)" class="fill dark small hanger offset text">8 mm</text>
+            <text transform="matrix(1 0 0 1 380 441)" class="fill dark small hanger height text">6 mm</text>
+            <circle class="fill dark hanger outline" cx="346.49" cy="436.371" r="8.46"></circle>
             <g>
-                <path class="st4  hanger offset top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
-                <line class="st14 hanger offset line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
-                <path class="st4  hanger offset bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
-                <line class="st14 hanger offset bottom mark" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
+                <path class="fill dark  hanger offset top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
+                <line class="continuous medium hanger offset line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
+                <path class="fill dark  hanger offset bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
+                <line class="continuous medium hanger offset bottom mark" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
             </g>
             <g>
-                <path class="st4  hanger height top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
-                <line class="st14 hanger height line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
-                <path class="st4  hanger height bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
-                <line class="st14 hanger height bottom mark" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
+                <path class="fill dark  hanger height top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
+                <line class="continuous medium hanger height line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
+                <path class="fill dark  hanger height bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
+                <line class="continuous medium hanger height bottom mark" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
             </g>
         </g>
         <g>
-            <line class="st1 top offset mark" x1="607.93" y1="404.56" x2="570.57" y2="404.56"/>
-            <g id="Zipper">
-                <text transform="matrix(0 1 -1 0 607.9297 426.2608)" class="st4 st5 st12 zipper offset text">25  mm</text>
-                <text transform="matrix(0 1 -1 0 590.6973 478.9854)" class="st4 st5 st12 zipper height text">13  mm</text>
-                <line class="st1 zipper bottom offset mark" x1="612.26" y1="474.47" x2="574.91" y2="474.47"/>
-                <line class="st2 zipper bottom height mark" x1="593.58" y1="511.53" x2="574.91" y2="511.53"/>
-                <line class="st17 zipper part" x1="174.63" y1="474.47" x2="569.69" y2="474.47"/>
-                <line class="st15 zipper part" x1="174.63" y1="488.9" x2="569.69" y2="488.9"/>
-                <line class="st15 zipper part" x1="174.63" y1="497.9" x2="569.69" y2="497.9"/>
-                <line class="st17 zipper part" x1="174.63" y1="511.32" x2="569.69" y2="511.32"/>
-                <line class="st14 zipper offset line" x1="600.86" y1="417.4" x2="600.86" y2="469.76"/>
-                <line class="st14 zipper height line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
-                <path class="st4 zipper offset bottom arrow" d="M602.28,469.76c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C601.26,473.56,601.68,471.75,602.28,469.76"/>
-                <path class="st4 zipper height bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
-                <path class="st4 zipper offset top arrow" d="M599.96,412.74c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C600.97,408.95,600.56,410.75,599.96,412.74"/>
-                <path class="st4 zipper height top arrow" d="M583.2,479.19c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.21,475.39,583.8,477.2,583.2,479.19"/>
+            <line class="continuous medium top offset mark" x1="607.93" y1="404.56" x2="570.57" y2="404.56" />
+            <g class="zipper">
+                <text transform="matrix(0 1 -1 0 607.9297 426.2608)" class="fill dark small offset text">25  mm</text>
+                <text transform="matrix(0 1 -1 0 590.6973 478.9854)" class="fill dark small height text">13  mm</text>
+                <line class="continuous medium bottom offset mark" x1="612.26" y1="474.47" x2="574.91" y2="474.47"/>
+                <line class="continuous medium bottom height mark" x1="593.58" y1="511.53" x2="574.91" y2="511.53"/>
+                <line class="continuous medium offset line" x1="600.86" y1="417.4" x2="600.86" y2="469.76"/>
+                <line class="continuous medium height line" x1="584.06" y1="482.67" x2="584.06" y2="507.7"/>
+                <path class="fill dark offset bottom arrow" d="M602.28,469.76c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C601.26,473.56,601.68,471.75,602.28,469.76"/>
+                <path class="fill dark height bottom arrow" d="M585.35,507.7c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.34,511.49,584.75,509.69,585.35,507.7"/>
+                <path class="fill dark offset top arrow" d="M599.96,412.74c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C600.97,408.95,600.56,410.75,599.96,412.74"/>
+                <path class="fill dark height top arrow" d="M583.2,479.19c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.21,475.39,583.8,477.2,583.2,479.19"/>
+                <g class="wishbone">
+                    <path class="dashed small peal top" d="M618.6,122.1H294.1h-0.4c-1.6,0-7.4-0.4-8.1-4.2v-4.3v0c0-3.9-3.2-7.1-7.1-7.1c-2.9,0-5.4,1.7-6.5,4.2" />
+                    <path class="dashed small peal bottom" d="M272.8,146.2c1.3,1.7,3.4,2.9,5.7,2.9c3.9,0,7.1-3.2,7.1-7.1v0v-4.3c0.7-3.8,6.5-4.2,8.1-4.2h0.4h325.8" />
+                    <rect x="271.2" y="121.5" class="continuous small outline" width="352.2" height="27.8"/>
+                    <g class="heat-line">
+                        <path class="dotted large vertical" d="M305.6 30.7V198c0 4.1-2.5 7.4-5.7 7.4h-36.9"/>
+                        <line class="dotted large top horizontal" x1="263.3" y1="139.3" x2="623" y2="139.3" />
+                        <line class="dotted large bottom horizontal" x1="263.3" y1="173.3" x2="623" y2="173.3"/>
+                    </g>
+                </g>
+                <g class="straight">
+                    <line class="continuous medium part" x1="174.63" y1="474.47" x2="569.69" y2="474.47"/>
+                    <line class="dashed medium part" x1="174.63" y1="488.9" x2="569.69" y2="488.9"/>
+                    <line class="dashed medium part" x1="174.63" y1="497.9" x2="569.69" y2="497.9"/>
+                    <line class="continuous medium part" x1="174.63" y1="511.32" x2="569.69" y2="511.32"/>
+                </g>
             </g>
-            <g id="Notch">
-                <text transform="matrix(0 1 -1 0 589.251 420.3699)" class="st4 st5 st12 notch offset text">20 mm</text>
-                <line class="st2 notch offset mark" x1="590.7" y1="461.04" x2="572.02" y2="461.04"/>
-                <line class="st3 notch offset line" x1="584.31" y1="414.97" x2="584.31" y2="455.53"/>
-                <polyline class="st4 notch left" points="174.63,465.61 183.96,465.61 189.29,461.46 184.45,456.62 174.94,456.62"/>
-                <polyline class="st4 notch right" points="571.24,465.61 561.91,465.61 556.58,461.46 561.42,456.62 570.92,456.62"/>
-                <path class="st4 notch offset bottom arrow" d="M585.4,455.33c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.39,459.13,584.8,457.32,585.4,455.33"/>
-                <path class="st4 notch offset top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
+            <g id="Notch" class="notch">
+                <text transform="matrix(0 1 -1 0 589.251 420.3699)" class="fill dark small notch offset text">20 mm</text>
+                <line class="continuous medium notch offset mark" x1="590.7" y1="461.04" x2="572.02" y2="461.04"/>
+                <line class="continuous medium notch offset line" x1="584.31" y1="414.97" x2="584.31" y2="455.53"/>
+                <polyline class="fill dark notch left" points="174.63,465.61 183.96,465.61 189.29,461.46 184.45,456.62 174.94,456.62"/>
+                <polyline class="fill dark notch right" points="571.24,465.61 561.91,465.61 556.58,461.46 561.42,456.62 570.92,456.62"/>
+                <path class="fill dark notch offset bottom arrow" d="M585.4,455.33c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.39,459.13,584.8,457.32,585.4,455.33"/>
+                <path class="fill dark notch offset top arrow" d="M583.09,410.31c-0.56,1.86-1.08,3.07-1.68,4.56h5.67c-0.25-0.53-1.11-2.7-1.68-4.56c-0.6-1.99-1.01-3.79-1.16-4.97C584.1,406.52,583.69,408.32,583.09,410.31"/>
             </g>
+        </g>
+        <g class="degasser">
+            <g class="offset">
+                <path class="fill dark top arrow" d="M583.2,950.26c-0.56,1.86-1.08,3.07-1.68,4.56h5.68c-0.25-0.53-1.12-2.7-1.68-4.56c-0.6-1.99-1.01-3.8-1.16-4.97C584.21,946.47,583.8,948.27,583.2,950.26"/>
+                <line class="continuous medium line" x1="584.3" y1="954.83" x2="584.3" y2="1043.26"/>
+                <text class="fill dark small text" transform="matrix(0 1 -1 0 593.584 983.4939)">38 mm</text>
+                <path class="fill dark bottom arrow" d="M585.52,1046.06c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.5,1049.85,584.92,1048.05,585.52,1046.06"/>
+                <line class="continuous medium bottom mark" x1="595.14" y1="1052.07" x2="573.57" y2="1052.07"/>
+            </g>
+            <circle class="continuous large outer" cx="346.49" cy="500" r="26"></circle>
+            <circle class="continuous large inner" cx="346.49" cy="500" r="19.4"></circle>
         </g>
         <g class="seal">
-            <text transform="matrix(1 0 0 1 354.8129 1044.8903)" class="st4 st5 st12 bottom size text">7.5  mm</text>
-            <text transform="matrix(0 1 -1 0 181.6318 728.6537)" class="st4 st5 st12 left size text">7.5  mm</text>
-            <polyline class="st15 outline" points="549.5,404.4 549.5,1031.68 195.87,1031.68 195.87,404.4"/>
-            <!-- <ellipse class="st15 curve" cx="373.7" cy="945" rx="176.258" ry="86"/> -->
+            <text transform="matrix(1 0 0 1 354.8129 1044.8903)" class="fill dark small bottom size text">7.5  mm</text>
+            <text transform="matrix(0 1 -1 0 181.6318 728.6537)" class="fill dark small left size text">7.5  mm</text>
+            <polyline class="dashed medium outline" points="549.5,404.4 549.5,1031.68 195.87,1031.68 195.87,404.4"/>
+            <!-- <ellipse class="dashed medium curve" cx="373.7" cy="945" rx="176.258" ry="86"/> -->
             <!-- <path d=" M x2  y2 A wid hei 0 0 1 x1 y1" /> -->
-            <path class="st15 curve" d="M 195.5 945 C 195.5 1059, 549.5 1059, 549.5 945" />
-            <!-- <path class="st15 curve" d="M549.49,945.3c0,47.64-78.81,86.27-176.03,86.27s-176.03-38.62-176.03-86.27"/> -->
+            <path class="dashed medium curve" d="M 195.5 945 C 195.5 1059, 549.5 1059, 549.5 945" />
+            <!-- <path class="dashed medium curve" d="M549.49,945.3c0,47.64-78.81,86.27-176.03,86.27s-176.03-38.62-176.03-86.27"/> -->
         </g>
         <g class="meridian">
-            <line class="st15 meridian" x1="171.39" y1="945.06" x2="573.57" y2="945.06"/>
+            <line class="dashed medium meridian" x1="171.39" y1="945.06" x2="573.57" y2="945.06"/>
             <g class="offset">
-                <line class="st0 top mark" x1="595.14" y1="945.3" x2="573.57" y2="945.3"/>
-                <path class="st4 top arrow" d="M583.2,950.26c-0.56,1.86-1.08,3.07-1.68,4.56h5.68c-0.25-0.53-1.12-2.7-1.68-4.56c-0.6-1.99-1.01-3.8-1.16-4.97C584.21,946.47,583.8,948.27,583.2,950.26"/>
-                <line class="st3 line" x1="584.3" y1="954.83" x2="584.3" y2="1043.26"/>
-                <text class="st4 st5 st12 text" transform="matrix(0 1 -1 0 593.584 983.4939)">38 mm</text>
-                <path class="st4 bottom arrow" d="M585.52,1046.06c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.5,1049.85,584.92,1048.05,585.52,1046.06"/>
-                <line class="st0 bottom mark" x1="595.14" y1="1052.07" x2="573.57" y2="1052.07"/>
+                <line class="continuous medium top mark" x1="595.14" y1="945.3" x2="573.57" y2="945.3"/>
+                <path class="fill dark top arrow" d="M583.2,950.26c-0.56,1.86-1.08,3.07-1.68,4.56h5.68c-0.25-0.53-1.12-2.7-1.68-4.56c-0.6-1.99-1.01-3.8-1.16-4.97C584.21,946.47,583.8,948.27,583.2,950.26"/>
+                <line class="continuous medium line" x1="584.3" y1="954.83" x2="584.3" y2="1043.26"/>
+                <text class="fill dark small text" transform="matrix(0 1 -1 0 593.584 983.4939)">38 mm</text>
+                <path class="fill dark bottom arrow" d="M585.52,1046.06c0.56-1.86,1.08-3.07,1.68-4.56h-5.68c0.25,0.53,1.12,2.7,1.68,4.56c0.6,1.99,1.01,3.8,1.16,4.97C584.5,1049.85,584.92,1048.05,585.52,1046.06"/>
+                <line class="continuous medium bottom mark" x1="595.14" y1="1052.07" x2="573.57" y2="1052.07"/>
             </g>
         </g>
     </g>
 
+    <g id="Right">
+        <g class="header">
+            <rect x="104.07" y="233.94" class="fill dark label background" width="516.11" height="25.75"/>
+            <text x="125" y="256" class="fill light medium label left text">RIGHT</text>
+            <text x="125" y="256" class="fill light medium label center text"></text>
+            <text x="125" y="256" class="fill light medium label right text">TOP</text>
+        </g>
+        <g class="face">
+            <text transform="matrix(0 -1 1 0 149.8129 778.2101)" class="fill dark medium height text">229 mm</text>
+            <text transform="matrix(1 0 0 1 337.3824 383.7047)" class="fill dark medium width text">140 mm </text>
+            <line class="continuous medium top height mark" x1="171.63" y1="403.73" x2="150.06" y2="403.73"/>
+            <line class="continuous medium height bottom mark" x1="171.39" y1="1051.74" x2="149.81" y2="1051.74"/>
+            <line class="continuous large height line" x1="160.58" y1="417.28" x2="160.58" y2="1037.53"/>
+            <line class="continuous large width line" x1="186.26" y1="393.06" x2="561.05" y2="393.06"/>
+            <line class="continuous medium width left mark" x1="174.63" y1="399.06" x2="174.63" y2="383.7"/>
+            <line class="continuous medium width right mark" x1="569.06" y1="397.46" x2="569.06" y2="382.1"/>
+            <path class="fill dark top height arrow" d="M158.91,412.97c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C160.47,407.1,159.84,409.89,158.91,412.97"/>
+            <path class="fill dark height bottom arrow" d="M162.49,1042.21c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C160.93,1048.08,161.56,1045.29,162.49,1042.21"/>
+            <path class="fill dark width left arrow" d="M185.57,394.43c2.87,0.87,4.74,1.67,7.05,2.59v-8.77c-0.83,0.39-4.18,1.73-7.05,2.59c-3.08,0.93-5.87,1.57-7.68,1.79C179.7,392.86,182.49,393.5,185.57,394.43"/>
+            <path class="fill dark width right arrow" d="M560.74,394.43c-2.87,0.87-4.74,1.67-7.05,2.59v-8.77c0.83,0.39,4.18,1.73,7.05,2.59c3.08,0.93,5.87,1.57,7.68,1.79C566.6,392.86,563.82,393.5,560.74,394.43"/>
+            <rect x="175.36" y="405.35" class="continuous large outline" width="394.33" height="646.61"/>
+        </g>
+        <g class="seal">
+            <text transform="matrix(1 0 0 1 354.8129 1044.8903)" class="fill dark small bottom size text">7.5  mm</text>
+            <text transform="matrix(0 1 -1 0 181.6318 728.6537)" class="fill dark small left size text">7.5  mm</text>
+            <polyline class="dashed medium outline" points="549.5,404.4 549.5,1031.68 195.87,1031.68 195.87,404.4"/>
+        </g>
+    </g>
     <g id="Back"></g>
+    <g id="Left"></g>
 
 
 
     <g id="Gusset">
         <g class="header-label">
-            <rect x="104.07" y="1157" class="st4 face label background" width="516.11" height="25.75"/>
-            <text x="125" y="1178" class="st9 st10 st11 face label left text">BOTTOM</text>
-            <text x="527" y="1178" class="st9 st10 st11 face label right text">GUSSET</text>
+            <rect x="104.07" y="1157" class="fill dark face label background" width="516.11" height="25.75"/>
+            <text x="125" y="1178" class="fill light medium face label left text">BOTTOM</text>
+            <text x="527" y="1178" class="fill light medium face label right text">GUSSET</text>
         </g>
         <g class="face">
-            <rect class="st16 outline" x="175.36" y="1079.26" width="394.33" height="214.69"/>
+            <rect class="continuous large outline" x="175.36" y="1079.26" width="394.33" height="214.69"/>
             <g class="height">
-                <line class="st0 top mark" x1="171.39" y1="1079.26" x2="149.81" y2="1079.26"/>
-                <path class="st4 top arrow" d="M159.91,1088.94c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C161.47,1083.07,160.84,1085.86,159.91,1088.94"/>
-                <line class="st3 line" x1="161.7" y1="1092.79" x2="161.7" y2="1284.35"/>
-                <text class="st4 st5 st12 text" transform="matrix(0 -1 1 0 157.3144 1196.1466)">76  mm</text>
-                <path class="st4 bottom arrow" d="M163.49,1286.27c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C161.93,1292.14,162.56,1289.35,163.49,1286.27"/>
-                <line class="st0 bottom mark" x1="171.39" y1="1293.95" x2="149.81" y2="1293.95"/>
+                <line class="continuous medium top mark" x1="171.39" y1="1079.26" x2="149.81" y2="1079.26"/>
+                <path class="fill dark top arrow" d="M159.91,1088.94c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C161.47,1083.07,160.84,1085.86,159.91,1088.94"/>
+                <line class="continuous large line" x1="161.7" y1="1092.79" x2="161.7" y2="1284.35"/>
+                <text class="fill dark small text" transform="matrix(0 -1 1 0 157.3144 1196.1466)">76  mm</text>
+                <path class="fill dark bottom arrow" d="M163.49,1286.27c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C161.93,1292.14,162.56,1289.35,163.49,1286.27"/>
+                <line class="continuous medium bottom mark" x1="171.39" y1="1293.95" x2="149.81" y2="1293.95"/>
             </g>
         </g>
         <g class="meridian">
-            <line class="st15 meridian" x1="175.36" y1="1186.61" x2="569.69" y2="1186.61"/>
+            <line class="dashed medium meridian" x1="175.36" y1="1186.61" x2="569.69" y2="1186.61"/>
             <g class="offset">
-                <line class="st0 top mark" x1="595.48" y1="1079.26" x2="573.91" y2="1079.26"/>
-                <path class="st4 top arrow" d="M582.51,1088.94c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C584.07,1083.07,583.44,1085.86,582.51,1088.94"/>
-                <line class="st3 line" x1="584.7" y1="1091.04" x2="584.7" y2="1173.62"/>
-                <text class="st4 st5 st12 text" transform="matrix(0 1 -1 0 589.9697 1115.5659)">38  mm</text>
-                <path class="st4 bottom arrow" d="M586.09,1176.89c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C584.53,1182.76,585.16,1179.97,586.09,1176.89"/>
-                <line class="st0 bottom mark" x1="595.48" y1="1187.26" x2="573.91" y2="1187.26"/>
+                <line class="continuous medium top mark" x1="595.48" y1="1079.26" x2="573.91" y2="1079.26"/>
+                <path class="fill dark top arrow" d="M582.51,1088.94c-0.87,2.87-1.67,4.74-2.59,7.05h8.77c-0.39-0.83-1.73-4.18-2.59-7.05c-0.93-3.08-1.57-5.87-1.79-7.68C584.07,1083.07,583.44,1085.86,582.51,1088.94"/>
+                <line class="continuous large line" x1="584.7" y1="1091.04" x2="584.7" y2="1173.62"/>
+                <text class="fill dark small text" transform="matrix(0 1 -1 0 589.9697 1115.5659)">38  mm</text>
+                <path class="fill dark bottom arrow" d="M586.09,1176.89c0.87-2.87,1.67-4.74,2.59-7.05h-8.77c0.39,0.83,1.73,4.18,2.59,7.05c0.93,3.08,1.57,5.87,1.79,7.68C584.53,1182.76,585.16,1179.97,586.09,1176.89"/>
+                <line class="continuous medium bottom mark" x1="595.48" y1="1187.26" x2="573.91" y2="1187.26"/>
             </g>
         </g>
         <g class="seal">
-            <rect class="st15 outline" x="195.87" y="1100.2" width="353.63" height="174.55"/>
-            <ellipse class="st15 curve" cx="372.68" cy="1187.48" rx="176.81" ry="87.28"/>
+            <rect class="dashed medium outline" x="195.87" y="1100.2" width="353.63" height="174.55"/>
+            <ellipse class="dashed medium curve" cx="372.68" cy="1187.48" rx="176.81" ry="87.28"/>
         </g>
 
     </g>
