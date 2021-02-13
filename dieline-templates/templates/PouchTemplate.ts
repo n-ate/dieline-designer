@@ -9,6 +9,7 @@ import { Size } from "../models/Size.js";
 import { Placement } from "../enums/Placement.js";
 import { Gusset } from "../models/Gusset.js";
 import { Degasser } from "../models/Degasser.js";
+import { ZipperType } from "../enums/ZipperType.js";
 
 export class PouchTemplate {
     private _front: Facet;
@@ -73,7 +74,7 @@ export class PouchTemplate {
         let leftRightFacet = new FacetOption(false, new Size(140, 140, unit, 40, 400, 1, onchange), faceHeights, onchange);
         let gusset = new Gusset(false, new Size(76, 76, unit, 10, 400, 0.2, onchange), onchange);
         let seal = new Seal(Placement.Bottom, new Size(7.5, 7.5, unit, 5, 15, 0.1, onchange), onchange);
-        let zipper = new Zipper(false, new Offset(25, 25, unit, 5, 500, 1, Placement.Top, onchange), new Size(13, 13, unit, 13, 13, 1, onchange), onchange);
+        let zipper = new Zipper(false, new Offset(25, 25, unit, 5, 500, 1, Placement.Top, onchange), new Size(13, 13, unit, 13, 13, 1, onchange), ZipperType.Standard, onchange);
         let notch = new Notch(false, new Offset(20, 20, unit, 8, 200, 1, Placement.Center, onchange), onchange);
         let hanger = new Hanger(false, new Offset(6, 6, unit, 8, 40, 0.1, Placement.Top, onchange), new Size(6, 6, unit, 6, 6, 1, onchange), onchange);
         let degasser = new Degasser(false, new Offset(60, 60, unit, 18, 400, 1, Placement.Top, onchange), new Size(18, 18, unit, 18, 18, 1, onchange), onchange);

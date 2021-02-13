@@ -11,7 +11,7 @@
     
         .continuous,
         .dashed,
-        .dotted{ fill:none; stroke:#00A650; }
+        .dotted{ fill:none; }
     
 	    .continuous.small{ stroke-width:0.85; }
         .continuous,
@@ -28,8 +28,20 @@
 	    .dotted.medium{ stroke-width:1; stroke-dasharray:1,1; }
 	    .dotted.large{ stroke-width:1; stroke-dasharray:2,2; }
     
-        .fill,
-	    .fill.dark{ fill:#00A650; }    
+
+        
+     
+        .theme-green .fill,
+	    .theme-green .fill.dark{ fill:#00A650; }  
+        .theme-green .continuous,
+        .theme-green .dashed,
+        .theme-green .dotted{ stroke:#00A650; } 
+        .theme-red .fill,
+	    .theme-red .fill.dark{ fill:#E63138; }  
+        .theme-red .continuous,
+        .theme-red .dashed,
+        .theme-red .dotted{ stroke:#E63138; } 
+        
 	    .fill.light{ fill:#FFFFFF; }
     </style>
     <g id="Front">

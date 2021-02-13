@@ -1,0 +1,109 @@
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" height="200mm" width="200mm" x="0" y="0" viewBox="0 0 200mm 200mm" xml:space="preserve">
+    <style type="text/css">
+        text{ font-family:'Arial-Black'; }
+        
+        text.small{ font-size:10px; }
+        text,
+        text.medium{ font-size:20px; }
+        text.large{ font-size:30px; }
+    
+        .continuous,
+        .dashed,
+        .dotted{ fill:none; }
+    
+	    .continuous.small{ stroke-width:0.85; }
+        .continuous,
+	    .continuous.medium{ stroke-width:1.50; }
+	    .continuous.large{ stroke-width:2.25; }
+    
+	    .dashed.small{ stroke-width:1; stroke-dasharray:5,5; }
+        .dashed,
+	    .dashed.medium{ stroke-width:1.35; stroke-dasharray:10,10; }
+	    .dashed.large{ stroke-width:1.70; stroke-dasharray:10,10; }
+    
+	    .dotted.small{ stroke-width:0.8; stroke-dasharray:0.8,0.8; }
+        .dotted,
+	    .dotted.medium{ stroke-width:1; stroke-dasharray:1,1; }
+	    .dotted.large{ stroke-width:1; stroke-dasharray:2,2; }
+    
+
+        
+     
+        .theme-green .fill,
+	    .theme-green .fill.dark{ fill:#00A650; }  
+        .theme-green .continuous,
+        .theme-green .dashed,
+        .theme-green .dotted{ stroke:#00A650; } 
+        .theme-red .fill,
+	    .theme-red .fill.dark{ fill:#E63138; }  
+        .theme-red .continuous,
+        .theme-red .dashed,
+        .theme-red .dotted{ stroke:#E63138; } 
+        
+	    .fill.light{ fill:#FFFFFF; }
+    </style>
+    <g class="theme-green">
+        <rect x="1mm" y="1mm" class="fill dark" width="2.8201336556456643792888334373051" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="10mm" class="fill dark" width="14.100668278228321896444167186526" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="20mm" class="fill dark" width="22.561069245165315034310667498441" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="30mm" class="fill dark" width="28.201336556456643792888334373051" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="40mm" class="fill dark" width="56.402673112913287585776668746102" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="50mm" class="fill dark" width="70.503341391141609482220835932628" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="60mm" class="fill dark" width="141.00668278228321896444167186526" height="2.8201336556456643792888334373051" />
+        <rect x="1mm" y="70mm" class="fill dark" width="225.61069245165315034310667498441" height="2.8201336556456643792888334373051" />
+    </g>
+    <g class="theme-red">
+        <rect x="100mm" y="1mm" class="fill dark" width="1mm" height="1mm"/>
+        <rect x="100mm" y="10mm" class="fill dark" width="5mm" height="1mm"/>
+        <rect x="100mm" y="20mm" class="fill dark" width="8mm" height="1mm"/>
+        <rect x="100mm" y="30mm" class="fill dark" width="10mm" height="1mm"/>
+        <rect x="100mm" y="40mm" class="fill dark" width="20mm" height="1mm"/>
+        <rect x="100mm" y="50mm" class="fill dark" width="25mm" height="1mm"/>
+        <rect x="100mm" y="60mm" class="fill dark" width="50mm" height="1mm"/>
+        <rect x="100mm" y="70mm" class="fill dark" width="80mm" height="1mm"/>
+    </g>
+    <g class="theme-green">
+        <text x="25mm" y="5mm" class="fill dark medium" style="stroke:#000">mm: 1, 5, 8, 10, 20, 25, 50, 80</text>
+    </g>
+</svg>
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    
