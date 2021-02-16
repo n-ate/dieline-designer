@@ -494,18 +494,41 @@
             $("#IncludeStandardZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
                 pouch.zipper.type = ZipperType.Standard;
+                if (ev.target.checked) {
+                    $("[for=IncludeNotch]").css("text-decoration", "").off("click");
+                }
             });
             $("#IncludeEasyPullZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
                 pouch.zipper.type = ZipperType.EasyPull;
+                if (ev.target.checked) {
+                    $("[for=IncludeNotch]")
+                        .css("text-decoration", "line-through 2px #777")
+                        .on("click", function () {
+                            alert("Cannot place a tear notch when an easy-pull zipper is included");
+                            return false;
+                        });
+                    $("#ExcludeNotch").click();
+                }
             });
             $("#IncludeChildResistantZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
                 pouch.zipper.type = ZipperType.ChildResistant;
+                if (ev.target.checked) {
+                    $("[for=IncludeNotch]").css("text-decoration", "").off("click");
+                }
             });
             $("#ExcludeZipper").on("change", function (ev) {
                 pouch.zipper.included = !ev.target.checked;
+                if (ev.target.checked) {
+                    $("[for=IncludeNotch]").css("text-decoration", "").off("click");
+                }
             });
+            if ($("#IncludeEasyPullZipper")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ExcludeZipper").click();
+                $("#IncludeEasyPullZipper").click();
+            }
             $("#ZipperOffset").on("change", function (ev) {
                 pouch.zipper.offset.value = ev.target.value * 1;
             });
