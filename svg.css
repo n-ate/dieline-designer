@@ -1,0 +1,85 @@
+text {
+    font-family: Arial, Arial-Black;
+    font-weight: bold;
+}
+
+text.small {
+    font-size: 10px;
+}
+text,
+text.medium {
+    font-size: 20px;
+}
+text.large {
+    font-size: 30px;
+}
+
+.continuous,
+.dashed,
+.dotted {
+    fill: none;
+}
+
+.continuous.small {
+    stroke-width: 0.85;
+}
+.continuous,
+.continuous.medium {
+    stroke-width: 1.5;
+}
+.continuous.large {
+    stroke-width: 2.25;
+}
+
+.dashed.small {
+    stroke-width: 1;
+    stroke-dasharray: 5, 5;
+}
+.dashed,
+.dashed.medium {
+    stroke-width: 1.35;
+    stroke-dasharray: 10, 10;
+}
+.dashed.large {
+    stroke-width: 1.7;
+    stroke-dasharray: 10, 10;
+}
+
+.dotted.small {
+    stroke-width: 0.8;
+    stroke-dasharray: 0.8, 0.8;
+}
+.dotted,
+.dotted.medium {
+    stroke-width: 1;
+    stroke-dasharray: 1, 1;
+}
+.dotted.large {
+    stroke-width: 1;
+    stroke-dasharray: 2, 2;
+}
+
+/**** Themes ****/
+
+.theme-green .fill,
+.theme-green .fill.dark {
+    fill: #00a650;
+}
+.theme-green .continuous,
+.theme-green .dashed,
+.theme-green .dotted {
+    stroke: #00a650;
+}
+.theme-red .fill,
+.theme-red .fill.dark {
+    fill: #e63138;
+}
+.theme-red .continuous,
+.theme-red .dashed,
+.theme-red .dotted {
+    stroke: #e63138;
+}
+
+.fill.light {
+    fill: #ffffff;
+}
