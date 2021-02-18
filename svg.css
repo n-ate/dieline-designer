@@ -6,6 +6,9 @@ text {
 text.small {
     font-size: 10px;
 }
+text.medium.small {
+    font-size: 13px;
+}
 text,
 text.medium {
     font-size: 20px;
@@ -61,25 +64,53 @@ text.large {
 
 /**** Themes ****/
 
+svg .green.fill,
 .theme-green .fill,
 .theme-green .fill.dark {
     fill: #00a650;
 }
+svg .green.continuous,
+svg .green.dashed,
+svg .green.dotted,
 .theme-green .continuous,
 .theme-green .dashed,
 .theme-green .dotted {
     stroke: #00a650;
 }
+svg .red.fill,
 .theme-red .fill,
 .theme-red .fill.dark {
     fill: #e63138;
 }
+svg .red.continuous,
+svg .red.dashed,
+svg .red.dotted,
 .theme-red .continuous,
 .theme-red .dashed,
 .theme-red .dotted {
     stroke: #e63138;
 }
 
+.black.fill {
+    fill: #333;
+}
+.black.continuous,
+.black.dashed,
+.black.dotted {
+    stroke: #333;
+}
+
 .fill.light {
     fill: #ffffff;
+}
+
+/**** areas ****/
+.area.matte rect {
+    fill: #fc53a8;
+}
+.area.white rect {
+    fill: #6dd6e2;
+}
+.area.features .red {
+    text-decoration: line-through;
 }

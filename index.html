@@ -348,6 +348,22 @@
                 get length() {
                     return this._elements.length;
                 }
+                appendTo(_newParent) {
+                    $(this._elements).appendTo($(_newParent._elements));
+                    return this;
+                }
+                attr(name, value) {
+                    this._elements.forEach((el) => {
+                        el.setAttribute(name, value);
+                    });
+                    return this;
+                }
+                children(selector) {
+                    return new _Elements($.makeArray($(this._elements).children(selector)));
+                }
+                clone() {
+                    return new _Elements($.makeArray($(this._elements).clone()));
+                }
                 create(elementName) {
                     var elements = [];
                     this._elements.forEach((el) => {
@@ -357,20 +373,19 @@
                     });
                     return new _Elements(elements);
                 }
-                attr(name) {
-                    return this._elements[0].getAttribute(name);
-                }
-                attr(name, value) {
-                    this._elements.forEach((el) => {
-                        el.setAttribute(name, value);
-                    });
-                    return this;
-                }
                 find(selector) {
                     return new _Elements($.makeArray($(this._elements).find(selector)));
                 }
+                remove() {
+                    $(this._elements).remove();
+                    return this;
+                }
                 text(innerText) {
                     $(this._elements).text(innerText);
+                    return this;
+                }
+                toggleClass(classes) {
+                    $(this._elements).toggleClass(classes);
                     return this;
                 }
             }
@@ -384,12 +399,47 @@
             import { ZipperType } from "./js/enums/ZipperType.js";
 
             let pouch = PouchTemplate.getDefault(UpdateSvg);
-            let themeClass = "theme-green";
-            let verboseLabels = false;
-            let inkingDetails = true;
+            let layout = new (class {
+                _themeClass = "theme-green";
+                _verboseLabels = false;
+                _inkingDetails = true;
+                _changed = false;
+                get themeClass() {
+                    return this._themeClass;
+                }
+                set themeClass(value) {
+                    if (this._themeClass != value) this._changed = true;
+                    this._themeClass = value;
+                }
+                get verboseLabels() {
+                    return this._verboseLabels;
+                }
+                set verboseLabels(value) {
+                    if (this._verboseLabels != value) this._changed = true;
+                    this._verboseLabels = value;
+                }
+                get inkingDetails() {
+                    return this._inkingDetails;
+                }
+                set inkingDetails(value) {
+                    if (this._inkingDetails != value) this._changed = true;
+                    this._inkingDetails = value;
+                }
+                get changed() {
+                    return this._changed;
+                }
+                set changed(value) {
+                    this._changed = value;
+                }
+            })();
+            console.log(layout);
             let svgNotchLarge = "m4.5 0 0-9-4.5-5.5-4.5 5.5 0 9z";
             let svgArrowLarge = "m0 0c2.57 10.57 3.37 12.44 4.29 14.75l-8.77 0c.39-.83 1.73-4.18 2.59-7.05.93-3.08 1.57-5.87 1.79-7.68";
             let svgArrowSmall = "m0 0c-1.7 6.86-2.22 8.07-2.82 9.56h5.67c-.25-.53-1.11-2.7-1.68-4.62-.6-1.99-1.04-3.79-1.16-4.97";
+            let svgX =
+                "m186 306c-8-8-27.5-32-44-54-16-22-31-40.5-33-41.5-2-.5-12.5 17-23 39.5-22 44.5-37.5 60-50 49.5-4-3.5-7.5-9-7.5-12.5 0-3.5 12-31 27-61.5l27.5-55.5-27-45c-44.5-73.5-60.5-108.5-53-117 3-4 10-7 14.5-6 4.5 1 10 2 12 2 2 .5 18.5 29.5 37.5 65.5 18.5 35.5 35 65 36.5 65 1.5-.5 10-13 19-29 9-16 24-37 33.5-47.5 15.5-16.5 18.5-18 27.5-12.5 5.5 3.5 10 7.5 10 9.5 0 1.5-14.5 27-32.5 57-18 29.5-32.5 56.5-32.5 59.5 0 3 18 29 40 58 62 80.5 58.5 75 47.5 83-12.5 9.5-14 9-30-6.5z";
+            let svgCheck =
+                "m210 13c-19 16.5-72.5 109.5-95.5 165.5-11 26.5-21 48-22.5 48-1.5 0-12.5-14-25-31-12.5-17-26.5-31.5-31.5-32.5-13-2.5-33.5 3-33.5 9 0 2.5 10.5 16.5 24 31 13 14.5 30.5 37.5 38.5 50.5 13.5 21.5 16.5 23.5 32 22.5 16.5-1.5 17.5-2.5 40.5-59.5 26.5-65.5 49-108.5 88.5-165.5 14.5-21.5 26.5-41.5 26.5-44 0-9.5-29.5-5-42 6z";
 
             //radio event binding
             $("[data-show]").on("change", function (ev) {
@@ -560,16 +610,16 @@
                 pouch.degasser.offset.value = ev.target.value * 1;
             });
             $("#IncludeInkingDetails").on("change", function (ev) {
-                inkingDetails = ev.target.checked;
+                layout.inkingDetails = ev.target.checked;
             });
             $("#ExcludeInkingDetails").on("change", function (ev) {
-                inkingDetails = !ev.target.checked;
+                layout.inkingDetails = !ev.target.checked;
             });
             $("#StandardLabelingVerbosity").on("change", function (ev) {
-                verboseLabels = !ev.target.checked;
+                layout.verboseLabels = !ev.target.checked;
             });
             $("#DetailedLabelingVerbosity").on("change", function (ev) {
-                verboseLabels = ev.target.checked;
+                layout.verboseLabels = ev.target.checked;
             });
 
             //--periodic model updating--//
@@ -613,24 +663,24 @@
                 pouch.hanger.offset.value = hanger.value * 1;
                 pouch.degasser.included = yesDegasser.checked;
                 pouch.degasser.offset.value = degasser.value * 1;
-                let old = themeClass;
-                themeClass = theme.not(":not(:checked)")[0].value;
-                if (themeClass != old) otherSvgChange = true;
-                old = inkingDetails;
-                inkingDetails = yesInkingDetails.checked;
-                if (inkingDetails != old) otherSvgChange = true;
-                old = verboseLabels;
-                verboseLabels = yesVerboseLabels.checked;
-                if (verboseLabels != old) otherSvgChange = true;
                 setTimeout(UpdateModel, 100);
-                if (otherSvgChange) UpdateSvg(); //a change not tracked by the pouch object
+                layout.themeClass = theme.not(":not(:checked)")[0].value;
+                layout.inkingDetails = yesInkingDetails.checked;
+                layout.verboseLabels = yesVerboseLabels.checked;
+                if (layout.changed) {
+                    //a change not tracked by the pouch object
+                    layout.changed = false;
+                    UpdateSvg();
+                }
             })();
 
             //--create svg--//
             function CreateSvg() {
-                let _svg = _("aside").create("svg");
+                let _svg = _("aside").create("svg").attr("xmlns", "http://www.w3.org/2000/svg");
+                let _style = _svg.create("style").attr("type", "text/css");
                 $.get("svg.css", function (text) {
-                    _svg.create("style").text(text);
+                    text = text.replace(/\/\*.*\*\//g, ""); //matches single line comments
+                    _style.text(text);
                 });
                 let _front = _svg.create("svg").attr("class", "side front").attr("overflow", "visible");
 
@@ -741,25 +791,79 @@
                 _meridianOffset.create("line").attr("class", "arrow continuous medium");
                 _meridianOffset.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(180)");
                 _meridianOffset.create("line").attr("class", "mark bottom continuous medium");
+
+                //bag features//
+                let _features = _svg.create("svg").attr("class", "area features").attr("overflow", "visible");
+                _features.create("rect").attr("class", "outline continuous large black").attr("width", "71mm").attr("height", "102mm");
+                _features.create("line").attr("class", "divide upper continuous large black").attr("x2", "71mm").attr("y1", "15mm").attr("y2", "15mm");
+                _features.create("line").attr("class", "divide lower continuous large black").attr("x2", "71mm").attr("y1", "57mm").attr("y2", "57mm");
+                _features.create("text").attr("class", "header fill large black").text("Bag Features").attr("x", "35.5mm").attr("y", "11mm").attr("text-anchor", "middle");
+
+                _features.create("text").attr("class", "label outer fill medium small black").text("Outer Size:").attr("x", "35.5mm").attr("y", "22mm").attr("text-anchor", "middle");
+                _features.create("text").attr("class", "value outer fill medium small green").text("<outer-size>").attr("x", "35.5mm").attr("y", "29mm").attr("text-anchor", "middle");
+                _features.create("line").attr("class", "divide hr continuous small black").attr("x1", "20mm").attr("x2", "51mm").attr("y1", "32mm").attr("y2", "32mm");
+                _features.create("text").attr("class", "label inner fill medium small black").text("Inner Size:").attr("x", "35.5mm").attr("y", "38mm").attr("text-anchor", "middle");
+                _features.create("text").attr("class", "value inner fill medium small green").text("<inner-size>").attr("x", "35.5mm").attr("y", "45mm").attr("text-anchor", "middle");
+                _features.create("line").attr("class", "divide hr continuous small black").attr("x1", "20mm").attr("x2", "51mm").attr("y1", "48mm").attr("y2", "48mm");
+                _features.create("text").attr("class", "label seal fill medium small black").text("Seal Size:").attr("x", "35mm").attr("y", "54mm").attr("text-anchor", "end");
+                _features.create("text").attr("class", "value seal fill medium small green").text("<seal-size>").attr("x", "36mm").attr("y", "54mm");
+
+                _features.create("text").attr("class", "label hanger fill medium small").text("Hang Hole").attr("x", "32mm").attr("y", "64mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon hanger fill medium small").attr("x", "46mm").attr("y", "59mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label notch fill medium small").text("Tear Notch").attr("x", "32mm").attr("y", "71mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon notch fill medium small").attr("x", "46mm").attr("y", "66mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label degasser fill medium small").text("Degassing Valve").attr("x", "32mm").attr("y", "78mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon degasser fill medium small").attr("x", "52mm").attr("y", "73mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper standard fill medium small").text("Standard Zipper").attr("x", "32mm").attr("y", "85mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper standard fill medium small").attr("x", "51.5mm").attr("y", "80mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper safety fill medium small").text("Child Resistant Zipper").attr("x", "32mm").attr("y", "92mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper safety fill medium small").attr("x", "59mm").attr("y", "87mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper wishbone fill medium small").text("EZ Pull Zipper").attr("x", "32mm").attr("y", "99mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper wishbone fill medium small").attr("x", "50mm").attr("y", "94mm").create("path").attr("transform", "scale(0.055)");
+
+                //design proof//
+                // let _designProof = _svg.create("image").attr("class", "area design");
+                // var xhr = new XMLHttpRequest();
+                // xhr.responseType = "arraybuffer";
+                // xhr.onload = function () {
+                //     let blob = new Blob([xhr.response], { type: "image/png" });
+                //     let reader = new FileReader();
+                //     reader.onload = function () {
+                //         _designProof.attr("href", reader.result);
+                //     };
+                //     let dataUrl = reader.readAsDataURL(blob);
+                // };
+                // xhr.open("GET", "master-design-proof.png");
+                // xhr.send();
             }
 
             //--adjust svg--//
             function UpdateSvg() {
-                let $svg = $("aside>svg");
-                if ($svg.length) {
+                let _svg = _("aside > svg");
+                if (_svg.length) {
+                    let featuresWidth = 71; //exists in 2 places
                     let horizSpace = 40;
                     let vertSpace = 40;
-                    let width = pouch.right.included ? pouch.front.width.value * 2 + pouch.right.width.value * 2 + horizSpace * 5 : pouch.front.width.value * 2 + horizSpace * 3;
-                    let height = pouch.gusset.included ? pouch.front.height.value + pouch.gusset.depth.value + vertSpace * 3 : pouch.front.height.value + vertSpace * 2;
-                    $svg.attr("class", themeClass)
+                    let imageWidth = 418;
+                    let imageHeight = 270;
+                    let designWidth = pouch.right.included ? pouch.front.width.value * 2 + pouch.right.width.value * 2 + horizSpace * 4 : pouch.front.width.value * 2 + horizSpace * 2;
+                    let designHeight = pouch.gusset.included ? pouch.front.height.value + pouch.gusset.depth.value + vertSpace * 2 : pouch.front.height.value + vertSpace;
+                    let width = layout.inkingDetails ? Math.max(designWidth * 2 + horizSpace, imageWidth) : designWidth + horizSpace;
+                    if (layout.verboseLabels) width += featuresWidth + horizSpace;
+                    let height = layout.inkingDetails ? designHeight + vertSpace + Math.max(designHeight, imageHeight) : designHeight + vertSpace;
+                    _svg.attr("class", layout.themeClass)
                         .attr("width", width + "mm")
                         .attr("height", height + "mm");
                     //UpdateSvgViewBox($svg, horizSpace);
-                    UpdateSvgFront($svg, horizSpace, vertSpace);
-                    UpdateSvgBack($svg, horizSpace);
-                    UpdateSvgRight($svg, horizSpace);
-                    UpdateSvgLeft($svg, horizSpace);
-                    UpdateSvgGusset($svg, vertSpace);
+                    UpdateSvgFront(_svg, horizSpace, vertSpace);
+                    UpdateSvgBack(_svg, horizSpace);
+                    UpdateSvgRight(_svg, horizSpace);
+                    UpdateSvgLeft(_svg, horizSpace);
+                    UpdateSvgGusset(_svg, vertSpace);
+                    UpdateBagFeatures(_svg, designWidth, designHeight, horizSpace, vertSpace);
+                    UpdateDesignImage(_svg, designWidth, designHeight, horizSpace, vertSpace);
+                    UpdateMatteArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
+                    UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
                 }
             }
             // function UpdateSvgViewBox($svg, horizSpace, ratio) {
@@ -768,12 +872,12 @@
             //     let leftRightWidth = pouch.left.included && pouch.right.included ? (pouch.right.width.value + pouch.left.width.value) * ratio + 380 : 0;
             //     $svg.attr("viewBox", `${450 - pouch.front.width.value * ratio} ${175} ${frontBackWidth + leftRightWidth} ${170 + pouch.front.height.value * ratio + gussetDepth}`);
             // }
-            function UpdateSvgFront($svg, horizSpace, vertSpace) {
+            function UpdateSvgFront(_svg, horizSpace, vertSpace) {
                 //NOTE: The following variables unit is mm!
                 let __center = pouch.front.width.value / 2;
                 let __middle = pouch.front.height.value / 2;
 
-                let _front = _("aside > svg .side.front");
+                let _front = _svg.children(".side.front");
                 let _face = _front.find(".face");
 
                 //conditional elements//
@@ -1209,146 +1313,215 @@
             // function CreateHorizontalBezierArc(x1, x2, y, radius) {
             //     return `M ${x1} ${y} C ${x1} ${y + radius * 1.32536445942915653}, ${x2} ${y + radius * 1.32536445942915653}, ${x2} ${y}`;
             // }
-            function UpdateSvgBack($svg, horizSpace) {
+            function UpdateSvgBack(_svg, horizSpace) {
                 let __left = pouch.right.included ? horizSpace * 3 + pouch.front.width.value + pouch.right.width.value : horizSpace * 2 + pouch.front.width.value;
-                let __$svg = $("aside > svg");
-                let $front = __$svg.find(".side.front");
-                let $old = __$svg.find(".side.back");
-                let $new = $front.clone();
-                $new.toggleClass("front back");
-                $new.find(".header .label.left").text("BACK");
-                $new.find(".zipper").remove();
-                $new.find(".degasser").remove();
-                $new.attr("x", __left + "mm");
-                $old.remove();
-                $new.appendTo(__$svg);
+                let _front = _svg.children(".side.front");
+                let _old = _svg.children(".side.back");
+                let _new = _front.clone();
+                _new.toggleClass("front back");
+                _new.find(".header .label.left").text("BACK");
+                _new.find(".zipper").remove();
+                _new.find(".degasser").remove();
+                _new.attr("x", __left + "mm");
+                _old.remove();
+                _new.appendTo(_svg);
             }
-            function UpdateSvgLeft($svg, horizSpace) {
+            function UpdateSvgLeft(_svg, horizSpace) {
                 let __left = horizSpace * 4 + pouch.front.width.value * 2 + pouch.right.width.value;
-                let __$svg = $("aside > svg");
-                let $front = __$svg.find(".side.right");
-                let $old = __$svg.find(".side.left");
+                let _front = _svg.children(".side.right");
+                let _old = _svg.children(".side.left");
                 if (pouch.left.included) {
-                    let $new = $front.clone();
-                    $new.toggleClass("right left");
-                    $new.find(".header .label.left").text("LEFT");
-                    $new.find(".header .label.center").text("");
-                    $new.attr("x", __left + "mm");
-                    $new.appendTo(__$svg);
+                    let _new = _front.clone();
+                    _new.toggleClass("right left");
+                    _new.find(".header .label.left").text("LEFT");
+                    _new.find(".header .label.center").text("");
+                    _new.attr("x", __left + "mm");
+                    _new.appendTo(_svg);
                 }
-                $old.remove();
+                _old.remove();
             }
-            function UpdateSvgRight($svg, horizSpace) {
+            function UpdateSvgRight(_svg, horizSpace) {
                 let __left = horizSpace * 2 + pouch.front.width.value;
-                let __$svg = $("aside > svg");
-                let $front = __$svg.find(".side.front");
-                let $old = __$svg.find(".side.right");
+                let _front = _svg.children(".side.front");
+                let _old = _svg.children(".side.right");
                 if (pouch.left.included) {
-                    let $new = $front.clone();
-                    $new.toggleClass("front right");
+                    let _new = _front.clone();
+                    _new.toggleClass("front right");
 
                     //header label//
                     let headerMargin = 17;
-                    $new.find(".header .label.background").attr("width", pouch.right.width.value + headerMargin * 2 + "mm");
-                    $new.find(".header .label.left").text("RIGHT");
-                    $new.find(".header .label.center").remove();
-                    $new.find(".header .label.right").attr("x", pouch.right.width.value + headerMargin - 18 + "mm");
+                    _new.find(".header .label.background").attr("width", pouch.right.width.value + headerMargin * 2 + "mm");
+                    _new.find(".header .label.left").text("RIGHT");
+                    _new.find(".header .label.center").remove();
+                    _new.find(".header .label.right").attr("x", pouch.right.width.value + headerMargin - 18 + "mm");
 
                     //face//
-                    $new.find(".face .outline").attr("width", pouch.left.width.value + "mm");
+                    _new.find(".face .outline").attr("width", pouch.left.width.value + "mm");
 
                     //face width guides//
-                    $new.find(".face .width.outer text")
+                    _new.find(".face .width.outer text")
                         .attr("x", pouch.right.width.value / 2 - 7 + "mm")
                         .text(pouch.right.width.value + " mm");
-                    $new.find(".face .width.outer line.arrow").attr("x2", pouch.right.width.value - 2 + "mm");
-                    $new.find(".face .width.outer .arrow.right").attr("x", pouch.right.width.value + "mm");
-                    $new.find(".face .width.outer .mark.right")
+                    _new.find(".face .width.outer line.arrow").attr("x2", pouch.right.width.value - 2 + "mm");
+                    _new.find(".face .width.outer .arrow.right").attr("x", pouch.right.width.value + "mm");
+                    _new.find(".face .width.outer .mark.right")
                         .attr("x1", pouch.right.width.value + "mm")
                         .attr("x2", pouch.right.width.value + "mm");
 
                     //seal//
-                    $new.find(".seal .outline").attr("width", pouch.right.width.value - pouch.seal.width.value * 2 + "mm");
+                    _new.find(".seal .outline").attr("width", pouch.right.width.value - pouch.seal.width.value * 2 + "mm");
 
-                    $new.find(".hanger").remove();
-                    $new.find(".notch").remove();
-                    $new.find(".zipper").remove();
-                    $new.find(".degasser").remove();
-                    $new.attr("x", __left + "mm");
-                    $new.appendTo(__$svg);
+                    _new.find(".hanger").remove();
+                    _new.find(".notch").remove();
+                    _new.find(".zipper").remove();
+                    _new.find(".degasser").remove();
+                    _new.attr("x", __left + "mm");
+                    _new.appendTo(_svg);
                 }
-                $old.remove();
+                _old.remove();
             }
-            function UpdateSvgGusset($svg, vertSpace) {
+            function UpdateSvgGusset(_svg, vertSpace) {
                 let __top = pouch.front.height.value + vertSpace * 2;
-                let __$svg = $("aside > svg");
-                let $front = __$svg.find(".side.front");
-                let $old = __$svg.find(".side.gusset");
+                let _front = _svg.children(".side.front");
+                let _old = _svg.children(".side.gusset");
                 if (pouch.gusset.included) {
-                    let $new = $front.clone();
-                    $new.toggleClass("front gusset");
+                    let _new = _front.clone();
+                    _new.toggleClass("front gusset");
 
                     //header label//
                     let headerMargin = 17;
-                    $new.find(".header .label.background"); //.attr("width", pouch.right.width.value + headerMargin * 2 + "mm");
-                    $new.find(".header .label.left").text("BOTTOM");
-                    $new.find(".header .label.center").remove();
-                    $new.find(".header .label.right")
+                    _new.find(".header .label.background"); //.attr("width", pouch.right.width.value + headerMargin * 2 + "mm");
+                    _new.find(".header .label.left").text("BOTTOM");
+                    _new.find(".header .label.center").remove();
+                    _new.find(".header .label.right")
                         .attr("x", pouch.front.width.value + headerMargin - 33 + "mm")
                         .text("GUSSET");
 
                     //face//
-                    $new.find(".face .outline").attr("height", pouch.gusset.depth.value + "mm");
+                    _new.find(".face .outline").attr("height", pouch.gusset.depth.value + "mm");
 
                     //face width guides//
-                    $new.find(".face .width.outer").remove();
+                    _new.find(".face .width.outer").remove();
 
                     //face height guides//
-                    $new.find(".face .height.outer text")
+                    _new.find(".face .height.outer text")
                         .attr("x", -(pouch.gusset.depth.value / 2 + 7) + "mm")
                         .text(pouch.gusset.depth.value + " mm");
-                    $new.find(".face .height.outer line.arrow").attr("y2", pouch.gusset.depth.value - 2 + "mm");
-                    $new.find(".face .height.outer .arrow.bottom").attr("y", pouch.gusset.depth.value + "mm");
-                    $new.find(".face .height.outer .mark.bottom")
+                    _new.find(".face .height.outer line.arrow").attr("y2", pouch.gusset.depth.value - 2 + "mm");
+                    _new.find(".face .height.outer .arrow.bottom").attr("y", pouch.gusset.depth.value + "mm");
+                    _new.find(".face .height.outer .mark.bottom")
                         .attr("y1", pouch.gusset.depth.value + "mm")
                         .attr("y2", pouch.gusset.depth.value + "mm");
 
                     //seal//
-                    $new.find(".seal .curve")
+                    _new.find(".seal .curve")
                         .attr("cy", pouch.gusset.depth.value / 2 + "mm")
                         .attr("clip-path", "");
-                    $new.find(".seal .outline")
+                    _new.find(".seal .outline")
                         .attr("y", pouch.seal.width.value + "mm")
                         .attr("height", pouch.gusset.depth.value - pouch.seal.width.value * 2 + "mm");
 
                     //meridian//
-                    $new.find(".meridian .divide")
+                    _new.find(".meridian .divide")
                         .attr("y1", pouch.gusset.depth.value / 2 + "mm")
                         .attr("y2", pouch.gusset.depth.value / 2 + "mm");
-                    $new.find(".meridian .offset text")
+                    _new.find(".meridian .offset text")
                         .attr("y", -(pouch.front.width.value + 5) + "mm")
                         .attr("x", pouch.gusset.depth.value / 4 - 4 + "mm")
                         .text(pouch.gusset.depth.value / 2 + " mm");
-                    $new.find(".meridian .offset .mark.top")
+                    _new.find(".meridian .offset .mark.top")
                         .attr("y1", pouch.gusset.depth.value / 2 + "mm")
                         .attr("y2", pouch.gusset.depth.value / 2 + "mm");
-                    $new.find(".meridian .offset .arrow.top").attr("y", 0 + "mm");
-                    $new.find(".meridian .offset line.arrow")
+                    _new.find(".meridian .offset .arrow.top").attr("y", 0 + "mm");
+                    _new.find(".meridian .offset line.arrow")
                         .attr("y1", 2 + "mm")
                         .attr("y2", pouch.gusset.depth.value / 2 - 2 + "mm");
-                    $new.find(".meridian .offset .arrow.bottom").attr("y", pouch.gusset.depth.value / 2 + "mm");
-                    $new.find(".meridian .offset .mark.bottom")
+                    _new.find(".meridian .offset .arrow.bottom").attr("y", pouch.gusset.depth.value / 2 + "mm");
+                    _new.find(".meridian .offset .mark.bottom")
                         .attr("y1", 0 + "mm")
                         .attr("y2", 0 + "mm");
 
-                    $new.find(".hanger").remove();
-                    $new.find(".notch").remove();
-                    $new.find(".zipper").remove();
-                    $new.find(".degasser").remove();
-                    $new.attr("y", __top + "mm");
-                    $new.appendTo(__$svg);
+                    _new.find(".hanger").remove();
+                    _new.find(".notch").remove();
+                    _new.find(".zipper").remove();
+                    _new.find(".degasser").remove();
+                    _new.attr("y", __top + "mm");
+                    _new.appendTo(_svg);
                 }
-                $old.remove();
+                _old.remove();
+            }
+            function UpdateBagFeatures(_svg, designWidth, designHeight, horizSpace, vertSpace) {
+                let _features = _svg.find(".area.features");
+                if (layout.verboseLabels) {
+                    _features.attr("x", designWidth + horizSpace + "mm").attr("y", vertSpace + "mm");
+                    _features.find(".label.outer").text("Outer Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
+                    _features.find(".value.outer").text(`${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
+                    _features.find(".label.inner").text("Inner Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
+                    _features.find(".value.inner").text(`TODO: ${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
+                    _features.find(".value.seal").text(pouch.seal.width.value + " mm");
+                    _features.find(".label.hanger").attr("class", "label hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
+                    _features.find(".icon.hanger").attr("class", "icon hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
+                    _features.find(".icon.hanger path").attr("d", pouch.hanger.included ? svgCheck : svgX);
+                    _features.find(".label.notch").attr("class", "label notch fill medium small " + (pouch.notch.included ? "green" : "red"));
+                    _features.find(".icon.notch").attr("class", "icon notch fill medium small " + (pouch.notch.included ? "green" : "red"));
+                    _features.find(".icon.notch path").attr("d", pouch.notch.included ? svgCheck : svgX);
+                    _features.find(".label.degasser").attr("class", "label degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
+                    _features.find(".icon.degasser").attr("class", "icon degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
+                    _features.find(".icon.degasser path").attr("d", pouch.degasser.included ? svgCheck : svgX);
+                    _features.find(".label.zipper.standard").attr("class", "label zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                    _features.find(".icon.zipper.standard").attr("class", "icon zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                    _features.find(".icon.zipper.standard path").attr("d", pouch.zipper.type == ZipperType.Standard ? svgCheck : svgX);
+                    _features.find(".label.zipper.safety").attr("class", "label zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                    _features.find(".icon.zipper.safety").attr("class", "icon zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                    _features.find(".icon.zipper.safety path").attr("d", pouch.zipper.type == ZipperType.ChildResistant ? svgCheck : svgX);
+                    _features.find(".label.zipper.wishbone").attr("class", "label zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                    _features.find(".icon.zipper.wishbone").attr("class", "icon zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                    _features.find(".icon.zipper.wishbone path").attr("d", pouch.zipper.type == ZipperType.EasyPull ? svgCheck : svgX);
+                    _features.attr("style", "");
+                } else _features.attr("style", "display:none");
+            }
+            function UpdateDesignImage(_svg, designWidth, designHeight, horizSpace, vertSpace) {
+                let featuresWidth = 71;
+                let left = layout.verboseLabels ? designWidth + horizSpace + featuresWidth + horizSpace : designWidth + horizSpace;
+                _svg.find(".area.design")
+                    .attr("x", left + "mm")
+                    .attr("y", 13 + "mm");
+            }
+            function UpdateMatteArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
+                let _old = _svg.find(".area.matte");
+                if (layout.inkingDetails) {
+                    let top = designHeight < 287 ? 287 : designHeight; // accomodates design image
+                    let _new = _svg.clone();
+                    _new.find(".area").remove(); //remove old nested areas
+                    _new.attr("class", "area matte");
+                    _new.attr("y", top + "mm");
+                    _new.find(".side .header").remove();
+                    _new.find(".side .hanger").remove();
+                    _new.find(".side .notch").remove();
+                    _new.find(".side .zipper").remove();
+                    _new.find(".side .degasser").remove();
+                    _new.find(".side .seal").remove();
+                    _new.find(".side .meridian").remove();
+                    _new.find(".side .face .outer").remove();
+                    _new.create("text")
+                        .attr("class", "header fill dark medium small")
+                        .attr("x", 44 + "mm")
+                        .attr("y", 31 + "mm")
+                        .text("LOCATION OF MATTE");
+                    _new.appendTo(_svg);
+                }
+                _old.remove();
+            }
+            function UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
+                let _old = _svg.find(".area.white");
+                if (layout.inkingDetails) {
+                    let _new = _svg.find(".area.matte").clone();
+                    _new.attr("class", "area white");
+                    _new.attr("x", designWidth + "mm");
+                    _new.find("text.header").text("LOCATION OF WHITE");
+                    _new.appendTo(_svg);
+                }
+                _old.remove();
             }
         </script>
 
