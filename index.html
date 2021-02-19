@@ -127,7 +127,8 @@
             }
             .flex-form .field fieldset label[for="GreenTheme"],
             .flex-form .field fieldset label[for="RedTheme"],
-            .flex-form .field fieldset label[for="ndTheme"] {
+            .flex-form .field fieldset label[for="BlueTheme"],
+            .flex-form .field fieldset label[for="BlackTheme"] {
                 min-width: 2em;
                 color: rgba(0, 0, 0, 0);
                 text-align: center;
@@ -144,11 +145,17 @@
             .flex-form .field fieldset input:checked + label[for="RedTheme"] {
                 background: #e63138;
             }
-            .flex-form .field fieldset label[for="GreenTheme"] {
-                background: #88c1a4;
+            .flex-form .field fieldset label[for="BlueTheme"] {
+                background: #8fc2d6;
             }
-            .flex-form .field fieldset input:checked + label[for="GreenTheme"] {
-                background: #00a650;
+            .flex-form .field fieldset input:checked + label[for="BlueTheme"] {
+                background: #31b3e6;
+            }
+            .flex-form .field fieldset label[for="BlackTheme"] {
+                background: #535353;
+            }
+            .flex-form .field fieldset input:checked + label[for="BlackTheme"] {
+                background: #1d1d1d;
             }
         </style>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -285,8 +292,10 @@
                             <label for="GreenTheme" title="Applies a green theme">_</label>
                             <input id="RedTheme" name="ColorTheme" type="radio" value="theme-red" title="Use a red theme?" />
                             <label for="RedTheme" title="Applies a red theme">_</label>
-                            <input id="ndTheme" name="ColorTheme" type="radio" value="theme-nd" title="Use a n/d theme?" />
-                            <label for="ndTheme" title="Applies a n/d theme">N/D</label>
+                            <input id="BlueTheme" name="ColorTheme" type="radio" value="theme-blue" title="Use a blue theme?" />
+                            <label for="BlueTheme" title="Applies a blue theme">_</label>
+                            <input id="BlackTheme" name="ColorTheme" type="radio" value="theme-black" title="Use a black theme?" />
+                            <label for="BlackTheme" title="Applies a black theme">_</label>
                         </fieldset>
                     </div>
                     <div class="field">
@@ -297,14 +306,22 @@
                     <div class="field">
                         <label title="Include inking details?">Inking Details</label>
                         <fieldset>
-                            <input id="IncludeInkingDetails" name="InkingDetails" type="radio" value="true" title="Includes inking details?" />
+                            <input id="IncludeInkingDetails" name="InkingDetails" type="radio" value="true" title="Includes inking details?" data-show="#FinishSection" />
                             <label for="IncludeInkingDetails" title="Adds inking details">yes</label>
-                            <input id="ExcludeInkingDetails" name="InkingDetails" type="radio" value="false" checked title="No inking details?" />
+                            <input id="ExcludeInkingDetails" name="InkingDetails" type="radio" value="false" checked title="No inking details?" data-hide="#FinishSection" />
                             <label for="ExcludeInkingDetails" title="No inking details">no</label>
                         </fieldset>
                     </div>
-                    <div class="field">
-                        <label>&nbsp;</label>
+                    <div id="FinishSection" class="field">
+                        <label title="Choose the desired ink finish.">Finish</label>
+                        <fieldset>
+                            <input id="GlossFinish" name="Finish" type="radio" value="gloss" title="Apply a gloss finish to the pouch?" />
+                            <label for="GlossFinish" title="Applies a gloss finish to the pouch">gloss</label>
+                            <input id="MatteFinish" name="Finish" type="radio" value="matte" title="Apply a matte finish to the pouch?" />
+                            <label for="MatteFinish" title="Applies a matte finish to the pouch">matte</label>
+                            <input id="CustomFinish" name="Finish" type="radio" value="custom" checked title="Apply a custom finish to the pouch?" />
+                            <label for="CustomFinish" title="Applies a custom finish to the pouch">custom</label>
+                        </fieldset>
                     </div>
                 </div>
                 <div class="group">
@@ -403,6 +420,7 @@
                 _themeClass = "theme-green";
                 _verboseLabels = false;
                 _inkingDetails = true;
+                _finish = "custom";
                 _changed = false;
                 get themeClass() {
                     return this._themeClass;
@@ -424,6 +442,13 @@
                 set inkingDetails(value) {
                     if (this._inkingDetails != value) this._changed = true;
                     this._inkingDetails = value;
+                }
+                get finish() {
+                    return this._finish;
+                }
+                set finish(value) {
+                    if (this._finish != value) this._changed = true;
+                    this._finish = value;
                 }
                 get changed() {
                     return this._changed;
@@ -543,15 +568,15 @@
             });
             $("#IncludeStandardZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
-                pouch.zipper.type = ZipperType.Standard;
-                if (ev.target.checked) {
+                if (pouch.zipper.included) {
+                    pouch.zipper.type = ZipperType.Standard;
                     $("[for=IncludeNotch]").css("text-decoration", "").off("click");
                 }
             });
             $("#IncludeEasyPullZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
-                pouch.zipper.type = ZipperType.EasyPull;
-                if (ev.target.checked) {
+                if (pouch.zipper.included) {
+                    pouch.zipper.type = ZipperType.EasyPull;
                     $("[for=IncludeNotch]")
                         .css("text-decoration", "line-through 2px #777")
                         .on("click", function () {
@@ -563,8 +588,8 @@
             });
             $("#IncludeChildResistantZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
-                pouch.zipper.type = ZipperType.ChildResistant;
-                if (ev.target.checked) {
+                if (pouch.zipper.included) {
+                    pouch.zipper.type = ZipperType.ChildResistant;
                     $("[for=IncludeNotch]").css("text-decoration", "").off("click");
                 }
             });
@@ -615,6 +640,15 @@
             $("#ExcludeInkingDetails").on("change", function (ev) {
                 layout.inkingDetails = !ev.target.checked;
             });
+            $("#GlossFinish").on("change", function (ev) {
+                if (ev.target.checked) layout.finish = ev.target.value;
+            });
+            $("#MatteFinish").on("change", function (ev) {
+                if (ev.target.checked) layout.finish = ev.target.value;
+            });
+            $("#CustomFinish").on("change", function (ev) {
+                if (ev.target.checked) layout.finish = ev.target.value;
+            });
             $("#StandardLabelingVerbosity").on("change", function (ev) {
                 layout.verboseLabels = !ev.target.checked;
             });
@@ -642,6 +676,7 @@
                 degasser = $("#DegasserOffset")[0],
                 theme = $("[name=ColorTheme]"),
                 yesInkingDetails = $("#IncludeInkingDetails")[0],
+                finish = $("[name=Finish]"),
                 yesVerboseLabels = $("#DetailedLabelingVerbosity")[0];
 
             (function UpdateModel() {
@@ -657,6 +692,7 @@
                 pouch.zipper.included = !noZipper.checked;
                 pouch.zipper.type = pouch.zipper.included ? ZipperType[zipperType.not(":not(:checked)")[0].value] : pouch.zipper.type;
                 pouch.zipper.offset.value = zipperOffset.value * 1;
+                pouch.zipper.height.value = pouch.zipper.type == ZipperType.ChildResistant ? 15 : 13;
                 pouch.notch.included = yesNotch.checked;
                 pouch.notch.offset.value = notch.value * 1;
                 pouch.hanger.included = yesHanger.checked;
@@ -666,6 +702,7 @@
                 setTimeout(UpdateModel, 100);
                 layout.themeClass = theme.not(":not(:checked)")[0].value;
                 layout.inkingDetails = yesInkingDetails.checked;
+                layout.finish = finish.not(":not(:checked)")[0].value;
                 layout.verboseLabels = yesVerboseLabels.checked;
                 if (layout.changed) {
                     //a change not tracked by the pouch object
@@ -794,9 +831,9 @@
 
                 //bag features//
                 let _features = _svg.create("svg").attr("class", "area features").attr("overflow", "visible");
-                _features.create("rect").attr("class", "outline continuous large black").attr("width", "71mm").attr("height", "102mm");
+                _features.create("rect").attr("class", "outline continuous large black").attr("width", "71mm").attr("height", "111mm");
                 _features.create("line").attr("class", "divide upper continuous large black").attr("x2", "71mm").attr("y1", "15mm").attr("y2", "15mm");
-                _features.create("line").attr("class", "divide lower continuous large black").attr("x2", "71mm").attr("y1", "57mm").attr("y2", "57mm");
+                _features.create("line").attr("class", "divide lower continuous large black").attr("x2", "71mm").attr("y1", "66mm").attr("y2", "66mm");
                 _features.create("text").attr("class", "header fill large black").text("Bag Features").attr("x", "35.5mm").attr("y", "11mm").attr("text-anchor", "middle");
 
                 _features.create("text").attr("class", "label outer fill medium small black").text("Outer Size:").attr("x", "35.5mm").attr("y", "22mm").attr("text-anchor", "middle");
@@ -807,19 +844,22 @@
                 _features.create("line").attr("class", "divide hr continuous small black").attr("x1", "20mm").attr("x2", "51mm").attr("y1", "48mm").attr("y2", "48mm");
                 _features.create("text").attr("class", "label seal fill medium small black").text("Seal Size:").attr("x", "35mm").attr("y", "54mm").attr("text-anchor", "end");
                 _features.create("text").attr("class", "value seal fill medium small green").text("<seal-size>").attr("x", "36mm").attr("y", "54mm");
+                _features.create("line").attr("class", "divide hr continuous small black").attr("x1", "20mm").attr("x2", "51mm").attr("y1", "57mm").attr("y2", "57mm");
+                _features.create("text").attr("class", "label finish fill medium small black").text("Finish:").attr("x", "35mm").attr("y", "63mm").attr("text-anchor", "end");
+                _features.create("text").attr("class", "value finish fill medium small green").text("<finish>").attr("x", "36mm").attr("y", "63mm");
 
-                _features.create("text").attr("class", "label hanger fill medium small").text("Hang Hole").attr("x", "32mm").attr("y", "64mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon hanger fill medium small").attr("x", "46mm").attr("y", "59mm").create("path").attr("transform", "scale(0.055)");
-                _features.create("text").attr("class", "label notch fill medium small").text("Tear Notch").attr("x", "32mm").attr("y", "71mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon notch fill medium small").attr("x", "46mm").attr("y", "66mm").create("path").attr("transform", "scale(0.055)");
-                _features.create("text").attr("class", "label degasser fill medium small").text("Degassing Valve").attr("x", "32mm").attr("y", "78mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon degasser fill medium small").attr("x", "52mm").attr("y", "73mm").create("path").attr("transform", "scale(0.055)");
-                _features.create("text").attr("class", "label zipper standard fill medium small").text("Standard Zipper").attr("x", "32mm").attr("y", "85mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon zipper standard fill medium small").attr("x", "51.5mm").attr("y", "80mm").create("path").attr("transform", "scale(0.055)");
-                _features.create("text").attr("class", "label zipper safety fill medium small").text("Child Resistant Zipper").attr("x", "32mm").attr("y", "92mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon zipper safety fill medium small").attr("x", "59mm").attr("y", "87mm").create("path").attr("transform", "scale(0.055)");
-                _features.create("text").attr("class", "label zipper wishbone fill medium small").text("EZ Pull Zipper").attr("x", "32mm").attr("y", "99mm").attr("text-anchor", "middle");
-                _features.create("svg").attr("class", "icon zipper wishbone fill medium small").attr("x", "50mm").attr("y", "94mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label hanger fill medium small").text("Hang Hole").attr("x", "32mm").attr("y", "73mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon hanger fill medium small").attr("x", "46mm").attr("y", "68mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label notch fill medium small").text("Tear Notch").attr("x", "32mm").attr("y", "80mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon notch fill medium small").attr("x", "46mm").attr("y", "75mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label degasser fill medium small").text("Degassing Valve").attr("x", "32mm").attr("y", "87mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon degasser fill medium small").attr("x", "52mm").attr("y", "82mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper standard fill medium small").text("Standard Zipper").attr("x", "32mm").attr("y", "94mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper standard fill medium small").attr("x", "51.5mm").attr("y", "89mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper safety fill medium small").text("Child Resistant Zipper").attr("x", "32mm").attr("y", "101mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper safety fill medium small").attr("x", "59mm").attr("y", "96mm").create("path").attr("transform", "scale(0.055)");
+                _features.create("text").attr("class", "label zipper wishbone fill medium small").text("EZ Pull Zipper").attr("x", "32mm").attr("y", "108mm").attr("text-anchor", "middle");
+                _features.create("svg").attr("class", "icon zipper wishbone fill medium small").attr("x", "50mm").attr("y", "103mm").create("path").attr("transform", "scale(0.055)");
 
                 //design proof//
                 // let _designProof = _svg.create("image").attr("class", "area design");
@@ -849,7 +889,8 @@
                     let designWidth = pouch.right.included ? pouch.front.width.value * 2 + pouch.right.width.value * 2 + horizSpace * 4 : pouch.front.width.value * 2 + horizSpace * 2;
                     let designHeight = pouch.gusset.included ? pouch.front.height.value + pouch.gusset.depth.value + vertSpace * 2 : pouch.front.height.value + vertSpace;
                     let width = layout.inkingDetails ? Math.max(designWidth * 2 + horizSpace, imageWidth) : designWidth + horizSpace;
-                    if (layout.verboseLabels) width += featuresWidth + horizSpace;
+                    // if (layout.verboseLabels)
+                    width += featuresWidth + horizSpace;
                     let height = layout.inkingDetails ? designHeight + vertSpace + Math.max(designHeight, imageHeight) : designHeight + vertSpace;
                     _svg.attr("class", layout.themeClass)
                         .attr("width", width + "mm")
@@ -862,7 +903,7 @@
                     UpdateSvgGusset(_svg, vertSpace);
                     UpdateBagFeatures(_svg, designWidth, designHeight, horizSpace, vertSpace);
                     UpdateDesignImage(_svg, designWidth, designHeight, horizSpace, vertSpace);
-                    UpdateMatteArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
+                    UpdateFinishArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
                     UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
                 }
             }
@@ -894,9 +935,8 @@
                 }
                 if (pouch.hanger.included) $(".side.front .hanger").show();
                 else $(".side.front .hanger").hide();
-                if (pouch.degasser.included) $(".side.front .degasser").show();
-                else $(".side.front .degasser").hide();
-                if (pouch.left.included) $(".side.front .seal .curve, .side.front .meridian").hide();
+                $(".side.front .degasser").hide(); //always hide on front
+                if (pouch.left.included || !pouch.gusset.included) $(".side.front .seal .curve, .side.front .meridian").hide();
                 else $(".side.front .seal .curve, .side.front .meridian").show();
 
                 ////////////////////TODO: seal labels
@@ -1320,8 +1360,8 @@
                 let _new = _front.clone();
                 _new.toggleClass("front back");
                 _new.find(".header .label.left").text("BACK");
-                _new.find(".zipper").remove();
-                _new.find(".degasser").remove();
+                if (pouch.zipper.type == ZipperType.EasyPull) _new.find(".zipper").remove();
+                if (pouch.degasser.included) _new.find(".degasser").attr("style", ""); //remove display:none;
                 _new.attr("x", __left + "mm");
                 _old.remove();
                 _new.appendTo(_svg);
@@ -1452,33 +1492,33 @@
             }
             function UpdateBagFeatures(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let _features = _svg.find(".area.features");
-                if (layout.verboseLabels) {
-                    _features.attr("x", designWidth + horizSpace + "mm").attr("y", vertSpace + "mm");
-                    _features.find(".label.outer").text("Outer Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
-                    _features.find(".value.outer").text(`${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
-                    _features.find(".label.inner").text("Inner Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
-                    _features.find(".value.inner").text(`TODO: ${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
-                    _features.find(".value.seal").text(pouch.seal.width.value + " mm");
-                    _features.find(".label.hanger").attr("class", "label hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
-                    _features.find(".icon.hanger").attr("class", "icon hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
-                    _features.find(".icon.hanger path").attr("d", pouch.hanger.included ? svgCheck : svgX);
-                    _features.find(".label.notch").attr("class", "label notch fill medium small " + (pouch.notch.included ? "green" : "red"));
-                    _features.find(".icon.notch").attr("class", "icon notch fill medium small " + (pouch.notch.included ? "green" : "red"));
-                    _features.find(".icon.notch path").attr("d", pouch.notch.included ? svgCheck : svgX);
-                    _features.find(".label.degasser").attr("class", "label degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
-                    _features.find(".icon.degasser").attr("class", "icon degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
-                    _features.find(".icon.degasser path").attr("d", pouch.degasser.included ? svgCheck : svgX);
-                    _features.find(".label.zipper.standard").attr("class", "label zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
-                    _features.find(".icon.zipper.standard").attr("class", "icon zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
-                    _features.find(".icon.zipper.standard path").attr("d", pouch.zipper.type == ZipperType.Standard ? svgCheck : svgX);
-                    _features.find(".label.zipper.safety").attr("class", "label zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
-                    _features.find(".icon.zipper.safety").attr("class", "icon zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
-                    _features.find(".icon.zipper.safety path").attr("d", pouch.zipper.type == ZipperType.ChildResistant ? svgCheck : svgX);
-                    _features.find(".label.zipper.wishbone").attr("class", "label zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
-                    _features.find(".icon.zipper.wishbone").attr("class", "icon zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
-                    _features.find(".icon.zipper.wishbone path").attr("d", pouch.zipper.type == ZipperType.EasyPull ? svgCheck : svgX);
-                    _features.attr("style", "");
-                } else _features.attr("style", "display:none");
+                _features.attr("x", designWidth + horizSpace + "mm").attr("y", vertSpace + "mm");
+                _features.find(".label.outer").text("Outer Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
+                _features.find(".value.outer").text(`${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
+                _features.find(".label.inner").text("Inner Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
+                _features.find(".value.inner").text(`TODO: ${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
+                _features.find(".value.seal").text(pouch.seal.width.value + " mm");
+                _features.find(".value.finish").text(layout.finish);
+                _features.find(".label.hanger").attr("class", "label hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
+                _features.find(".icon.hanger").attr("class", "icon hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
+                _features.find(".icon.hanger path").attr("d", pouch.hanger.included ? svgCheck : svgX);
+                _features.find(".label.notch").attr("class", "label notch fill medium small " + (pouch.notch.included ? "green" : "red"));
+                _features.find(".icon.notch").attr("class", "icon notch fill medium small " + (pouch.notch.included ? "green" : "red"));
+                _features.find(".icon.notch path").attr("d", pouch.notch.included ? svgCheck : svgX);
+                _features.find(".label.degasser").attr("class", "label degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
+                _features.find(".icon.degasser").attr("class", "icon degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
+                _features.find(".icon.degasser path").attr("d", pouch.degasser.included ? svgCheck : svgX);
+                _features.find(".label.zipper.standard").attr("class", "label zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                _features.find(".icon.zipper.standard").attr("class", "icon zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                _features.find(".icon.zipper.standard path").attr("d", pouch.zipper.type == ZipperType.Standard ? svgCheck : svgX);
+                _features.find(".label.zipper.safety").attr("class", "label zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                _features.find(".icon.zipper.safety").attr("class", "icon zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                _features.find(".icon.zipper.safety path").attr("d", pouch.zipper.type == ZipperType.ChildResistant ? svgCheck : svgX);
+                _features.find(".label.zipper.wishbone").attr("class", "label zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                _features.find(".icon.zipper.wishbone").attr("class", "icon zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                _features.find(".icon.zipper.wishbone path").attr("d", pouch.zipper.type == ZipperType.EasyPull ? svgCheck : svgX);
+                _features.attr("style", "");
+                //_features.attr("style", "display:none");
             }
             function UpdateDesignImage(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let featuresWidth = 71;
@@ -1487,13 +1527,13 @@
                     .attr("x", left + "mm")
                     .attr("y", 13 + "mm");
             }
-            function UpdateMatteArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
-                let _old = _svg.find(".area.matte");
+            function UpdateFinishArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
+                let _old = _svg.find(".area.finish");
                 if (layout.inkingDetails) {
                     let top = designHeight < 287 ? 287 : designHeight; // accomodates design image
                     let _new = _svg.clone();
                     _new.find(".area").remove(); //remove old nested areas
-                    _new.attr("class", "area matte");
+                    _new.attr("class", "area finish finish-" + layout.finish);
                     _new.attr("y", top + "mm");
                     _new.find(".side .header").remove();
                     _new.find(".side .hanger").remove();
@@ -1507,7 +1547,7 @@
                         .attr("class", "header fill dark medium small")
                         .attr("x", 44 + "mm")
                         .attr("y", 31 + "mm")
-                        .text("LOCATION OF MATTE");
+                        .text("BAG FINISH");
                     _new.appendTo(_svg);
                 }
                 _old.remove();
@@ -1515,7 +1555,7 @@
             function UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let _old = _svg.find(".area.white");
                 if (layout.inkingDetails) {
-                    let _new = _svg.find(".area.matte").clone();
+                    let _new = _svg.find(".area.finish").clone();
                     _new.attr("class", "area white");
                     _new.attr("x", designWidth + "mm");
                     _new.find("text.header").text("LOCATION OF WHITE");

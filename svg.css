@@ -90,14 +90,31 @@ svg .red.dotted,
 .theme-red .dotted {
     stroke: #e63138;
 }
-
-.black.fill {
-    fill: #333;
+svg .blue.fill,
+.theme-blue .fill,
+.theme-blue .fill.dark {
+    fill: #31b3e6;
 }
-.black.continuous,
-.black.dashed,
-.black.dotted {
-    stroke: #333;
+svg .blue.continuous,
+svg .blue.dashed,
+svg .blue.dotted,
+.theme-blue .continuous,
+.theme-blue .dashed,
+.theme-blue .dotted {
+    stroke: #31b3e6;
+}
+svg .black.fill,
+.theme-black .fill,
+.theme-black .fill.dark {
+    fill: #1d1d1d;
+}
+svg .black.continuous,
+svg .black.dashed,
+svg .black.dotted,
+.theme-black .continuous,
+.theme-black .dashed,
+.theme-black .dotted {
+    stroke: #1d1d1d;
 }
 
 .fill.light {
@@ -105,7 +122,10 @@ svg .red.dotted,
 }
 
 /**** areas ****/
-.area.matte rect {
+.finish-gloss rect {
+    fill: #8619a7;
+}
+.finish-matte rect {
     fill: #fc53a8;
 }
 .area.white rect {
