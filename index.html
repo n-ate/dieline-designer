@@ -1496,7 +1496,8 @@
                 _features.find(".label.outer").text("Outer Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
                 _features.find(".value.outer").text(`${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
                 _features.find(".label.inner").text("Inner Size (h x w" + (pouch.gusset.included ? " x d):" : "):"));
-                _features.find(".value.inner").text(`TODO: ${pouch.front.height.value} x ${pouch.front.width.value} ${pouch.gusset.included ? " x " + pouch.gusset.depth.value : ""} mm`);
+                let innerHeight = pouch.zipper.included ? pouch.front.height.value - pouch.seal.width.value - pouch.zipper.offset.value - pouch.zipper.height.value / 2 : pouch.front.height.value - pouch.seal.width.value * 2;
+                _features.find(".value.inner").text(`${innerHeight} x ${pouch.front.width.value - pouch.seal.width.value * 2} ${pouch.gusset.included ? " x " + (pouch.gusset.depth.value - pouch.seal.width.value * 2) : ""} mm`);
                 _features.find(".value.seal").text(pouch.seal.width.value + " mm");
                 _features.find(".value.finish").text(layout.finish);
                 _features.find(".label.hanger").attr("class", "label hanger fill medium small " + (pouch.hanger.included ? "green" : "red"));
