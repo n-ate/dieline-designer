@@ -754,23 +754,27 @@
                 let _hanger = _front.create("g").attr("class", "hanger");
                 _hanger.create("circle").attr("class", "hole fill dark");
                 let _hangerOffset = _hanger.create("g").attr("class", "offset");
-                _hangerOffset.create("text").attr("class", "fill dark small");
+                _hangerOffset.create("text").attr("class", "value fill dark small");
                 _hangerOffset.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill");
                 _hangerOffset.create("line").attr("class", "arrow continuous medium");
                 _hangerOffset.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(180)");
                 _hangerOffset.create("line").attr("class", "mark bottom continuous medium");
+                _hangerOffset.create("text").attr("class", "type verbosity fill dark small").text("Hole");
 
                 //notch//
                 let _notch = _front.create("g").attr("class", "notch");
                 _notch.create("svg").attr("class", "cut left fill dark").attr("overflow", "visible").create("path").attr("d", svgNotchLarge).attr("class", "fill").attr("transform", "rotate(90)");
                 _notch.create("svg").attr("class", "cut right fill dark").attr("overflow", "visible").create("path").attr("d", svgNotchLarge).attr("class", "fill").attr("transform", "rotate(-90)");
                 let _notchOffset = _notch.create("g").attr("class", "offset");
-                _notchOffset.create("text").attr("class", "fill dark small").attr("transform", "rotate(90)");
+                _notchOffset.create("text").attr("class", "value fill dark small").attr("transform", "rotate(90)");
                 _notchOffset.create("line").attr("class", "mark top continuous medium");
                 _notchOffset.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill");
                 _notchOffset.create("line").attr("class", "arrow continuous medium");
                 _notchOffset.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(180)");
                 _notchOffset.create("line").attr("class", "mark bottom continuous medium");
+                let _notchLabel = _notchOffset.create("text").attr("class", "type verbosity fill dark small");
+                _notchLabel.create("tspan").attr("class", "upper").text("Tear");
+                _notchLabel.create("tspan").attr("class", "lower").text("Notch");
 
                 //zippers//
                 let _zipper = _front.create("g").attr("class", "zipper");
@@ -792,12 +796,15 @@
                 _wishbone.create("rect").attr("class", "outline continuous small");
                 _wishbone.create("rect").attr("class", "inner dashed small");
                 let _zipperOffset = _zipper.create("g").attr("class", "offset");
-                _zipperOffset.create("text").attr("class", "fill dark small").attr("transform", "rotate(90)");
+                _zipperOffset.create("text").attr("class", "value fill dark small").attr("transform", "rotate(90)");
                 _zipperOffset.create("line").attr("class", "mark top continuous medium");
                 _zipperOffset.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill");
                 _zipperOffset.create("line").attr("class", "arrow continuous medium");
                 _zipperOffset.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(180)");
                 _zipperOffset.create("line").attr("class", "mark bottom continuous medium");
+                let _zipperLabel = _zipperOffset.create("text").attr("class", "type verbosity fill dark small");
+                _zipperLabel.create("tspan").attr("class", "upper");
+                _zipperLabel.create("tspan").attr("class", "lower");
 
                 //degasser//
                 let _degasser = _front.create("g").attr("class", "degasser");
@@ -882,7 +889,7 @@
                 let _svg = _("aside > svg");
                 if (_svg.length) {
                     let featuresWidth = 71; //exists in 2 places
-                    let horizSpace = 40;
+                    let horizSpace = 40 + (layout.verboseLabels && pouch.zipper.included ? (pouch.notch.included ? 20 : 6) : 0);
                     let vertSpace = 40;
                     let imageWidth = 418;
                     let imageHeight = 270;
@@ -922,6 +929,8 @@
                 let _face = _front.find(".face");
 
                 //conditional elements//
+                if (layout.verboseLabels) $(".verbosity").show();
+                else $(".verbosity").hide();
                 if (pouch.zipper.included) $(".side.front .zipper").show();
                 else $(".side.front .zipper").hide();
                 if (pouch.notch.included) $(".side.front .notch").show();
@@ -992,7 +1001,7 @@
                     .find("text")
                     .attr("y", -7 + "mm")
                     .attr("x", -(__middle + 7) + "mm")
-                    .text(pouch.front.height.value + " mm");
+                    .text(pouch.front.height.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                 _outerHeight
                     .find(".mark.top")
                     .attr("x1", -6 + "mm")
@@ -1026,7 +1035,7 @@
                     .find("text")
                     .attr("x", __center - 7 + "mm")
                     .attr("y", -7 + "mm")
-                    .text(pouch.front.width.value + " mm");
+                    .text(pouch.front.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                 _outerWidth
                     .find(".mark.left")
                     .attr("x1", 0 + "mm")
@@ -1063,7 +1072,7 @@
                     .attr("r", pouch.hanger.height.value / 2 + "mm");
                 let _hangerOffset = _hanger.find(".offset");
                 _hangerOffset
-                    .find("text")
+                    .find("text.value")
                     .attr("x", __center + pouch.hanger.height.value / 2 + 5.5 + "mm")
                     .attr("y", pouch.hanger.offset.value / 2 + 1 + "mm")
                     .text(pouch.hanger.offset.value + " mm");
@@ -1087,8 +1096,13 @@
                     .attr("x2", __center + pouch.hanger.height.value / 2 + 6 + "mm")
                     .attr("y1", pouch.hanger.offset.value + "mm")
                     .attr("y2", pouch.hanger.offset.value + "mm");
+                _hangerOffset
+                    .find("text.type")
+                    .attr("x", __center + pouch.hanger.height.value / 2 + 7 + "mm")
+                    .attr("y", pouch.hanger.offset.value + 1 + "mm");
 
                 //notch//
+                let _notchOffsetShift = layout.verboseLabels && pouch.notch.included ? 9 : 0;
                 let _notch = _front.find(".notch");
                 _notch
                     .find(".cut.left")
@@ -1100,38 +1114,47 @@
                     .attr("y", pouch.notch.offset.value + "mm");
                 let _notchOffset = _notch.find(".offset");
                 _notchOffset
-                    .find("text")
-                    .attr("y", -pouch.front.width.value - 5 + "mm")
+                    .find("text.value")
+                    .attr("y", -pouch.front.width.value - 5 - _notchOffsetShift + "mm")
                     .attr("x", pouch.notch.offset.value / 2 - 5.5 + "mm")
                     .text(pouch.notch.offset.value + " mm");
                 _notchOffset
                     .find(".mark.top")
                     .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + "mm")
+                    .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
                     .attr("y1", 0 + "mm")
                     .attr("y2", 0 + "mm");
                 _notchOffset
                     .find(".arrow.top")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
+                    .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
                     .attr("y", 0 + "mm");
                 _notchOffset
                     .find("line.arrow")
-                    .attr("x1", pouch.front.width.value + 3 + "mm")
-                    .attr("x2", pouch.front.width.value + 3 + "mm")
+                    .attr("x1", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
+                    .attr("x2", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
                     .attr("y1", 2 + "mm")
                     .attr("y2", pouch.notch.offset.value - 2 + "mm");
                 _notchOffset
                     .find(".arrow.bottom")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
+                    .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
                     .attr("y", pouch.notch.offset.value + "mm");
                 _notchOffset
                     .find(".mark.bottom")
                     .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + "mm")
+                    .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
                     .attr("y1", pouch.notch.offset.value + "mm")
                     .attr("y2", pouch.notch.offset.value + "mm");
+                _notchOffset
+                    .find("text.type")
+                    .attr("x", pouch.front.width.value + 3 + "mm")
+                    .attr("y", pouch.notch.offset.value / 2 - 1 + "mm");
+                _notchOffset
+                    .find(".type tspan.lower")
+                    .attr("x", pouch.front.width.value + 3 + "mm")
+                    .attr("dy", 3 + "mm");
 
                 //zippers//
+                let _zipperOffsetShift = _notchOffsetShift + (pouch.notch.included ? 5 : 0);
                 let _zipper = _front.find(".zipper");
                 let _straight = _zipper.find(".straight");
                 _straight
@@ -1203,36 +1226,46 @@
                     .attr("height", pouch.zipper.height.value / 3 + "mm");
                 let _zipperOffset = _zipper.find(".offset");
                 _zipperOffset
-                    .find("text")
-                    .attr("y", -pouch.front.width.value - 11 + "mm")
+                    .find("text.value")
                     .attr("x", pouch.zipper.offset.value / 2 - 5.5 + "mm")
+                    .attr("y", -pouch.front.width.value - 6 - _zipperOffsetShift + "mm")
                     .text(pouch.zipper.offset.value + " mm");
                 _zipperOffset
                     .find(".mark.top")
                     .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 12 + "mm")
+                    .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
                     .attr("y1", 0 + "mm")
                     .attr("y2", 0 + "mm");
                 _zipperOffset
                     .find(".arrow.top")
-                    .attr("x", pouch.front.width.value + 9 + "mm")
+                    .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
                     .attr("y", 0 + "mm");
                 _zipperOffset
                     .find("line.arrow")
-                    .attr("x1", pouch.front.width.value + 9 + "mm")
-                    .attr("x2", pouch.front.width.value + 9 + "mm")
+                    .attr("x1", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
+                    .attr("x2", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
                     .attr("y1", 2 + "mm")
                     .attr("y2", pouch.zipper.offset.value - 2 + "mm");
                 _zipperOffset
                     .find(".arrow.bottom")
-                    .attr("x", pouch.front.width.value + 9 + "mm")
+                    .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
                     .attr("y", pouch.zipper.offset.value + "mm");
                 _zipperOffset
                     .find(".mark.bottom")
                     .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 12 + "mm")
+                    .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
                     .attr("y1", pouch.zipper.offset.value + "mm")
                     .attr("y2", pouch.zipper.offset.value + "mm");
+                _zipperOffset
+                    .find("text.type")
+                    .attr("x", pouch.front.width.value + 9 + _zipperOffsetShift + "mm")
+                    .attr("y", pouch.zipper.offset.value / 2 - 1 + "mm");
+                _zipperOffset.find(".type tspan.upper").text(pouch.zipper.type == ZipperType.Standard ? "Standard Zipper" : pouch.zipper.type == ZipperType.EasyPull ? "Easy-Pull Zipper" : "Child-Resistant Zipper");
+                _zipperOffset
+                    .find(".type tspan.lower")
+                    .attr("x", pouch.front.width.value + 9 + _zipperOffsetShift + "mm")
+                    .attr("dy", 3 + "mm")
+                    .text(pouch.zipper.type == ZipperType.ChildResistant ? "" : "(not child-resistant)");
 
                 //degasser//
                 let _degasser = _front.find(".degasser");
@@ -1401,7 +1434,7 @@
                     //face width guides//
                     _new.find(".face .width.outer text")
                         .attr("x", pouch.right.width.value / 2 - 7 + "mm")
-                        .text(pouch.right.width.value + " mm");
+                        .text(pouch.right.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                     _new.find(".face .width.outer line.arrow").attr("x2", pouch.right.width.value - 2 + "mm");
                     _new.find(".face .width.outer .arrow.right").attr("x", pouch.right.width.value + "mm");
                     _new.find(".face .width.outer .mark.right")
@@ -1446,7 +1479,7 @@
                     //face height guides//
                     _new.find(".face .height.outer text")
                         .attr("x", -(pouch.gusset.depth.value / 2 + 7) + "mm")
-                        .text(pouch.gusset.depth.value + " mm");
+                        .text(pouch.gusset.depth.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                     _new.find(".face .height.outer line.arrow").attr("y2", pouch.gusset.depth.value - 2 + "mm");
                     _new.find(".face .height.outer .arrow.bottom").attr("y", pouch.gusset.depth.value + "mm");
                     _new.find(".face .height.outer .mark.bottom")
