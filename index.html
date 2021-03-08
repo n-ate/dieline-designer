@@ -734,7 +734,7 @@
 
                 //face height guides//
                 let _outerHeight = _face.create("g").attr("class", "height outer");
-                _outerHeight.create("text").attr("class", "fill dark medium").attr("transform", "rotate(-90)");
+                _outerHeight.create("text").attr("class", "fill dark medium").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
                 _outerHeight.create("line").attr("class", "mark top continuous medium");
                 _outerHeight.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill");
                 _outerHeight.create("line").attr("class", "arrow continuous medium");
@@ -743,7 +743,7 @@
 
                 //face width guides//
                 let _outerWidth = _face.create("g").attr("class", "width outer");
-                _outerWidth.create("text").attr("class", "fill dark medium");
+                _outerWidth.create("text").attr("class", "fill dark medium").attr("text-anchor", "middle");
                 _outerWidth.create("line").attr("class", "mark left continuous medium");
                 _outerWidth.create("svg").attr("class", "arrow left").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(-90)");
                 _outerWidth.create("line").attr("class", "arrow continuous medium");
@@ -811,12 +811,15 @@
                 _degasser.create("circle").attr("class", "outer dotted large");
                 _degasser.create("circle").attr("class", "inner continuous small");
                 let _degasserOffset = _degasser.create("g").attr("class", "offset");
-                _degasserOffset.create("text").attr("class", "fill dark small").attr("transform", "rotate(-90)");
+                _degasserOffset.create("text").attr("class", "value fill dark small").attr("transform", "rotate(-90)");
                 _degasserOffset.create("line").attr("class", "mark top continuous medium");
                 _degasserOffset.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill");
                 _degasserOffset.create("line").attr("class", "arrow continuous medium");
                 _degasserOffset.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(180)");
                 _degasserOffset.create("line").attr("class", "mark bottom continuous medium");
+                let _degasserLabel = _degasserOffset.create("text").attr("class", "type verbosity fill dark small");
+                _degasserLabel.create("tspan").attr("class", "upper").text("Degas");
+                _degasserLabel.create("tspan").attr("class", "lower").text("Valve");
 
                 //seal//
                 let _seal = _front.create("g").attr("class", "seal");
@@ -824,6 +827,10 @@
                 // let curveClipId = "_" + ("0000" + Math.random().toString(36).replace(".", "")).substr(-5);
                 _seal.create("clipPath").attr("id", "CurveClip").create("rect").attr("class", "clip");
                 _seal.create("ellipse").attr("class", "curve dashed medium").attr("clip-path", "url(#CurveClip)");
+                _seal.create("text").attr("class", "top fill dark small").attr("text-anchor", "middle");
+                _seal.create("text").attr("class", "right fill dark small").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
+                _seal.create("text").attr("class", "bottom fill dark small").attr("text-anchor", "middle");
+                _seal.create("text").attr("class", "left fill dark small").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
 
                 //meridian//
                 let _meridian = _front.create("g").attr("class", "meridian");
@@ -947,11 +954,10 @@
                 $(".side.front .degasser").hide(); //always hide on front
                 if (pouch.left.included || !pouch.gusset.included) $(".side.front .seal .curve, .side.front .meridian").hide();
                 else $(".side.front .seal .curve, .side.front .meridian").show();
-
-                ////////////////////TODO: seal labels
-                if (pouch.hanger.included && pouch.seal.placement == Placement.Top) $("#Front .bottom.seal.size.text").hide();
-                //hides label if hanger is in the way
-                else $("#Front .bottom.seal.size.text").show();
+                if (pouch.hanger.included || pouch.seal.placement != Placement.Top) $(".side.front .seal text.top").hide();
+                else $(".side.front .seal text.top").show();
+                if (pouch.seal.placement == Placement.Top) $(".side.front .seal text.bottom").hide();
+                else $(".side.front .seal text.bottom").show();
 
                 //front//
                 _front.attr("x", horizSpace + "mm").attr("y", vertSpace + "mm");
@@ -1000,7 +1006,7 @@
                 _outerHeight
                     .find("text")
                     .attr("y", -7 + "mm")
-                    .attr("x", -(__middle + 7) + "mm")
+                    .attr("x", -__middle + "mm")
                     .text(pouch.front.height.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                 _outerHeight
                     .find(".mark.top")
@@ -1033,7 +1039,7 @@
                 let _outerWidth = _face.find(".width.outer");
                 _outerWidth
                     .find("text")
-                    .attr("x", __center - 7 + "mm")
+                    .attr("x", __center + "mm")
                     .attr("y", -7 + "mm")
                     .text(pouch.front.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                 _outerWidth
@@ -1281,7 +1287,7 @@
                     .attr("r", 1.5 + "mm");
                 let _degasserOffset = _degasser.find(".offset");
                 _degasserOffset
-                    .find("text")
+                    .find("text.value")
                     .attr("y", __center - 6 + "mm")
                     .attr("x", -(pouch.degasser.offset.value * 0.95 - 5.5) + "mm")
                     .text(pouch.degasser.offset.value + " mm");
@@ -1311,6 +1317,14 @@
                     .attr("x2", __center - 7.5 + "mm")
                     .attr("y1", 0 + pouch.degasser.offset.value + "mm")
                     .attr("y2", 0 + pouch.degasser.offset.value + "mm");
+                _degasserOffset
+                    .find("text.type")
+                    .attr("x", __center - 18 + "mm")
+                    .attr("y", pouch.degasser.offset.value - 0.5 + "mm");
+                _degasserOffset
+                    .find(".type tspan.lower")
+                    .attr("x", __center - 17.7 + "mm")
+                    .attr("dy", 3 + "mm");
 
                 //seal//
                 let _seal = _front.find(".seal");
@@ -1341,6 +1355,26 @@
                     .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
                     .attr("width", pouch.front.width.value + "mm")
                     .attr("height", pouch.gusset.depth.value / 2 + "mm");
+                _seal
+                    .find("text.top")
+                    .attr("x", __center + "mm")
+                    .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
+                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                _seal
+                    .find("text.right")
+                    .attr("x", -__middle + "mm")
+                    .attr("y", 0.9 + pouch.front.width.value - pouch.seal.width.value / 2 + "mm")
+                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                _seal
+                    .find("text.bottom")
+                    .attr("x", __center + "mm")
+                    .attr("y", 0.9 + pouch.front.height.value - pouch.seal.width.value / 2 + "mm")
+                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                _seal
+                    .find("text.left")
+                    .attr("x", -__middle + "mm")
+                    .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
+                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
 
                 //meridian//
                 let _meridian = _front.find(".meridian");
@@ -1401,10 +1435,10 @@
             }
             function UpdateSvgLeft(_svg, horizSpace) {
                 let __left = horizSpace * 4 + pouch.front.width.value * 2 + pouch.right.width.value;
-                let _front = _svg.children(".side.right");
+                let _right = _svg.children(".side.right");
                 let _old = _svg.children(".side.left");
                 if (pouch.left.included) {
-                    let _new = _front.clone();
+                    let _new = _right.clone();
                     _new.toggleClass("right left");
                     _new.find(".header .label.left").text("LEFT");
                     _new.find(".header .label.center").text("");
@@ -1433,7 +1467,7 @@
 
                     //face width guides//
                     _new.find(".face .width.outer text")
-                        .attr("x", pouch.right.width.value / 2 - 7 + "mm")
+                        .attr("x", pouch.right.width.value / 2 + "mm")
                         .text(pouch.right.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
                     _new.find(".face .width.outer line.arrow").attr("x2", pouch.right.width.value - 2 + "mm");
                     _new.find(".face .width.outer .arrow.right").attr("x", pouch.right.width.value + "mm");
@@ -1443,6 +1477,11 @@
 
                     //seal//
                     _new.find(".seal .outline").attr("width", pouch.right.width.value - pouch.seal.width.value * 2 + "mm");
+                    _new.find(".seal text.top")
+                        .attr("x", pouch.right.width.value / 2 + "mm")
+                        .attr("style", pouch.seal.placement == Placement.Top ? "" : "display:none");
+                    _new.find(".seal text.right").attr("y", 0.9 + pouch.right.width.value - pouch.seal.width.value / 2 + "mm");
+                    _new.find(".seal text.bottom").attr("x", pouch.right.width.value / 2 + "mm");
 
                     _new.find(".hanger").remove();
                     _new.find(".notch").remove();
@@ -1493,6 +1532,12 @@
                     _new.find(".seal .outline")
                         .attr("y", pouch.seal.width.value + "mm")
                         .attr("height", pouch.gusset.depth.value - pouch.seal.width.value * 2 + "mm");
+                    _new.find(".seal text.top").attr("style", "");
+                    _new.find(".seal text.right").attr("x", -pouch.gusset.depth.value / 2 + "mm");
+                    _new.find(".seal text.bottom")
+                        .attr("y", 0.9 + pouch.gusset.depth.value - pouch.seal.width.value / 2 + "mm")
+                        .attr("style", "");
+                    _new.find(".seal text.left").attr("x", -pouch.gusset.depth.value / 2 + "mm");
 
                     //meridian//
                     _new.find(".meridian .divide")
