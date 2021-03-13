@@ -422,6 +422,7 @@
                 _inkingDetails = true;
                 _finish = "custom";
                 _changed = false;
+                _frozen = false;
                 get themeClass() {
                     return this._themeClass;
                 }
@@ -455,6 +456,21 @@
                 }
                 set changed(value) {
                     this._changed = value;
+                }
+                get themeClass() {
+                    return this._themeClass;
+                }
+                get themeClass() {
+                    return this._themeClass;
+                }
+                get frozen() {
+                    return this._frozen;
+                }
+                freeze() {
+                    this._frozen = true;
+                }
+                unfreeze() {
+                    this._frozen = false;
                 }
             })();
             console.log(layout);
@@ -732,7 +748,7 @@
                 let _face = _front.create("g").attr("class", "face");
                 _face.create("rect").attr("class", "outline continuous large");
 
-                //face height guides//
+                //face outer height guides//
                 let _outerHeight = _face.create("g").attr("class", "height outer");
                 _outerHeight.create("text").attr("class", "fill dark medium").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
                 _outerHeight.create("line").attr("class", "mark top continuous medium");
@@ -741,7 +757,7 @@
                 _outerHeight.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(180)");
                 _outerHeight.create("line").attr("class", "mark bottom continuous medium");
 
-                //face width guides//
+                //face outer width guides//
                 let _outerWidth = _face.create("g").attr("class", "width outer");
                 _outerWidth.create("text").attr("class", "fill dark medium").attr("text-anchor", "middle");
                 _outerWidth.create("line").attr("class", "mark left continuous medium");
@@ -749,6 +765,26 @@
                 _outerWidth.create("line").attr("class", "arrow continuous medium");
                 _outerWidth.create("svg").attr("class", "arrow right").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(90)");
                 _outerWidth.create("line").attr("class", "mark right continuous medium");
+
+                //face inner height guides//
+                let _innerHeight = _face.create("g").attr("class", "height inner verbosity");
+                _innerHeight.create("text").attr("class", "fill dark small").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
+                _innerHeight.create("line").attr("class", "mark top continuous medium");
+                _innerHeight.create("svg").attr("class", "arrow top").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill");
+                _innerHeight.create("line").attr("class", "arrow continuous medium");
+                _innerHeight.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(180)");
+                _innerHeight.create("line").attr("class", "mark bottom continuous medium");
+                _innerHeight.create("svg").attr("class", "mark arrow").attr("overflow", "visible").create("path").attr("d", svgArrowSmall).attr("class", "fill").attr("transform", "rotate(225)");
+
+                //face inner width guides//
+                let _innerWidth = _face.create("g").attr("class", "width inner verbosity");
+                _innerWidth.create("text").attr("class", "fill dark small").attr("text-anchor", "middle");
+                _innerHeight.create("svg").attr("class", "arrow bottom").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(180)");
+                _innerWidth.create("line").attr("class", "mark left continuous medium");
+                _innerWidth.create("svg").attr("class", "arrow left").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(-90)");
+                _innerWidth.create("line").attr("class", "arrow continuous medium");
+                _innerWidth.create("svg").attr("class", "arrow right").attr("overflow", "visible").create("path").attr("d", svgArrowLarge).attr("class", "fill").attr("transform", "rotate(90)");
+                _innerWidth.create("line").attr("class", "mark right continuous medium");
 
                 //hanger//
                 let _hanger = _front.create("g").attr("class", "hanger");
@@ -893,10 +929,11 @@
 
             //--adjust svg--//
             function UpdateSvg() {
+                if (layout.frozen) return;
                 let _svg = _("aside > svg");
                 if (_svg.length) {
                     let featuresWidth = 71; //exists in 2 places
-                    let horizSpace = 40 + (layout.verboseLabels && pouch.zipper.included ? (pouch.notch.included ? 20 : 6) : 0);
+                    let horizSpace = 40 + (layout.verboseLabels && pouch.zipper.included ? (pouch.notch.included ? 31.5 : 14) : 0);
                     let vertSpace = 40;
                     let imageWidth = 418;
                     let imageHeight = 270;
@@ -1001,7 +1038,7 @@
                     .attr("width", pouch.front.width.value + "mm")
                     .attr("height", pouch.front.height.value + "mm");
 
-                //face height guides//
+                //face outer height guides//
                 let _outerHeight = _face.find(".height.outer");
                 _outerHeight
                     .find("text")
@@ -1035,7 +1072,7 @@
                     .attr("y1", pouch.front.height.value + "mm")
                     .attr("y2", pouch.front.height.value + "mm");
 
-                //face width guides//
+                //face outer width guides//
                 let _outerWidth = _face.find(".width.outer");
                 _outerWidth
                     .find("text")
@@ -1068,6 +1105,82 @@
                     .attr("x2", pouch.front.width.value + "mm")
                     .attr("y1", -6 + "mm")
                     .attr("y2", -1 + "mm");
+
+                //face inner height guides//
+                let _innerXOffset = pouch.seal.width.value + 9;
+                let _innerYTopOffset = pouch.zipper.included ? pouch.zipper.offset.value + pouch.zipper.height.value / 2 : pouch.seal.width.value;
+                let _innerYBottomOffset = -pouch.seal.width.value - 9;
+                let _innerYHeight = pouch.front.height.value - _innerYTopOffset - pouch.seal.width.value;
+                let _innerHeight = _face.find(".height.inner");
+                _innerHeight
+                    .find("text")
+                    .attr("y", _innerXOffset + 1 + "mm")
+                    .attr("x", -(_innerYTopOffset + (pouch.front.height.value - _innerYTopOffset + _innerYBottomOffset) / 2) + "mm")
+                    .text(_innerYHeight + " mm I.D.");
+                _innerHeight
+                    .find(".mark.top")
+                    .attr("x1", pouch.seal.width.value + 1 + "mm")
+                    .attr("x2", _innerXOffset + 6 + "mm")
+                    .attr("y1", _innerYTopOffset + "mm")
+                    .attr("y2", _innerYTopOffset + "mm");
+                _innerHeight
+                    .find(".arrow.top")
+                    .attr("x", _innerXOffset + 3 + "mm")
+                    .attr("y", _innerYTopOffset + "mm");
+                _innerHeight
+                    .find("line.arrow")
+                    .attr("x1", _innerXOffset + 3 + "mm")
+                    .attr("x2", _innerXOffset + 3 + "mm")
+                    .attr("y1", _innerYTopOffset + 2 + "mm")
+                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 5 + "mm");
+                _innerHeight
+                    .find(".arrow.bottom")
+                    .attr("x", _innerXOffset + 3 + "mm")
+                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                _innerHeight
+                    .find(".mark.bottom")
+                    .attr("x1", pouch.seal.width.value + 1 + "mm")
+                    .attr("x2", _innerXOffset + 6 + "mm")
+                    .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
+                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
+                _innerHeight
+                    .find(".mark.arrow")
+                    .attr("x", pouch.seal.width.value + "mm")
+                    .attr("y", pouch.front.height.value - pouch.seal.width.value + "mm");
+
+                //face inner width guides//
+                let _innerWidth = _face.find(".width.inner");
+                _innerWidth
+                    .find("text")
+                    .attr("x", __center + "mm")
+                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 5 + "mm")
+                    .text(pouch.front.width.value - pouch.seal.width.value * 2 + " mm I.D.");
+                _innerWidth
+                    .find(".mark.left")
+                    .attr("x1", pouch.seal.width.value + 1 + "mm")
+                    .attr("x2", _innerXOffset + 6 + "mm")
+                    .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
+                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
+                _innerWidth
+                    .find(".arrow.left")
+                    .attr("x", _innerXOffset + 3 + "mm")
+                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                _innerWidth
+                    .find("line.arrow")
+                    .attr("x1", _innerXOffset + 5 + "mm")
+                    .attr("x2", pouch.front.width.value - pouch.seal.width.value - 2 + "mm")
+                    .attr("y1", pouch.front.height.value + _innerYBottomOffset - 3 + "mm")
+                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                _innerWidth
+                    .find(".arrow.right")
+                    .attr("x", pouch.front.width.value - pouch.seal.width.value + "mm")
+                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                _innerWidth
+                    .find(".mark.right")
+                    .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
+                    .attr("x2", pouch.front.width.value - pouch.seal.width.value + "mm")
+                    .attr("y1", pouch.front.height.value + _innerYBottomOffset - 6 + "mm")
+                    .attr("y2", pouch.front.height.value - pouch.seal.width.value - 1 + "mm");
 
                 //hanger//
                 let _hanger = _front.find(".hanger");
@@ -1108,7 +1221,7 @@
                     .attr("y", pouch.hanger.offset.value + 1 + "mm");
 
                 //notch//
-                let _notchOffsetShift = layout.verboseLabels && pouch.notch.included ? 9 : 0;
+                let _notchOffsetShift = layout.verboseLabels && pouch.notch.included ? 12.5 : 0;
                 let _notch = _front.find(".notch");
                 _notch
                     .find(".cut.left")
@@ -1264,12 +1377,12 @@
                     .attr("y2", pouch.zipper.offset.value + "mm");
                 _zipperOffset
                     .find("text.type")
-                    .attr("x", pouch.front.width.value + 9 + _zipperOffsetShift + "mm")
+                    .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
                     .attr("y", pouch.zipper.offset.value / 2 - 1 + "mm");
                 _zipperOffset.find(".type tspan.upper").text(pouch.zipper.type == ZipperType.Standard ? "Standard Zipper" : pouch.zipper.type == ZipperType.EasyPull ? "Easy-Pull Zipper" : "Child-Resistant Zipper");
                 _zipperOffset
                     .find(".type tspan.lower")
-                    .attr("x", pouch.front.width.value + 9 + _zipperOffsetShift + "mm")
+                    .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
                     .attr("dy", 3 + "mm")
                     .text(pouch.zipper.type == ZipperType.ChildResistant ? "" : "(not child-resistant)");
 
@@ -1319,11 +1432,11 @@
                     .attr("y2", 0 + pouch.degasser.offset.value + "mm");
                 _degasserOffset
                     .find("text.type")
-                    .attr("x", __center - 18 + "mm")
+                    .attr("x", __center - 20.5 + "mm")
                     .attr("y", pouch.degasser.offset.value - 0.5 + "mm");
                 _degasserOffset
                     .find(".type tspan.lower")
-                    .attr("x", __center - 17.7 + "mm")
+                    .attr("x", __center - 19.7 + "mm")
                     .attr("dy", 3 + "mm");
 
                 //seal//
@@ -1429,6 +1542,7 @@
                 _new.find(".header .label.left").text("BACK");
                 if (pouch.zipper.type == ZipperType.EasyPull) _new.find(".zipper").remove();
                 if (pouch.degasser.included) _new.find(".degasser").attr("style", ""); //remove display:none;
+                _new.find(".face .height.inner, .face .width.inner").remove();
                 _new.attr("x", __left + "mm");
                 _old.remove();
                 _new.appendTo(_svg);
@@ -1474,6 +1588,7 @@
                     _new.find(".face .width.outer .mark.right")
                         .attr("x1", pouch.right.width.value + "mm")
                         .attr("x2", pouch.right.width.value + "mm");
+                    _new.find(".face .height.inner, .face .width.inner").remove();
 
                     //seal//
                     _new.find(".seal .outline").attr("width", pouch.right.width.value - pouch.seal.width.value * 2 + "mm");
@@ -1524,6 +1639,7 @@
                     _new.find(".face .height.outer .mark.bottom")
                         .attr("y1", pouch.gusset.depth.value + "mm")
                         .attr("y2", pouch.gusset.depth.value + "mm");
+                    _new.find(".face .height.inner, .face .width.inner").remove();
 
                     //seal//
                     _new.find(".seal .curve")
@@ -1622,6 +1738,7 @@
                     _new.find(".side .seal").remove();
                     _new.find(".side .meridian").remove();
                     _new.find(".side .face .outer").remove();
+                    _new.find(".side .face .inner").remove();
                     _new.create("text")
                         .attr("class", "header fill dark medium small")
                         .attr("x", 44 + "mm")
@@ -1642,12 +1759,13 @@
                 }
                 _old.remove();
             }
-        </script>
 
-        <script id="Downloader">
+            //////////////Downloader///////////////////////////
             function downloadSvg(filename, svgElement) {
-                var el = document.createElement("a");
+                let el = document.createElement("a");
+                removeForAdobeIllustrator(svgElement);
                 el.setAttribute("href", "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgElement.outerHTML));
+                restoreForAdobeIllustrator(svgElement);
                 el.setAttribute("download", filename);
                 el.style.display = "none";
                 document.body.appendChild(el);
@@ -1658,6 +1776,24 @@
             $("#Download").on("click", function () {
                 downloadSvg("pouch-dieline.svg", $("aside>svg")[0]);
             });
+
+            function removeForAdobeIllustrator(svgElement) {
+                //nuke all display:none elements//
+                layout.freeze();
+                let matches = svgElement.querySelectorAll('[style~="display:"]');
+                matches = [].slice.call(matches).filter((x) => x.style.display == "none");
+                for (let key in matches) {
+                    matches[key].remove();
+                }
+            }
+
+            function restoreForAdobeIllustrator(svgElement) {
+                //nuke and recreate entire svg//
+                svgElement.remove();
+                CreateSvg();
+                layout.unfreeze();
+                UpdateSvg();
+            }
         </script>
     </body>
 </html>
