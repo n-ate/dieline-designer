@@ -1703,15 +1703,15 @@
                 _features.find(".label.degasser").attr("class", "label degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
                 _features.find(".icon.degasser").attr("class", "icon degasser fill medium small " + (pouch.degasser.included ? "green" : "red"));
                 _features.find(".icon.degasser path").attr("d", pouch.degasser.included ? svgCheck : svgX);
-                _features.find(".label.zipper.standard").attr("class", "label zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
-                _features.find(".icon.zipper.standard").attr("class", "icon zipper standard fill medium small " + (pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
-                _features.find(".icon.zipper.standard path").attr("d", pouch.zipper.type == ZipperType.Standard ? svgCheck : svgX);
-                _features.find(".label.zipper.safety").attr("class", "label zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
-                _features.find(".icon.zipper.safety").attr("class", "icon zipper safety fill medium small " + (pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
-                _features.find(".icon.zipper.safety path").attr("d", pouch.zipper.type == ZipperType.ChildResistant ? svgCheck : svgX);
-                _features.find(".label.zipper.wishbone").attr("class", "label zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
-                _features.find(".icon.zipper.wishbone").attr("class", "icon zipper wishbone fill medium small " + (pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
-                _features.find(".icon.zipper.wishbone path").attr("d", pouch.zipper.type == ZipperType.EasyPull ? svgCheck : svgX);
+                _features.find(".label.zipper.standard").attr("class", "label zipper standard fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                _features.find(".icon.zipper.standard").attr("class", "icon zipper standard fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.Standard ? "green" : "red"));
+                _features.find(".icon.zipper.standard path").attr("d", pouch.zipper.included && pouch.zipper.type == ZipperType.Standard ? svgCheck : svgX);
+                _features.find(".label.zipper.safety").attr("class", "label zipper safety fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                _features.find(".icon.zipper.safety").attr("class", "icon zipper safety fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.ChildResistant ? "green" : "red"));
+                _features.find(".icon.zipper.safety path").attr("d", pouch.zipper.included && pouch.zipper.type == ZipperType.ChildResistant ? svgCheck : svgX);
+                _features.find(".label.zipper.wishbone").attr("class", "label zipper wishbone fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                _features.find(".icon.zipper.wishbone").attr("class", "icon zipper wishbone fill medium small " + (pouch.zipper.included && pouch.zipper.type == ZipperType.EasyPull ? "green" : "red"));
+                _features.find(".icon.zipper.wishbone path").attr("d", pouch.zipper.included && pouch.zipper.type == ZipperType.EasyPull ? svgCheck : svgX);
                 _features.attr("style", "");
                 //_features.attr("style", "display:none");
             }
