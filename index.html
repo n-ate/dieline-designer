@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Demo</title>
@@ -52,10 +53,19 @@
                 max-width: 30em;
                 padding: 0.3em 1em;
             }
+            .flex-form .group .group .field {
+                min-width: 9em;
+                max-width: 15em;
+                padding: 0.3em 1em;
+            }
             .flex-form > .group,
             .flex-form > .field {
                 flex-grow: 1;
                 flex-basis: 15em;
+            }
+            .flex-form > .group > .group {
+                flex-grow: 0.5;
+                flex-basis: 7.5em;
             }
             .flex-form .field label {
             }
@@ -175,12 +185,29 @@
                 </div>
                 <div class="group">
                     <div class="field">
+                        <label title="Include pouch sides?">Corner Rounding</label>
+                        <fieldset>
+                            <input id="IncludeCornerRounding" name="CornerRounding" type="radio" value="true" title="Include corner rounding on the pouch?" data-show="#CornerRoundingRadiusSection" />
+                            <label for="IncludeCornerRounding" title="Adds a corner rounding to the pouch">yes</label>
+                            <input id="ExcludeCornerRounding" name="CornerRounding" type="radio" value="false" checked title="No corner rounding on the pouch?" data-hide="#CornerRoundingRadiusSection" />
+                            <label for="ExcludeCornerRounding" title="No corner rounding on the pouch">no</label>
+                        </fieldset>
+                    </div>
+                    <div id="CornerRoundingRadiusSection" class="field">
+                        <label for="CornerRoundingRadius" title="The radius of the pouch corners">Radius</label><abbr>mm</abbr>
+                        <input id="CornerRoundingRadius" type="number" value="5" min="5" max="25" title="The radius of the pouch corners" />
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="field">
                         <label title="Pouch can stand on end?">Gusset</label>
                         <fieldset>
-                            <input id="IncludeGusset" name="Gusset" type="radio" value="true" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDepthSection, #SidesWidthSection>em" data-vanish="#SidesWidthSection>input,#SidesWidthSection>abbr" />
-                            <label for="IncludeGusset" title="Pouch can stand on end?">yes</label>
-                            <input id="ExcludeGusset" name="Gusset" type="radio" value="false" checked title="No gusset on the pouch" data-hide="#GussetDepthSection" data-show="#SidesWidthSection>input,#SidesWidthSection>abbr" data-vanish="#SidesWidthSection>em" />
-                            <label for="ExcludeGusset" title="Pouch can stand on end?">no</label>
+                            <input id="IncludeGussetRounded" name="GussetMain" type="radio" value="Rounded" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDepthSection, #SidesWidthSection>em" data-vanish="#SidesWidthSection>input,#SidesWidthSection>abbr" />
+                            <label for="IncludeGussetRounded" title="Pouch can stand on end?">rounded</label>
+                            <input id="IncludeGussetK" name="GussetMain" type="radio" value="K" title="Adds a gusset to the bottom of the pouch. Pouch can be stood up" data-show="#GussetDepthSection, #SidesWidthSection>em" data-vanish="#SidesWidthSection>input,#SidesWidthSection>abbr" />
+                            <label for="IncludeGussetK" title="Pouch can stand on end?">&nbsp;k&nbsp;</label>
+                            <input id="ExcludeGusset" name="GussetMain" type="radio" value="false" checked title="No gusset on the pouch" data-hide="#GussetDepthSection" data-show="#SidesWidthSection>input,#SidesWidthSection>abbr" data-vanish="#SidesWidthSection>em" />
+                            <label for="ExcludeGusset" title="Pouch can stand on end?">none</label>
                         </fieldset>
                     </div>
                     <div id="GussetDepthSection" class="field">
@@ -208,10 +235,12 @@
                     <div class="field">
                         <label title="How pouch will be sealed">Seal Placement</label>
                         <fieldset>
-                            <input id="SealTop" name="SealPlacement" type="radio" value="Top" title="Top and sides will be sealed" />
-                            <label for="SealTop" title="Apply a top seal?">top</label>
-                            <input id="SealBottom" name="SealPlacement" type="radio" value="Bottom" checked title="Bottom and sides will be sealed" />
-                            <label for="SealBottom" title="Apply a bottom seal?">bottom</label>
+                            <input id="SealTopSides" name="SealPlacement" type="radio" value="Top,Left,Right" title="Top and sides will be sealed" />
+                            <label for="SealTopSides" title="Apply a top and side seals?">top</label>
+                            <input id="SealBottomSides" name="SealPlacement" type="radio" value="Bottom,Left,Right" checked title="Bottom and sides will be sealed" />
+                            <label for="SealBottomSides" title="Apply a bottom and side seals?">bottom</label>
+                            <input id="SealSidesOnly" name="SealPlacement" type="radio" value="Left,Right" title="Sides will be sealed" />
+                            <label for="SealSidesOnly" title="Apply only side seals?">sides</label>
                         </fieldset>
                     </div>
                     <div class="field">
@@ -223,19 +252,28 @@
                     <div class="field">
                         <label title="Include a zipper for reclosing the pouch?">Zipper</label>
                         <fieldset>
-                            <input id="IncludeStandardZipper" name="Zipper" type="radio" value="Standard" title="Include a standard zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" />
+                            <input id="IncludeStandardZipper" name="ZipperMain" type="radio" value="Standard" title="Include a standard zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" data-hide="#ZipperFacetSection" />
                             <label for="IncludeStandardZipper" title="Adds a standard zipper to the pouch">standard</label>
-                            <input id="IncludeEasyPullZipper" name="Zipper" type="radio" value="EasyPull" title="Include an easy-pull zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" />
+                            <input id="IncludeEasyPullZipper" name="ZipperMain" type="radio" value="EasyPull" title="Include an easy-pull zipper for reclosing the pouch?" data-show="#ZipperOffsetSection,#ZipperFacetSection" />
                             <label for="IncludeEasyPullZipper" title="Adds an easy-pull zipper to the pouch">ez-pull</label>
-                            <input id="IncludeChildResistantZipper" name="Zipper" type="radio" value="ChildResistant" title="Include a child-resistant zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" />
+                            <input id="IncludeChildResistantZipper" name="ZipperMain" type="radio" value="ChildResistant" title="Include a child-resistant zipper for reclosing the pouch?" data-show="#ZipperOffsetSection" data-hide="#ZipperFacetSection" />
                             <label for="IncludeChildResistantZipper" title="Adds a child-reistant zipper to the pouch">saftey</label>
-                            <input id="ExcludeZipper" name="Zipper" type="radio" value="none" checked title="No zipper for reclosing the pouch?" data-hide="#ZipperOffsetSection" />
+                            <input id="ExcludeZipper" name="ZipperMain" type="radio" value="false" checked title="No zipper for reclosing the pouch?" data-hide="#ZipperOffsetSection,#ZipperFacetSection" />
                             <label for="ExcludeZipper" title="No zipper on the pouch">none</label>
                         </fieldset>
                     </div>
                     <div id="ZipperOffsetSection" class="field">
-                        <label for="ZipperOffset" title="The distance from the edge of the pouch to the top of the zipper">Zipper Offset</label><abbr>mm</abbr>
+                        <label for="ZipperOffset" title="The distance from the edge of the pouch to the top of the zipper">Offset</label><abbr>mm</abbr>
                         <input id="ZipperOffset" type="number" value="25" title="The distance from the edge of the pouch to the top of the zipper" />
+                    </div>
+                    <div id="ZipperFacetSection" class="field">
+                        <label title="Which bag side to place the zipper on?">Placement</label>
+                        <fieldset>
+                            <input id="ZipperFacetFront" name="ZipperFacet" type="radio" value="Front" checked title="Add zipper to the front of the pouch?" />
+                            <label for="ZipperFacetFront" title="Adds zipper to front">front</label>
+                            <input id="ZipperFacetBack" name="ZipperFacet" type="radio" value="Back" title="Add zipper to the back of the pouch?" />
+                            <label for="ZipperFacetBack" title="Adds zipper to back">back</label>
+                        </fieldset>
                     </div>
                 </div>
                 <div class="group">
@@ -273,14 +311,16 @@
                     <div class="field">
                         <label title="Include a degasser valve?">Degas Valve</label>
                         <fieldset>
-                            <input id="IncludeDegasser" name="Degasser" type="radio" value="true" title="Include a degasser valve?" data-show="#DegasserOffsetSection" />
-                            <label for="IncludeDegasser" title="Adds a degasser valve to the pouch">yes</label>
-                            <input id="ExcludeDegasser" name="Degasser" type="radio" value="false" checked title="No degasser valve?" data-hide="#DegasserOffsetSection" />
-                            <label for="ExcludeDegasser" title="No degasser valve on the pouch">no</label>
+                            <input id="IncludeDegasserFront" name="DegasserMain" type="radio" value="Front" title="Add degassing valve to the front of the pouch?" data-show="#DegasserOffsetSection" />
+                            <label for="IncludeDegasserFront" title="Adds degassing valve to front">front</label>
+                            <input id="IncludeDegasserBack" name="DegasserMain" type="radio" value="Back" checked title="Add degassing valve to the back of the pouch?" data-show="#DegasserOffsetSection" />
+                            <label for="IncludeDegasserBack" title="Adds degassing valve to back">back</label>
+                            <input id="ExcludeDegasser" name="DegasserMain" type="radio" value="false" checked title="No degasser valve?" data-hide="#DegasserOffsetSection" />
+                            <label for="ExcludeDegasser" title="No degasser valve on the pouch">none</label>
                         </fieldset>
                     </div>
                     <div id="DegasserOffsetSection" class="field">
-                        <label for="DegasserOffset" title="The distance from the edge of the pouch to the top of the hang hole">Degas Valve Offset</label><abbr>mm</abbr>
+                        <label for="DegasserOffset" title="The distance from the edge of the pouch to the top of the degassing valve">Degas Valve Offset</label><abbr>mm</abbr>
                         <input id="DegasserOffset" type="number" value="60" min="18" max="400" title="The distance from the edge of the pouch to the top of the degasser valve" />
                     </div>
                 </div>
@@ -381,15 +421,25 @@
                 clone() {
                     return new _Elements($.makeArray($(this._elements).clone()));
                 }
-                create(elementName) {
+                create(elementName, prepend) {
                     var elements = [];
                     this._elements.forEach((el) => {
                         let newEl = document.createElementNS("http://www.w3.org/2000/svg", elementName);
-                        el.appendChild(newEl);
+                        if (prepend) el.prepend(newEl);
+                        else el.appendChild(newEl);
                         elements.push(newEl);
                     });
                     return new _Elements(elements);
                 }
+                // create2(elementName) {
+                //     var elements = [];
+                //     this._elements.forEach((el) => {
+                //         let newEl = document.createElementNS("http://www.w3.org/2000/svg", elementName);
+                //         el.appendChild(newEl);
+                //         elements.push(newEl);
+                //     });
+                //     return new _Elements(elements);
+                // }
                 find(selector) {
                     return new _Elements($.makeArray($(this._elements).find(selector)));
                 }
@@ -414,6 +464,8 @@
             import { PouchTemplate } from "./js/templates/PouchTemplate.js";
             import { Placement } from "./js/enums/Placement.js";
             import { ZipperType } from "./js/enums/ZipperType.js";
+            import { GussetType } from "./js/enums/GussetType.js";
+            import { FacetPlacement } from "./js/enums/FacetPlacement.js";
 
             let pouch = PouchTemplate.getDefault(UpdateSvg);
             let layout = new (class {
@@ -541,28 +593,64 @@
             $("#LengthTotal").on("change", function (ev) {
                 pouch.front.height.value = ev.target.value * 1;
             });
-            $("#IncludeGusset").on("change", function (ev) {
+            $("#IncludeCornerRounding").on("change", function (ev) {
+                pouch.corners.included = ev.target.checked;
+            });
+            $("#ExcludeCornerRounding").on("change", function (ev) {
+                pouch.corners.included = !ev.target.checked;
+            });
+            $("#CornerRoundingRadius").on("change", function (ev) {
+                pouch.corners.radius.value = ev.target.value * 1;
+            });
+            // pouch.corners.included = $("#IncludeCornerRounding").is(":checked");
+            // pouch.corners.radius.value = $("#CornerRoundingRadius").val();
+            $("#IncludeGussetRounded").on("change", function (ev) {
                 pouch.gusset.included = ev.target.checked;
                 if (ev.target.checked) {
-                    $("[for=SealTop]")
+                    $("[for=SealTopSides]")
                         .css("text-decoration", "line-through 2px #777")
                         .on("click", function () {
                             alert("Cannot place a top seal when a gusset is included");
                             return false;
                         });
-                    $("#SealBottom").click();
+                    $("#SealBottomSides").click();
+                    $("[for=SealBottomSides]").css("text-decoration", "").off("click");
+                }
+            });
+            $("#IncludeGussetK").on("change", function (ev) {
+                pouch.gusset.included = ev.target.checked;
+                if (ev.target.checked) {
+                    $("[for=SealTopSides]")
+                        .css("text-decoration", "line-through 2px #777")
+                        .on("click", function () {
+                            alert("Cannot place a top seal when a gusset is included");
+                            return false;
+                        });
+                    $("[for=SealBottomSides]")
+                        .css("text-decoration", "line-through 2px #777")
+                        .on("click", function () {
+                            alert("Cannot place a top seal when a k-gusset is included");
+                            return false;
+                        });
+                    $("#SealSidesOnly").click();
                 }
             });
             $("#ExcludeGusset").on("change", function (ev) {
                 pouch.gusset.included = !ev.target.checked;
                 if (ev.target.checked) {
-                    $("[for=SealTop]").css("text-decoration", "").off("click");
+                    $("[for=SealTopSides]").css("text-decoration", "").off("click");
+                    $("[for=SealBottomSides]").css("text-decoration", "").off("click");
                 }
             });
-            if ($("#IncludeGusset")[0].checked) {
+            if ($("#IncludeGussetRounded")[0].checked) {
                 //toggle initial state back and forth to ensure that events and styles are added.
                 $("#ExcludeGusset").click();
-                $("#IncludeGusset").click();
+                $("#IncludeGussetRounded").click();
+            }
+            if ($("#IncludeGussetK")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ExcludeGusset").click();
+                $("#IncludeGussetK").click();
             }
             $("#GussetDepth").on("change", function (ev) {
                 pouch.gusset.depth.value = ev.target.value * 1;
@@ -576,11 +664,10 @@
             $("#SealSize").on("change", function (ev) {
                 pouch.seal.width.value = ev.target.value * 1;
             });
-            $("#SealTop").on("change", function (ev) {
-                pouch.seal.placement = ev.target.checked ? Placement.Top : Placement.Bottom;
-            });
-            $("#SealBottom").on("change", function (ev) {
-                pouch.seal.placement = ev.target.checked ? Placement.Bottom : Placement.Top;
+            $("[name=SealPlacement]").on("change", function (ev) {
+                if (ev.target.checked) {
+                    pouch.seal.placements = ev.target.value.split(",").map((p) => Placement[p]);
+                }
             });
             $("#IncludeStandardZipper").on("change", function (ev) {
                 pouch.zipper.included = ev.target.checked;
@@ -594,7 +681,7 @@
                 if (pouch.zipper.included) {
                     pouch.zipper.type = ZipperType.EasyPull;
                     $("[for=IncludeNotch]")
-                        .css("text-decoration", "line-through 2px #777")
+                        .css("text-decoration", "line-through 2px #777") /////////////////////////
                         .on("click", function () {
                             alert("Cannot place a tear notch when an easy-pull zipper is included");
                             return false;
@@ -623,6 +710,23 @@
             $("#ZipperOffset").on("change", function (ev) {
                 pouch.zipper.offset.value = ev.target.value * 1;
             });
+
+            $("#ZipperFacetFront").on("change", function (ev) {
+                pouch.zipper.facet = FacetPlacement.Front;
+            });
+            $("#ZipperFacetBack").on("change", function (ev) {
+                pouch.zipper.facet = FacetPlacement.Back;
+            });
+            if ($("#ZipperFacetBack")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ZipperFacetFront").click();
+                $("#ZipperFacetBack").click();
+            }
+            if ($("#ZipperFacetFront")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ZipperFacetBack").click();
+                $("#ZipperFacetFront").click();
+            }
             $("#IncludeNotch").on("change", function (ev) {
                 pouch.notch.included = ev.target.checked;
             });
@@ -641,8 +745,17 @@
             $("#HoleOffset").on("change", function (ev) {
                 pouch.hanger.offset.value = ev.target.value * 1;
             });
-            $("#IncludeDegasser").on("change", function (ev) {
-                pouch.degasser.included = ev.target.checked;
+            $("#IncludeDegasserFront").on("change", function (ev) {
+                if (ev.target.checked) {
+                    pouch.degasser.included = true;
+                    pouch.degasser.facet = FacetPlacement.Front;
+                }
+            });
+            $("#IncludeDegasserBack").on("change", function (ev) {
+                if (ev.target.checked) {
+                    pouch.degasser.included = true;
+                    pouch.degasser.facet = FacetPlacement.Back;
+                }
             });
             $("#ExcludeDegasser").on("change", function (ev) {
                 pouch.degasser.included = !ev.target.checked;
@@ -650,6 +763,18 @@
             $("#DegasserOffset").on("change", function (ev) {
                 pouch.degasser.offset.value = ev.target.value * 1;
             });
+
+            if ($("#IncludeDegasserBack")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ExcludeDegasser").click();
+                $("#IncludeDegasserBack").click();
+            }
+            if ($("#IncludeDegasserFront")[0].checked) {
+                //toggle initial state back and forth to ensure that events and styles are added.
+                $("#ExcludeDegasser").click();
+                $("#IncludeDegasserFront").click();
+            }
+
             $("#IncludeInkingDetails").on("change", function (ev) {
                 layout.inkingDetails = ev.target.checked;
             });
@@ -675,46 +800,62 @@
             //--periodic model updating--//
             let w = $("#WidthTotal")[0],
                 h = $("#LengthTotal")[0],
-                yesGusset = $("#IncludeGusset")[0],
-                gusset = $("#GussetDepth")[0],
+                yesCorners = $("#IncludeCornerRounding")[0],
+                cornerRadius = $("#CornerRoundingRadius")[0],
+                gussetMain = $("[name=GussetMain]"),
+                gussetDepth = $("#GussetDepth")[0],
                 yesSides = $("#IncludeSides")[0],
                 sides = $("#SideWidth")[0],
                 seal = $("#SealSize")[0],
-                sealPlacement = $("#SealBottom")[0],
+                sealPlacement = $("[name=SealPlacement]"),
                 noZipper = $("#ExcludeZipper")[0],
-                zipperType = $("[name=Zipper]"),
+                zipperMain = $("[name=ZipperMain]"),
                 zipperOffset = $("#ZipperOffset")[0],
+                zipperFacet = $("[name=ZipperFacet]"),
                 yesNotch = $("#IncludeNotch")[0],
                 notch = $("#NotchOffset")[0],
                 yesHanger = $("#IncludeHole")[0],
                 hanger = $("#HoleOffset")[0],
-                yesDegasser = $("#IncludeDegasser")[0],
-                degasser = $("#DegasserOffset")[0],
+                degasserMain = $("[name=DegasserMain]"),
+                degasserOffset = $("#DegasserOffset")[0],
                 theme = $("[name=ColorTheme]"),
                 yesInkingDetails = $("#IncludeInkingDetails")[0],
                 finish = $("[name=Finish]"),
                 yesVerboseLabels = $("#DetailedLabelingVerbosity")[0];
 
             (function UpdateModel() {
+                let main = null;
                 let otherSvgChange = false;
                 pouch.front.width.value = w.value * 1;
                 pouch.front.height.value = h.value * 1;
-                pouch.gusset.included = yesGusset.checked;
-                pouch.gusset.depth.value = gusset.value * 1;
+                pouch.corners.included = yesCorners.checked;
+                pouch.corners.radius.value = cornerRadius.value * 1;
+                main = gussetMain.filter(":checked").val();
+                pouch.gusset.included = main != "false";
+                pouch.gusset.depth.value = gussetDepth.value * 1;
+                if (pouch.gusset.included) pouch.gusset.type = GussetType[main];
                 pouch.left.included = yesSides.checked;
-                pouch.left.width.value = yesGusset.checked ? gusset.value * 1 : sides.value * 1; // width is from gusset if the gusset is on
+                pouch.left.width.value = pouch.gusset.included ? gussetDepth.value * 1 : sides.value * 1; // width is from gusset if the gusset is on
                 pouch.seal.width.value = seal.value * 1;
-                pouch.seal.placement = sealPlacement.checked ? Placement.Bottom : Placement.Top;
-                pouch.zipper.included = !noZipper.checked;
-                pouch.zipper.type = pouch.zipper.included ? ZipperType[zipperType.not(":not(:checked)")[0].value] : pouch.zipper.type;
+                pouch.seal.placements = sealPlacement
+                    .filter(":checked")
+                    .val()
+                    .split(",")
+                    .map((p) => Placement[p]);
+                main = zipperMain.filter(":checked").val();
+                pouch.zipper.included = main != "false";
+                if (pouch.zipper.included) ZipperType[main];
                 pouch.zipper.offset.value = zipperOffset.value * 1;
+                if (pouch.zipper.facet == ZipperType.EasyPull) pouch.zipper.facet = FacetPlacement[zipperFacet.filter((i, el) => $(el).is(":checked")).val()];
                 pouch.zipper.height.value = pouch.zipper.type == ZipperType.ChildResistant ? 15 : 13;
                 pouch.notch.included = yesNotch.checked;
                 pouch.notch.offset.value = notch.value * 1;
                 pouch.hanger.included = yesHanger.checked;
                 pouch.hanger.offset.value = hanger.value * 1;
-                pouch.degasser.included = yesDegasser.checked;
-                pouch.degasser.offset.value = degasser.value * 1;
+                main = degasserMain.filter(":checked").val();
+                pouch.degasser.included = main != "false";
+                pouch.degasser.offset.value = degasserOffset.value * 1;
+                if (pouch.degasser.included) pouch.degasser.facet = FacetPlacement[main];
                 setTimeout(UpdateModel, 100);
                 layout.themeClass = theme.not(":not(:checked)")[0].value;
                 layout.inkingDetails = yesInkingDetails.checked;
@@ -746,7 +887,10 @@
 
                 //face//
                 let _face = _front.create("g").attr("class", "face");
-                _face.create("rect").attr("class", "outline continuous large");
+                _face.create("clipPath").attr("id", "FaceUpperClip").create("rect").attr("class", "clip upper");
+                _face.create("clipPath").attr("id", "FaceLowerClip").create("rect").attr("class", "clip lower");
+                _face.create("rect").attr("class", "outline upper continuous large").attr("clip-path", "url(#FaceUpperClip)");
+                _face.create("rect").attr("class", "outline lower continuous large").attr("clip-path", "url(#FaceLowerClip)");
 
                 //face outer height guides//
                 let _outerHeight = _face.create("g").attr("class", "height outer");
@@ -863,6 +1007,8 @@
                 // let curveClipId = "_" + ("0000" + Math.random().toString(36).replace(".", "")).substr(-5);
                 _seal.create("clipPath").attr("id", "CurveClip").create("rect").attr("class", "clip");
                 _seal.create("ellipse").attr("class", "curve dashed medium").attr("clip-path", "url(#CurveClip)");
+                _seal.create("line").attr("class", "left k-corner dashed medium");
+                _seal.create("line").attr("class", "right k-corner dashed medium");
                 _seal.create("text").attr("class", "top fill dark small").attr("text-anchor", "middle");
                 _seal.create("text").attr("class", "right fill dark small").attr("text-anchor", "middle").attr("transform", "rotate(-90)");
                 _seal.create("text").attr("class", "bottom fill dark small").attr("text-anchor", "middle");
@@ -973,26 +1119,44 @@
                 let _face = _front.find(".face");
 
                 //conditional elements//
+                let $outlines = $(".side.front .face .outline");
+                if (pouch.corners.included) {
+                    let radius = pouch.corners.radius.value + pouch.corners.radius.unit;
+                    if (pouch.gusset.type == GussetType.K) {
+                        $outlines.filter(".upper").attr("rx", radius);
+                        $outlines.filter(".lower").attr("rx", 0);
+                    } else $outlines.attr("rx", radius);
+                } else $outlines.attr("rx", 0);
+
                 if (layout.verboseLabels) $(".verbosity").show();
                 else $(".verbosity").hide();
                 if (pouch.zipper.included) $(".side.front .zipper").show();
                 else $(".side.front .zipper").hide();
                 if (pouch.notch.included) $(".side.front .notch").show();
                 else $(".side.front .notch").hide();
-                if (pouch.zipper.type == ZipperType.EasyPull) {
-                    $(".side.front .zipper .wishbone").show();
-                    $(".side.front .zipper .straight").hide();
+                if (pouch.zipper.facet == FacetPlacement.Front) {
+                    if (pouch.zipper.type == ZipperType.EasyPull) {
+                        $(".side.front .zipper .wishbone").show();
+                        $(".side.front .zipper .straight").hide();
+                    } else {
+                        $(".side.front .zipper .wishbone").hide();
+                        $(".side.front .zipper .straight").show();
+                    }
                 } else {
+                    $(".side.front .zipper .straight").hide();
                     $(".side.front .zipper .wishbone").hide();
-                    $(".side.front .zipper .straight").show();
+                    $(".side.front .zipper .offset").hide();
                 }
                 if (pouch.hanger.included) $(".side.front .hanger").show();
                 else $(".side.front .hanger").hide();
-                $(".side.front .degasser").hide(); //always hide on front
-                if (pouch.left.included || !pouch.gusset.included) $(".side.front .seal .curve, .side.front .meridian").hide();
+                if (pouch.left.included || !pouch.gusset.included || pouch.gusset.type == GussetType.K) $(".side.front .seal .curve, .side.front .meridian").hide();
                 else $(".side.front .seal .curve, .side.front .meridian").show();
                 if (pouch.hanger.included || pouch.seal.placement != Placement.Top) $(".side.front .seal text.top").hide();
                 else $(".side.front .seal text.top").show();
+                if (pouch.degasser.included) {
+                    if (pouch.degasser.facet == FacetPlacement.Front) $(".side.front .degasser").show();
+                    else $(".side.front .degasser").hide();
+                } else $(".side.front .degasser").hide();
                 if (pouch.seal.placement == Placement.Top) $(".side.front .seal text.bottom").hide();
                 else $(".side.front .seal text.bottom").show();
 
@@ -1012,19 +1176,19 @@
                     .find(".label.left")
                     .attr("x", -headerMargin + 4 + "mm")
                     .attr("y", -19 + "mm");
-                if (pouch.seal.placement == Placement.Top) {
+                if (pouch.seal.placements.includes(Placement.Top)) {
                     _header
                         .find(".label.center")
                         .attr("x", __center - 15 + "mm")
                         .attr("y", -19 + "mm")
                         .text("(SEALED TOP)");
-                } else if (pouch.seal.placement == Placement.Bottom) {
+                } else {
                     _header
                         .find(".label.center")
                         .attr("x", __center - 13 + "mm")
                         .attr("y", -19 + "mm")
                         .text("(OPENING)");
-                } else throw "unexpected placement location";
+                }
                 _header
                     .find(".label.right")
                     .attr("x", pouch.front.width.value + headerMargin - 18 + "mm")
@@ -1037,6 +1201,18 @@
                     .attr("y", 0 + "mm")
                     .attr("width", pouch.front.width.value + "mm")
                     .attr("height", pouch.front.height.value + "mm");
+                _face
+                    .find(".clip.upper") //NOTE:clips have been padding with -1, +1, +2 because clipping is overzealous near the edge of the clip shape.
+                    .attr("x", -1 + "mm")
+                    .attr("y", -1 + "mm")
+                    .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
+                    .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
+                _face
+                    .find(".clip.lower")
+                    .attr("x", -1 + "mm")
+                    .attr("y", pouch.front.height.value / 2 + pouch.front.height.unit)
+                    .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
+                    .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
 
                 //face outer height guides//
                 let _outerHeight = _face.find(".height.outer");
@@ -1441,21 +1617,30 @@
 
                 //seal//
                 let _seal = _front.find(".seal");
-                if (pouch.seal.placement == Placement.Bottom) {
-                    _seal
-                        .find(".outline")
-                        .attr("x", pouch.seal.width.value + "mm")
-                        .attr("y", 0 + "mm")
-                        .attr("width", pouch.front.width.value - pouch.seal.width.value * 2 + "mm")
-                        .attr("height", pouch.front.height.value - pouch.seal.width.value + "mm");
-                } else if (pouch.seal.placement == Placement.Top) {
-                    _seal
-                        .find(".outline")
-                        .attr("x", pouch.seal.width.value + "mm")
-                        .attr("y", pouch.seal.width.value + "mm")
-                        .attr("width", pouch.front.width.value - pouch.seal.width.value * 2 + "mm")
-                        .attr("height", pouch.front.height.value - pouch.seal.width.value + "mm");
-                } else throw "Placement type is not implemented, type: " + pouch.seal.placement;
+                let x = 0,
+                    y = 0,
+                    width = pouch.front.width.value,
+                    height = pouch.front.height.value;
+                if (pouch.seal.placements.includes(Placement.Top)) {
+                    y += pouch.seal.width.value;
+                    height -= pouch.seal.width.value;
+                }
+                if (pouch.seal.placements.includes(Placement.Bottom)) {
+                    height -= pouch.seal.width.value;
+                }
+                if (pouch.seal.placements.includes(Placement.Left)) {
+                    x += pouch.seal.width.value;
+                    width -= pouch.seal.width.value;
+                }
+                if (pouch.seal.placements.includes(Placement.Right)) {
+                    width -= pouch.seal.width.value;
+                }
+                _seal
+                    .find(".outline")
+                    .attr("x", x + "mm")
+                    .attr("y", y + "mm")
+                    .attr("width", width + "mm")
+                    .attr("height", height + "mm");
                 _seal
                     .find(".curve")
                     .attr("cx", __center + "mm")
@@ -1468,6 +1653,18 @@
                     .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
                     .attr("width", pouch.front.width.value + "mm")
                     .attr("height", pouch.gusset.depth.value / 2 + "mm");
+                _seal
+                    .find(".k-corner.left")
+                    .attr("x1", x + "mm")
+                    .attr("x2", pouch.gusset.depth.value / 2 + "mm")
+                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                    .attr("y2", pouch.front.height.value + "mm");
+                _seal
+                    .find(".k-corner.right")
+                    .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
+                    .attr("x2", pouch.front.width.value - pouch.gusset.depth.value / 2 + "mm")
+                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                    .attr("y2", pouch.front.height.value + "mm");
                 _seal
                     .find("text.top")
                     .attr("x", __center + "mm")
@@ -1540,9 +1737,31 @@
                 let _new = _front.clone();
                 _new.toggleClass("front back");
                 _new.find(".header .label.left").text("BACK");
-                if (pouch.zipper.type == ZipperType.EasyPull) _new.find(".zipper").remove();
+
+                _new.find(".zipper .wishbone clipPath")._elements.forEach((el) => {
+                    el.id = el.id + "_back"; //NOTE:  could grab by id attribute and update all id instead of just clipPath elements
+                });
+                _new.find(".zipper .wishbone :not(clipPath)")._elements.forEach((el) => {
+                    let clipPath = el.getAttribute("clip-path");
+                    if (clipPath) {
+                        el.removeAttribute("clip-path");
+                        el.setAttribute("clip-path", clipPath.replace(/\)/g, "_back)"));
+                    }
+                });
+                if (pouch.zipper.type == ZipperType.EasyPull) {
+                    if (pouch.zipper.facet == FacetPlacement.Front) _new.find(".zipper").remove();
+                    else {
+                        _new.find(".zipper .straight").remove();
+                        _new.find(".zipper .wishbone").attr("style", "");
+                        _new.find(".zipper .offset").attr("style", "");
+                    }
+                }
+                if (pouch.degasser.included) {
+                    if (pouch.degasser.facet == FacetPlacement.Front) _new.find(".degasser").remove();
+                    else _new.find(".degasser").attr("style", ""); //remove display:none;
+                } else _new.find(".degasser").remove();
                 if (pouch.degasser.included) _new.find(".degasser").attr("style", ""); //remove display:none;
-                _new.find(".face .height.inner, .face .width.inner").remove();
+                //_new.find(".face .height.inner, .face .width.inner").remove();
                 _new.attr("x", __left + "mm");
                 _old.remove();
                 _new.appendTo(_svg);
@@ -1625,7 +1844,11 @@
                         .text("GUSSET");
 
                     //face//
-                    _new.find(".face .outline").attr("height", pouch.gusset.depth.value + "mm");
+                    _new.find(".face .outline.upper").attr("clip-path", "");
+                    _new.find(".face .outline.lower").remove();
+                    _new.find(".face .outline")
+                        .attr("height", pouch.gusset.depth.value + "mm")
+                        .attr("rx", 0);
 
                     //face width guides//
                     _new.find(".face .width.outer").remove();
@@ -1642,18 +1865,24 @@
                     _new.find(".face .height.inner, .face .width.inner").remove();
 
                     //seal//
-                    _new.find(".seal .curve")
-                        .attr("cy", pouch.gusset.depth.value / 2 + "mm")
-                        .attr("clip-path", "");
-                    _new.find(".seal .outline")
-                        .attr("y", pouch.seal.width.value + "mm")
-                        .attr("height", pouch.gusset.depth.value - pouch.seal.width.value * 2 + "mm");
-                    _new.find(".seal text.top").attr("style", "");
-                    _new.find(".seal text.right").attr("x", -pouch.gusset.depth.value / 2 + "mm");
-                    _new.find(".seal text.bottom")
-                        .attr("y", 0.9 + pouch.gusset.depth.value - pouch.seal.width.value / 2 + "mm")
-                        .attr("style", "");
-                    _new.find(".seal text.left").attr("x", -pouch.gusset.depth.value / 2 + "mm");
+                    if (pouch.gusset.type == GussetType.Rounded) {
+                        _new.find(".seal .curve")
+                            .attr("cy", pouch.gusset.depth.value / 2 + "mm")
+                            .attr("clip-path", "");
+                        _new.find(".seal .outline")
+                            .attr("y", pouch.seal.width.value + "mm")
+                            .attr("height", pouch.gusset.depth.value - pouch.seal.width.value * 2 + "mm");
+                        _new.find(".seal text.top").attr("style", "");
+                        _new.find(".seal text.right").attr("x", -pouch.gusset.depth.value / 2 + "mm");
+                        _new.find(".seal text.bottom")
+                            .attr("y", 0.9 + pouch.gusset.depth.value - pouch.seal.width.value / 2 + "mm")
+                            .attr("style", "");
+                        _new.find(".seal text.left").attr("x", -pouch.gusset.depth.value / 2 + "mm");
+                    } else {
+                        _new.find(".seal .outline").remove();
+                        _new.find(".seal text.right").remove();
+                        _new.find(".seal text.left").remove();
+                    }
 
                     //meridian//
                     _new.find(".meridian .divide")
@@ -1674,6 +1903,7 @@
                     _new.find(".meridian .offset .mark.bottom")
                         .attr("y1", 0 + "mm")
                         .attr("y2", 0 + "mm");
+                    _new.find(".meridian").attr("style", ""); //show
 
                     _new.find(".hanger").remove();
                     _new.find(".notch").remove();
