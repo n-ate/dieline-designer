@@ -797,7 +797,7 @@
                 layout.verboseLabels = ev.target.checked;
             });
 
-            //--periodic model updating--//
+            //--periodic model updating variables--//  //NOTE: these variables must reference elements otherwise updates will not work.
             let w = $("#WidthTotal")[0],
                 h = $("#LengthTotal")[0],
                 yesCorners = $("#IncludeCornerRounding")[0],
@@ -1104,19 +1104,13 @@
                     UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace);
                 }
             }
-            // function UpdateSvgViewBox($svg, horizSpace, ratio) {
-            //     let gussetDepth = pouch.gusset.included ? 183 + pouch.gusset.depth.value * ratio : 0; //header and space + gusset
-            //     let frontBackWidth = (pouch.front.width.value + pouch.back.width.value) * ratio + 380;
-            //     let leftRightWidth = pouch.left.included && pouch.right.included ? (pouch.right.width.value + pouch.left.width.value) * ratio + 380 : 0;
-            //     $svg.attr("viewBox", `${450 - pouch.front.width.value * ratio} ${175} ${frontBackWidth + leftRightWidth} ${170 + pouch.front.height.value * ratio + gussetDepth}`);
-            // }
+
             function UpdateSvgFront(_svg, horizSpace, vertSpace) {
                 //NOTE: The following variables unit is mm!
                 let __center = pouch.front.width.value / 2;
                 let __middle = pouch.front.height.value / 2;
 
                 let _front = _svg.children(".side.front");
-                let _face = _front.find(".face");
 
                 //conditional elements//
                 let $outlines = $(".side.front .face .outline");
@@ -1149,8 +1143,12 @@
                 }
                 if (pouch.hanger.included) $(".side.front .hanger").show();
                 else $(".side.front .hanger").hide();
+
                 if (pouch.left.included || !pouch.gusset.included || pouch.gusset.type == GussetType.K) $(".side.front .seal .curve, .side.front .meridian").hide();
                 else $(".side.front .seal .curve, .side.front .meridian").show();
+                if (/*pouch.left.included ||*/ !pouch.gusset.included || pouch.gusset.type == GussetType.Rounded) $(".side.front .seal .k-corner, .side.front .meridian").hide();
+                else $(".side.front .seal .k-corner, .side.front .meridian").show();
+
                 if (pouch.hanger.included || pouch.seal.placement != Placement.Top) $(".side.front .seal text.top").hide();
                 else $(".side.front .seal text.top").show();
                 if (pouch.degasser.included) {
@@ -1163,573 +1161,597 @@
                 //front//
                 _front.attr("x", horizSpace + "mm").attr("y", vertSpace + "mm");
 
-                //header label//
-                let _header = _front.find(".header");
-                let headerMargin = 17;
-                _header
-                    .find(".label.background")
-                    .attr("x", -headerMargin + "mm")
-                    .attr("y", -25 + "mm")
-                    .attr("width", pouch.front.width.value + headerMargin * 2 + "mm")
-                    .attr("height", 7 + "mm");
-                _header
-                    .find(".label.left")
-                    .attr("x", -headerMargin + 4 + "mm")
-                    .attr("y", -19 + "mm");
-                if (pouch.seal.placements.includes(Placement.Top)) {
-                    _header
-                        .find(".label.center")
-                        .attr("x", __center - 15 + "mm")
-                        .attr("y", -19 + "mm")
-                        .text("(SEALED TOP)");
-                } else {
-                    _header
-                        .find(".label.center")
-                        .attr("x", __center - 13 + "mm")
-                        .attr("y", -19 + "mm")
-                        .text("(OPENING)");
-                }
-                _header
-                    .find(".label.right")
-                    .attr("x", pouch.front.width.value + headerMargin - 18 + "mm")
-                    .attr("y", -19 + "mm");
-
-                //face//
-                _face
-                    .find(".outline")
-                    .attr("x", 0 + "mm")
-                    .attr("y", 0 + "mm")
-                    .attr("width", pouch.front.width.value + "mm")
-                    .attr("height", pouch.front.height.value + "mm");
-                _face
-                    .find(".clip.upper") //NOTE:clips have been padding with -1, +1, +2 because clipping is overzealous near the edge of the clip shape.
-                    .attr("x", -1 + "mm")
-                    .attr("y", -1 + "mm")
-                    .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
-                    .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
-                _face
-                    .find(".clip.lower")
-                    .attr("x", -1 + "mm")
-                    .attr("y", pouch.front.height.value / 2 + pouch.front.height.unit)
-                    .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
-                    .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
-
-                //face outer height guides//
-                let _outerHeight = _face.find(".height.outer");
-                _outerHeight
-                    .find("text")
-                    .attr("y", -7 + "mm")
-                    .attr("x", -__middle + "mm")
-                    .text(pouch.front.height.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
-                _outerHeight
-                    .find(".mark.top")
-                    .attr("x1", -6 + "mm")
-                    .attr("x2", -1 + "mm")
-                    .attr("y1", 0 + "mm")
-                    .attr("y2", 0 + "mm");
-                _outerHeight
-                    .find(".arrow.top")
-                    .attr("x", -3 + "mm")
-                    .attr("y", 0 + "mm");
-                _outerHeight
-                    .find("line.arrow")
-                    .attr("x1", -3 + "mm")
-                    .attr("x2", -3 + "mm")
-                    .attr("y1", 2 + "mm")
-                    .attr("y2", pouch.front.height.value - 2 + "mm");
-                _outerHeight
-                    .find(".arrow.bottom")
-                    .attr("x", -3 + "mm")
-                    .attr("y", pouch.front.height.value + "mm");
-                _outerHeight
-                    .find(".mark.bottom")
-                    .attr("x1", -6 + "mm")
-                    .attr("x2", -1 + "mm")
-                    .attr("y1", pouch.front.height.value + "mm")
-                    .attr("y2", pouch.front.height.value + "mm");
-
-                //face outer width guides//
-                let _outerWidth = _face.find(".width.outer");
-                _outerWidth
-                    .find("text")
-                    .attr("x", __center + "mm")
-                    .attr("y", -7 + "mm")
-                    .text(pouch.front.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
-                _outerWidth
-                    .find(".mark.left")
-                    .attr("x1", 0 + "mm")
-                    .attr("x2", 0 + "mm")
-                    .attr("y1", -6 + "mm")
-                    .attr("y2", -1 + "mm");
-                _outerWidth
-                    .find(".arrow.left")
-                    .attr("x", 0 + "mm")
-                    .attr("y", -3 + "mm");
-                _outerWidth
-                    .find("line.arrow")
-                    .attr("x1", 2 + "mm")
-                    .attr("x2", pouch.front.width.value - 2 + "mm")
-                    .attr("y1", -3 + "mm")
-                    .attr("y2", -3 + "mm");
-                _outerWidth
-                    .find(".arrow.right")
-                    .attr("x", pouch.front.width.value + "mm")
-                    .attr("y", -3 + "mm");
-                _outerWidth
-                    .find(".mark.right")
-                    .attr("x1", pouch.front.width.value + "mm")
-                    .attr("x2", pouch.front.width.value + "mm")
-                    .attr("y1", -6 + "mm")
-                    .attr("y2", -1 + "mm");
-
-                //face inner height guides//
                 let _innerXOffset = pouch.seal.width.value + 9;
-                let _innerYTopOffset = pouch.zipper.included ? pouch.zipper.offset.value + pouch.zipper.height.value / 2 : pouch.seal.width.value;
                 let _innerYBottomOffset = -pouch.seal.width.value - 9;
-                let _innerYHeight = pouch.front.height.value - _innerYTopOffset - pouch.seal.width.value;
-                let _innerHeight = _face.find(".height.inner");
-                _innerHeight
-                    .find("text")
-                    .attr("y", _innerXOffset + 1 + "mm")
-                    .attr("x", -(_innerYTopOffset + (pouch.front.height.value - _innerYTopOffset + _innerYBottomOffset) / 2) + "mm")
-                    .text(_innerYHeight + " mm I.D.");
-                _innerHeight
-                    .find(".mark.top")
-                    .attr("x1", pouch.seal.width.value + 1 + "mm")
-                    .attr("x2", _innerXOffset + 6 + "mm")
-                    .attr("y1", _innerYTopOffset + "mm")
-                    .attr("y2", _innerYTopOffset + "mm");
-                _innerHeight
-                    .find(".arrow.top")
-                    .attr("x", _innerXOffset + 3 + "mm")
-                    .attr("y", _innerYTopOffset + "mm");
-                _innerHeight
-                    .find("line.arrow")
-                    .attr("x1", _innerXOffset + 3 + "mm")
-                    .attr("x2", _innerXOffset + 3 + "mm")
-                    .attr("y1", _innerYTopOffset + 2 + "mm")
-                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 5 + "mm");
-                _innerHeight
-                    .find(".arrow.bottom")
-                    .attr("x", _innerXOffset + 3 + "mm")
-                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
-                _innerHeight
-                    .find(".mark.bottom")
-                    .attr("x1", pouch.seal.width.value + 1 + "mm")
-                    .attr("x2", _innerXOffset + 6 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
-                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
-                _innerHeight
-                    .find(".mark.arrow")
-                    .attr("x", pouch.seal.width.value + "mm")
-                    .attr("y", pouch.front.height.value - pouch.seal.width.value + "mm");
-
-                //face inner width guides//
-                let _innerWidth = _face.find(".width.inner");
-                _innerWidth
-                    .find("text")
-                    .attr("x", __center + "mm")
-                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 5 + "mm")
-                    .text(pouch.front.width.value - pouch.seal.width.value * 2 + " mm I.D.");
-                _innerWidth
-                    .find(".mark.left")
-                    .attr("x1", pouch.seal.width.value + 1 + "mm")
-                    .attr("x2", _innerXOffset + 6 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
-                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
-                _innerWidth
-                    .find(".arrow.left")
-                    .attr("x", _innerXOffset + 3 + "mm")
-                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
-                _innerWidth
-                    .find("line.arrow")
-                    .attr("x1", _innerXOffset + 5 + "mm")
-                    .attr("x2", pouch.front.width.value - pouch.seal.width.value - 2 + "mm")
-                    .attr("y1", pouch.front.height.value + _innerYBottomOffset - 3 + "mm")
-                    .attr("y2", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
-                _innerWidth
-                    .find(".arrow.right")
-                    .attr("x", pouch.front.width.value - pouch.seal.width.value + "mm")
-                    .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
-                _innerWidth
-                    .find(".mark.right")
-                    .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
-                    .attr("x2", pouch.front.width.value - pouch.seal.width.value + "mm")
-                    .attr("y1", pouch.front.height.value + _innerYBottomOffset - 6 + "mm")
-                    .attr("y2", pouch.front.height.value - pouch.seal.width.value - 1 + "mm");
-
-                //hanger//
-                let _hanger = _front.find(".hanger");
-                _hanger
-                    .find(".hole")
-                    .attr("cx", __center + "mm")
-                    .attr("cy", pouch.hanger.offset.value + "mm")
-                    .attr("r", pouch.hanger.height.value / 2 + "mm");
-                let _hangerOffset = _hanger.find(".offset");
-                _hangerOffset
-                    .find("text.value")
-                    .attr("x", __center + pouch.hanger.height.value / 2 + 5.5 + "mm")
-                    .attr("y", pouch.hanger.offset.value / 2 + 1 + "mm")
-                    .text(pouch.hanger.offset.value + " mm");
-                _hangerOffset
-                    .find(".arrow.top")
-                    .attr("x", __center + pouch.hanger.height.value / 2 + 3 + "mm")
-                    .attr("y", 0 + "mm");
-                _hangerOffset
-                    .find("line.arrow")
-                    .attr("x1", __center + pouch.hanger.height.value / 2 + 3 + "mm")
-                    .attr("x2", __center + pouch.hanger.height.value / 2 + 3 + "mm")
-                    .attr("y1", 2 + "mm")
-                    .attr("y2", pouch.hanger.offset.value - 2 + "mm");
-                _hangerOffset
-                    .find(".arrow.bottom")
-                    .attr("x", __center + pouch.hanger.height.value / 2 + 3 + "mm")
-                    .attr("y", pouch.hanger.offset.value + "mm");
-                _hangerOffset
-                    .find(".mark.bottom")
-                    .attr("x1", __center + pouch.hanger.height.value / 2 + 1 + "mm")
-                    .attr("x2", __center + pouch.hanger.height.value / 2 + 6 + "mm")
-                    .attr("y1", pouch.hanger.offset.value + "mm")
-                    .attr("y2", pouch.hanger.offset.value + "mm");
-                _hangerOffset
-                    .find("text.type")
-                    .attr("x", __center + pouch.hanger.height.value / 2 + 7 + "mm")
-                    .attr("y", pouch.hanger.offset.value + 1 + "mm");
-
-                //notch//
                 let _notchOffsetShift = layout.verboseLabels && pouch.notch.included ? 12.5 : 0;
-                let _notch = _front.find(".notch");
-                _notch
-                    .find(".cut.left")
-                    .attr("x", 0 + "mm")
-                    .attr("y", pouch.notch.offset.value + "mm");
-                _notch
-                    .find(".cut.right")
-                    .attr("x", pouch.front.width.value + "mm")
-                    .attr("y", pouch.notch.offset.value + "mm");
-                let _notchOffset = _notch.find(".offset");
-                _notchOffset
-                    .find("text.value")
-                    .attr("y", -pouch.front.width.value - 5 - _notchOffsetShift + "mm")
-                    .attr("x", pouch.notch.offset.value / 2 - 5.5 + "mm")
-                    .text(pouch.notch.offset.value + " mm");
-                _notchOffset
-                    .find(".mark.top")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
-                    .attr("y1", 0 + "mm")
-                    .attr("y2", 0 + "mm");
-                _notchOffset
-                    .find(".arrow.top")
-                    .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
-                    .attr("y", 0 + "mm");
-                _notchOffset
-                    .find("line.arrow")
-                    .attr("x1", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
-                    .attr("x2", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
-                    .attr("y1", 2 + "mm")
-                    .attr("y2", pouch.notch.offset.value - 2 + "mm");
-                _notchOffset
-                    .find(".arrow.bottom")
-                    .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
-                    .attr("y", pouch.notch.offset.value + "mm");
-                _notchOffset
-                    .find(".mark.bottom")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
-                    .attr("y1", pouch.notch.offset.value + "mm")
-                    .attr("y2", pouch.notch.offset.value + "mm");
-                _notchOffset
-                    .find("text.type")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
-                    .attr("y", pouch.notch.offset.value / 2 - 1 + "mm");
-                _notchOffset
-                    .find(".type tspan.lower")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
-                    .attr("dy", 3 + "mm");
+                UpdateHeaderLabel(_front.find(".header"));
+                UpdateFace(_front.find(".face"));
+                UpdateHanger(_front.find(".hanger"));
+                UpdateNotch(_front.find(".notch"));
+                UpdateZipper(_front.find(".zipper"));
+                UpdateDegasser(_front.find(".degasser"));
+                UpdateSeal(_front.find(".seal"));
+                UpdateMeridian(_front.find(".meridian"));
 
-                //zippers//
-                let _zipperOffsetShift = _notchOffsetShift + (pouch.notch.included ? 5 : 0);
-                let _zipper = _front.find(".zipper");
-                let _straight = _zipper.find(".straight");
-                _straight
-                    .find(".outline")
-                    .attr("x", 0 + "mm")
-                    .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 2 + "mm")
-                    .attr("width", pouch.front.width.value + "mm")
-                    .attr("height", pouch.zipper.height.value + "mm");
-                _straight
-                    .find(".inner")
-                    .attr("x", 0 + "mm")
-                    .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 6 + "mm")
-                    .attr("width", pouch.front.width.value + "mm")
-                    .attr("height", pouch.zipper.height.value / 3 + "mm");
-                let _wishbone = _zipper.find(".wishbone");
-                let wishboneX = 3;
-                _wishbone
-                    .find(".clip.top")
-                    .attr("x", wishboneX - 0.2 + "mm")
-                    .attr("y", pouch.zipper.offset.value - 14.5 + "mm");
-                _wishbone
-                    .find(".clip.middle")
-                    .attr("x", wishboneX + 6.85 + "mm")
-                    .attr("y", pouch.zipper.offset.value - 9.5 + "mm");
-                _wishbone
-                    .find(".clip.bottom")
-                    .attr("x", wishboneX - 0.2 + "mm")
-                    .attr("y", pouch.zipper.offset.value + 2.5 + "mm");
-                _wishbone
-                    .find(".tear.upper.top")
-                    .attr("cx", wishboneX + 3.5 + "mm")
-                    .attr("cy", pouch.zipper.offset.value - 10.5 + "mm");
-                _wishbone
-                    .find(".tear.upper.bottom")
-                    .attr("cx", wishboneX + 10 + "mm")
-                    .attr("cy", pouch.zipper.offset.value - 9.5 + "mm");
-                _wishbone
-                    .find(".tear.lower.top")
-                    .attr("cx", wishboneX + 10 + "mm")
-                    .attr("cy", pouch.zipper.offset.value + 1 + "mm");
-                _wishbone
-                    .find(".tear.lower.bottom")
-                    .attr("cx", wishboneX + 3.5 + "mm")
-                    .attr("cy", pouch.zipper.offset.value + 2.5 + "mm");
-                _wishbone.find(".clip.heated").attr("height", pouch.zipper.offset.value + 40 + "mm");
-                _wishbone
-                    .find(".heated.vertical")
-                    .attr("x", -10 + "mm")
-                    .attr("y", -10 + "mm")
-                    .attr("width", 25.5 + "mm")
-                    .attr("height", pouch.zipper.offset.value + 41.5 + "mm");
-                _wishbone
-                    .find(".heated.horizontal")
-                    .attr("x1", 0 + "mm")
-                    .attr("x2", pouch.front.width.value + "mm")
-                    .attr("y1", pouch.zipper.offset.value + 17.5 + "mm")
-                    .attr("y2", pouch.zipper.offset.value + 17.5 + "mm");
-                _wishbone
-                    .find(".outline")
-                    .attr("x", 3 + "mm")
-                    .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 2 + "mm")
-                    .attr("width", pouch.front.width.value - 3 + "mm")
-                    .attr("height", pouch.zipper.height.value + "mm");
-                _wishbone
-                    .find(".inner")
-                    .attr("x", 3 + "mm")
-                    .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 6 + "mm")
-                    .attr("width", pouch.front.width.value - 3 + "mm")
-                    .attr("height", pouch.zipper.height.value / 3 + "mm");
-                let _zipperOffset = _zipper.find(".offset");
-                _zipperOffset
-                    .find("text.value")
-                    .attr("x", pouch.zipper.offset.value / 2 - 5.5 + "mm")
-                    .attr("y", -pouch.front.width.value - 6 - _zipperOffsetShift + "mm")
-                    .text(pouch.zipper.offset.value + " mm");
-                _zipperOffset
-                    .find(".mark.top")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
-                    .attr("y1", 0 + "mm")
-                    .attr("y2", 0 + "mm");
-                _zipperOffset
-                    .find(".arrow.top")
-                    .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
-                    .attr("y", 0 + "mm");
-                _zipperOffset
-                    .find("line.arrow")
-                    .attr("x1", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
-                    .attr("x2", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
-                    .attr("y1", 2 + "mm")
-                    .attr("y2", pouch.zipper.offset.value - 2 + "mm");
-                _zipperOffset
-                    .find(".arrow.bottom")
-                    .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
-                    .attr("y", pouch.zipper.offset.value + "mm");
-                _zipperOffset
-                    .find(".mark.bottom")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
-                    .attr("y1", pouch.zipper.offset.value + "mm")
-                    .attr("y2", pouch.zipper.offset.value + "mm");
-                _zipperOffset
-                    .find("text.type")
-                    .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
-                    .attr("y", pouch.zipper.offset.value / 2 - 1 + "mm");
-                _zipperOffset.find(".type tspan.upper").text(pouch.zipper.type == ZipperType.Standard ? "Standard Zipper" : pouch.zipper.type == ZipperType.EasyPull ? "Easy-Pull Zipper" : "Child-Resistant Zipper");
-                _zipperOffset
-                    .find(".type tspan.lower")
-                    .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
-                    .attr("dy", 3 + "mm")
-                    .text(pouch.zipper.type == ZipperType.ChildResistant ? "" : "(not child-resistant)");
+                //--------------------//
 
-                //degasser//
-                let _degasser = _front.find(".degasser");
-                _degasser
-                    .find("circle.outer")
-                    .attr("cx", __center + "mm")
-                    .attr("cy", pouch.degasser.offset.value + "mm")
-                    .attr("r", pouch.degasser.height.value / 2 + "mm");
-                _degasser
-                    .find("circle.inner")
-                    .attr("cx", __center + "mm")
-                    .attr("cy", pouch.degasser.offset.value + "mm")
-                    .attr("r", 1.5 + "mm");
-                let _degasserOffset = _degasser.find(".offset");
-                _degasserOffset
-                    .find("text.value")
-                    .attr("y", __center - 6 + "mm")
-                    .attr("x", -(pouch.degasser.offset.value * 0.95 - 5.5) + "mm")
-                    .text(pouch.degasser.offset.value + " mm");
-                _degasserOffset
-                    .find(".mark.top")
-                    .attr("x1", __center - 2.5 + "mm")
-                    .attr("x2", __center - 7.5 + "mm")
-                    .attr("y1", 0 + "mm")
-                    .attr("y2", 0 + "mm");
-                _degasserOffset
-                    .find(".arrow.top")
-                    .attr("x", __center - 4.5 + "mm")
-                    .attr("y", 0 + "mm");
-                _degasserOffset
-                    .find("line.arrow")
-                    .attr("x1", __center - 4.5 + "mm")
-                    .attr("x2", __center - 4.5 + "mm")
-                    .attr("y1", 2 + "mm")
-                    .attr("y2", pouch.degasser.offset.value - 2 + "mm");
-                _degasserOffset
-                    .find(".arrow.bottom")
-                    .attr("x", __center - 4.5 + "mm")
-                    .attr("y", 0 + pouch.degasser.offset.value + "mm");
-                _degasserOffset
-                    .find(".mark.bottom")
-                    .attr("x1", __center - 2.5 + "mm")
-                    .attr("x2", __center - 7.5 + "mm")
-                    .attr("y1", 0 + pouch.degasser.offset.value + "mm")
-                    .attr("y2", 0 + pouch.degasser.offset.value + "mm");
-                _degasserOffset
-                    .find("text.type")
-                    .attr("x", __center - 20.5 + "mm")
-                    .attr("y", pouch.degasser.offset.value - 0.5 + "mm");
-                _degasserOffset
-                    .find(".type tspan.lower")
-                    .attr("x", __center - 19.7 + "mm")
-                    .attr("dy", 3 + "mm");
+                function UpdateHeaderLabel(_header) {
+                    let headerMargin = 17;
+                    _header
+                        .find(".label.background")
+                        .attr("x", -headerMargin + "mm")
+                        .attr("y", -25 + "mm")
+                        .attr("width", pouch.front.width.value + headerMargin * 2 + "mm")
+                        .attr("height", 7 + "mm");
+                    _header
+                        .find(".label.left")
+                        .attr("x", -headerMargin + 4 + "mm")
+                        .attr("y", -19 + "mm");
+                    if (pouch.seal.placements.includes(Placement.Top)) {
+                        _header
+                            .find(".label.center")
+                            .attr("x", __center - 15 + "mm")
+                            .attr("y", -19 + "mm")
+                            .text("(SEALED TOP)");
+                    } else {
+                        _header
+                            .find(".label.center")
+                            .attr("x", __center - 13 + "mm")
+                            .attr("y", -19 + "mm")
+                            .text("(OPENING)");
+                    }
+                    _header
+                        .find(".label.right")
+                        .attr("x", pouch.front.width.value + headerMargin - 18 + "mm")
+                        .attr("y", -19 + "mm");
+                }
 
-                //seal//
-                let _seal = _front.find(".seal");
-                let x = 0,
-                    y = 0,
-                    width = pouch.front.width.value,
-                    height = pouch.front.height.value;
-                if (pouch.seal.placements.includes(Placement.Top)) {
-                    y += pouch.seal.width.value;
-                    height -= pouch.seal.width.value;
-                }
-                if (pouch.seal.placements.includes(Placement.Bottom)) {
-                    height -= pouch.seal.width.value;
-                }
-                if (pouch.seal.placements.includes(Placement.Left)) {
-                    x += pouch.seal.width.value;
-                    width -= pouch.seal.width.value;
-                }
-                if (pouch.seal.placements.includes(Placement.Right)) {
-                    width -= pouch.seal.width.value;
-                }
-                _seal
-                    .find(".outline")
-                    .attr("x", x + "mm")
-                    .attr("y", y + "mm")
-                    .attr("width", width + "mm")
-                    .attr("height", height + "mm");
-                _seal
-                    .find(".curve")
-                    .attr("cx", __center + "mm")
-                    .attr("cy", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("rx", pouch.front.width.value / 2 - pouch.seal.width.value + "mm")
-                    .attr("ry", pouch.gusset.depth.value / 2 - pouch.seal.width.value + "mm");
-                _seal
-                    .find(".clip")
-                    .attr("x", 0 + "mm")
-                    .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("width", pouch.front.width.value + "mm")
-                    .attr("height", pouch.gusset.depth.value / 2 + "mm");
-                _seal
-                    .find(".k-corner.left")
-                    .attr("x1", x + "mm")
-                    .attr("x2", pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y2", pouch.front.height.value + "mm");
-                _seal
-                    .find(".k-corner.right")
-                    .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
-                    .attr("x2", pouch.front.width.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y2", pouch.front.height.value + "mm");
-                _seal
-                    .find("text.top")
-                    .attr("x", __center + "mm")
-                    .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
-                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
-                _seal
-                    .find("text.right")
-                    .attr("x", -__middle + "mm")
-                    .attr("y", 0.9 + pouch.front.width.value - pouch.seal.width.value / 2 + "mm")
-                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
-                _seal
-                    .find("text.bottom")
-                    .attr("x", __center + "mm")
-                    .attr("y", 0.9 + pouch.front.height.value - pouch.seal.width.value / 2 + "mm")
-                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
-                _seal
-                    .find("text.left")
-                    .attr("x", -__middle + "mm")
-                    .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
-                    .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                function UpdateFace(_face) {
+                    _face
+                        .find(".outline")
+                        .attr("x", 0 + "mm")
+                        .attr("y", 0 + "mm")
+                        .attr("width", pouch.front.width.value + "mm")
+                        .attr("height", pouch.front.height.value + "mm");
+                    _face
+                        .find(".clip.upper") //NOTE:clips have been padding with -1, +1, +2 because clipping is overzealous near the edge of the clip shape.
+                        .attr("x", -1 + "mm")
+                        .attr("y", -1 + "mm")
+                        .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
+                        .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
+                    _face
+                        .find(".clip.lower")
+                        .attr("x", -1 + "mm")
+                        .attr("y", pouch.front.height.value / 2 + pouch.front.height.unit)
+                        .attr("width", pouch.front.width.value + 2 + pouch.front.width.unit)
+                        .attr("height", pouch.front.height.value / 2 + 1 + pouch.front.height.unit);
+                    UpdateFaceOuterHeightGuides(_face.find(".height.outer"));
+                    UpdateFaceOuterWidthGuides(_face.find(".width.outer"));
+                    UpdateFaceInnerHeightGuides(_face.find(".height.inner"));
+                    UpdateFaceInnerWidthGuides(_face.find(".width.inner"));
 
-                //meridian//
-                let _meridian = _front.find(".meridian");
-                _meridian
-                    .find(".divide")
-                    .attr("x1", 0 + "mm")
-                    .attr("x2", pouch.front.width.value + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y2", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
-                let _meridianOffset = _meridian.find(".offset");
-                _meridianOffset
-                    .find("text")
-                    .attr("y", -(pouch.front.width.value + 5) + "mm")
-                    .attr("x", pouch.front.height.value - pouch.gusset.depth.value / 4 - 5.5 + "mm")
-                    .text(pouch.gusset.depth.value / 2 + " mm");
-                _meridianOffset
-                    .find(".mark.top")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
-                    .attr("y2", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
-                _meridianOffset
-                    .find(".arrow.top")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
-                    .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
-                _meridianOffset
-                    .find("line.arrow")
-                    .attr("x1", pouch.front.width.value + 3 + "mm")
-                    .attr("x2", pouch.front.width.value + 3 + "mm")
-                    .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + 2 + "mm")
-                    .attr("y2", pouch.front.height.value - 2 + "mm");
-                _meridianOffset
-                    .find(".arrow.bottom")
-                    .attr("x", pouch.front.width.value + 3 + "mm")
-                    .attr("y", pouch.front.height.value + "mm");
-                _meridianOffset
-                    .find(".mark.bottom")
-                    .attr("x1", pouch.front.width.value + 1 + "mm")
-                    .attr("x2", pouch.front.width.value + 6 + "mm")
-                    .attr("y1", pouch.front.height.value + "mm")
-                    .attr("y2", pouch.front.height.value + "mm");
+                    //--------------------//
+
+                    function UpdateFaceOuterHeightGuides(_outerHeight) {
+                        _outerHeight
+                            .find("text")
+                            .attr("y", -7 + "mm")
+                            .attr("x", -__middle + "mm")
+                            .text(pouch.front.height.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
+                        _outerHeight
+                            .find(".mark.top")
+                            .attr("x1", -6 + "mm")
+                            .attr("x2", -1 + "mm")
+                            .attr("y1", 0 + "mm")
+                            .attr("y2", 0 + "mm");
+                        _outerHeight
+                            .find(".arrow.top")
+                            .attr("x", -3 + "mm")
+                            .attr("y", 0 + "mm");
+                        _outerHeight
+                            .find("line.arrow")
+                            .attr("x1", -3 + "mm")
+                            .attr("x2", -3 + "mm")
+                            .attr("y1", 2 + "mm")
+                            .attr("y2", pouch.front.height.value - 2 + "mm");
+                        _outerHeight
+                            .find(".arrow.bottom")
+                            .attr("x", -3 + "mm")
+                            .attr("y", pouch.front.height.value + "mm");
+                        _outerHeight
+                            .find(".mark.bottom")
+                            .attr("x1", -6 + "mm")
+                            .attr("x2", -1 + "mm")
+                            .attr("y1", pouch.front.height.value + "mm")
+                            .attr("y2", pouch.front.height.value + "mm");
+                    }
+
+                    function UpdateFaceOuterWidthGuides(_outerWidth) {
+                        _outerWidth
+                            .find("text")
+                            .attr("x", __center + "mm")
+                            .attr("y", -7 + "mm")
+                            .text(pouch.front.width.value + " mm" + (layout.verboseLabels ? " O.D." : ""));
+                        _outerWidth
+                            .find(".mark.left")
+                            .attr("x1", 0 + "mm")
+                            .attr("x2", 0 + "mm")
+                            .attr("y1", -6 + "mm")
+                            .attr("y2", -1 + "mm");
+                        _outerWidth
+                            .find(".arrow.left")
+                            .attr("x", 0 + "mm")
+                            .attr("y", -3 + "mm");
+                        _outerWidth
+                            .find("line.arrow")
+                            .attr("x1", 2 + "mm")
+                            .attr("x2", pouch.front.width.value - 2 + "mm")
+                            .attr("y1", -3 + "mm")
+                            .attr("y2", -3 + "mm");
+                        _outerWidth
+                            .find(".arrow.right")
+                            .attr("x", pouch.front.width.value + "mm")
+                            .attr("y", -3 + "mm");
+                        _outerWidth
+                            .find(".mark.right")
+                            .attr("x1", pouch.front.width.value + "mm")
+                            .attr("x2", pouch.front.width.value + "mm")
+                            .attr("y1", -6 + "mm")
+                            .attr("y2", -1 + "mm");
+                    }
+
+                    function UpdateFaceInnerHeightGuides(_innerHeight) {
+                        let _innerYTopOffset = pouch.zipper.included ? pouch.zipper.offset.value + pouch.zipper.height.value / 2 : pouch.seal.width.value;
+
+                        let _innerYHeight = pouch.front.height.value - _innerYTopOffset - pouch.seal.width.value;
+                        _innerHeight
+                            .find("text")
+                            .attr("y", _innerXOffset + 1 + "mm")
+                            .attr("x", -(_innerYTopOffset + (pouch.front.height.value - _innerYTopOffset + _innerYBottomOffset) / 2) + "mm")
+                            .text(_innerYHeight + " mm I.D.");
+                        _innerHeight
+                            .find(".mark.top")
+                            .attr("x1", pouch.seal.width.value + 1 + "mm")
+                            .attr("x2", _innerXOffset + 6 + "mm")
+                            .attr("y1", _innerYTopOffset + "mm")
+                            .attr("y2", _innerYTopOffset + "mm");
+                        _innerHeight
+                            .find(".arrow.top")
+                            .attr("x", _innerXOffset + 3 + "mm")
+                            .attr("y", _innerYTopOffset + "mm");
+                        _innerHeight
+                            .find("line.arrow")
+                            .attr("x1", _innerXOffset + 3 + "mm")
+                            .attr("x2", _innerXOffset + 3 + "mm")
+                            .attr("y1", _innerYTopOffset + 2 + "mm")
+                            .attr("y2", pouch.front.height.value + _innerYBottomOffset - 5 + "mm");
+                        _innerHeight
+                            .find(".arrow.bottom")
+                            .attr("x", _innerXOffset + 3 + "mm")
+                            .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                        _innerHeight
+                            .find(".mark.bottom")
+                            .attr("x1", pouch.seal.width.value + 1 + "mm")
+                            .attr("x2", _innerXOffset + 6 + "mm")
+                            .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
+                            .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
+                        _innerHeight
+                            .find(".mark.arrow")
+                            .attr("x", pouch.seal.width.value + "mm")
+                            .attr("y", pouch.front.height.value - pouch.seal.width.value + "mm");
+                    }
+
+                    function UpdateFaceInnerWidthGuides(_innerWidth) {
+                        _innerWidth
+                            .find("text")
+                            .attr("x", __center + "mm")
+                            .attr("y", pouch.front.height.value + _innerYBottomOffset - 5 + "mm")
+                            .text(pouch.front.width.value - pouch.seal.width.value * 2 + " mm I.D.");
+                        _innerWidth
+                            .find(".mark.left")
+                            .attr("x1", pouch.seal.width.value + 1 + "mm")
+                            .attr("x2", _innerXOffset + 6 + "mm")
+                            .attr("y1", pouch.front.height.value - pouch.seal.width.value - 1 + "mm")
+                            .attr("y2", pouch.front.height.value + _innerYBottomOffset - 6 + "mm");
+                        _innerWidth
+                            .find(".arrow.left")
+                            .attr("x", _innerXOffset + 3 + "mm")
+                            .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                        _innerWidth
+                            .find("line.arrow")
+                            .attr("x1", _innerXOffset + 5 + "mm")
+                            .attr("x2", pouch.front.width.value - pouch.seal.width.value - 2 + "mm")
+                            .attr("y1", pouch.front.height.value + _innerYBottomOffset - 3 + "mm")
+                            .attr("y2", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                        _innerWidth
+                            .find(".arrow.right")
+                            .attr("x", pouch.front.width.value - pouch.seal.width.value + "mm")
+                            .attr("y", pouch.front.height.value + _innerYBottomOffset - 3 + "mm");
+                        _innerWidth
+                            .find(".mark.right")
+                            .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
+                            .attr("x2", pouch.front.width.value - pouch.seal.width.value + "mm")
+                            .attr("y1", pouch.front.height.value + _innerYBottomOffset - 6 + "mm")
+                            .attr("y2", pouch.front.height.value - pouch.seal.width.value - 1 + "mm");
+                    }
+                }
+
+                function UpdateHanger(_hanger) {
+                    _hanger
+                        .find(".hole")
+                        .attr("cx", __center + "mm")
+                        .attr("cy", pouch.hanger.offset.value + "mm")
+                        .attr("r", pouch.hanger.height.value / 2 + "mm");
+                    let _hangerOffset = _hanger.find(".offset");
+                    _hangerOffset
+                        .find("text.value")
+                        .attr("x", __center + pouch.hanger.height.value / 2 + 5.5 + "mm")
+                        .attr("y", pouch.hanger.offset.value / 2 + 1 + "mm")
+                        .text(pouch.hanger.offset.value + " mm");
+                    _hangerOffset
+                        .find(".arrow.top")
+                        .attr("x", __center + pouch.hanger.height.value / 2 + 3 + "mm")
+                        .attr("y", 0 + "mm");
+                    _hangerOffset
+                        .find("line.arrow")
+                        .attr("x1", __center + pouch.hanger.height.value / 2 + 3 + "mm")
+                        .attr("x2", __center + pouch.hanger.height.value / 2 + 3 + "mm")
+                        .attr("y1", 2 + "mm")
+                        .attr("y2", pouch.hanger.offset.value - 2 + "mm");
+                    _hangerOffset
+                        .find(".arrow.bottom")
+                        .attr("x", __center + pouch.hanger.height.value / 2 + 3 + "mm")
+                        .attr("y", pouch.hanger.offset.value + "mm");
+                    _hangerOffset
+                        .find(".mark.bottom")
+                        .attr("x1", __center + pouch.hanger.height.value / 2 + 1 + "mm")
+                        .attr("x2", __center + pouch.hanger.height.value / 2 + 6 + "mm")
+                        .attr("y1", pouch.hanger.offset.value + "mm")
+                        .attr("y2", pouch.hanger.offset.value + "mm");
+                    _hangerOffset
+                        .find("text.type")
+                        .attr("x", __center + pouch.hanger.height.value / 2 + 7 + "mm")
+                        .attr("y", pouch.hanger.offset.value + 1 + "mm");
+                }
+
+                function UpdateNotch(_notch) {
+                    _notch
+                        .find(".cut.left")
+                        .attr("x", 0 + "mm")
+                        .attr("y", pouch.notch.offset.value + "mm");
+                    _notch
+                        .find(".cut.right")
+                        .attr("x", pouch.front.width.value + "mm")
+                        .attr("y", pouch.notch.offset.value + "mm");
+                    let _notchOffset = _notch.find(".offset");
+                    _notchOffset
+                        .find("text.value")
+                        .attr("y", -pouch.front.width.value - 5 - _notchOffsetShift + "mm")
+                        .attr("x", pouch.notch.offset.value / 2 - 5.5 + "mm")
+                        .text(pouch.notch.offset.value + " mm");
+                    _notchOffset
+                        .find(".mark.top")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
+                        .attr("y1", 0 + "mm")
+                        .attr("y2", 0 + "mm");
+                    _notchOffset
+                        .find(".arrow.top")
+                        .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
+                        .attr("y", 0 + "mm");
+                    _notchOffset
+                        .find("line.arrow")
+                        .attr("x1", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
+                        .attr("x2", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
+                        .attr("y1", 2 + "mm")
+                        .attr("y2", pouch.notch.offset.value - 2 + "mm");
+                    _notchOffset
+                        .find(".arrow.bottom")
+                        .attr("x", pouch.front.width.value + 3 + _notchOffsetShift + "mm")
+                        .attr("y", pouch.notch.offset.value + "mm");
+                    _notchOffset
+                        .find(".mark.bottom")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 6 + _notchOffsetShift + "mm")
+                        .attr("y1", pouch.notch.offset.value + "mm")
+                        .attr("y2", pouch.notch.offset.value + "mm");
+                    _notchOffset
+                        .find("text.type")
+                        .attr("x", pouch.front.width.value + 3 + "mm")
+                        .attr("y", pouch.notch.offset.value / 2 - 1 + "mm");
+                    _notchOffset
+                        .find(".type tspan.lower")
+                        .attr("x", pouch.front.width.value + 3 + "mm")
+                        .attr("dy", 3 + "mm");
+                }
+
+                function UpdateZipper(_zipper) {
+                    let _zipperOffsetShift = _notchOffsetShift + (pouch.notch.included ? 5 : 0);
+                    let _straight = _zipper.find(".straight");
+                    _straight
+                        .find(".outline")
+                        .attr("x", 0 + "mm")
+                        .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 2 + "mm")
+                        .attr("width", pouch.front.width.value + "mm")
+                        .attr("height", pouch.zipper.height.value + "mm");
+                    _straight
+                        .find(".inner")
+                        .attr("x", 0 + "mm")
+                        .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 6 + "mm")
+                        .attr("width", pouch.front.width.value + "mm")
+                        .attr("height", pouch.zipper.height.value / 3 + "mm");
+                    let _wishbone = _zipper.find(".wishbone");
+                    let wishboneX = 3;
+                    _wishbone
+                        .find(".clip.top")
+                        .attr("x", wishboneX - 0.2 + "mm")
+                        .attr("y", pouch.zipper.offset.value - 14.5 + "mm");
+                    _wishbone
+                        .find(".clip.middle")
+                        .attr("x", wishboneX + 6.85 + "mm")
+                        .attr("y", pouch.zipper.offset.value - 9.5 + "mm");
+                    _wishbone
+                        .find(".clip.bottom")
+                        .attr("x", wishboneX - 0.2 + "mm")
+                        .attr("y", pouch.zipper.offset.value + 2.5 + "mm");
+                    _wishbone
+                        .find(".tear.upper.top")
+                        .attr("cx", wishboneX + 3.5 + "mm")
+                        .attr("cy", pouch.zipper.offset.value - 10.5 + "mm");
+                    _wishbone
+                        .find(".tear.upper.bottom")
+                        .attr("cx", wishboneX + 10 + "mm")
+                        .attr("cy", pouch.zipper.offset.value - 9.5 + "mm");
+                    _wishbone
+                        .find(".tear.lower.top")
+                        .attr("cx", wishboneX + 10 + "mm")
+                        .attr("cy", pouch.zipper.offset.value + 1 + "mm");
+                    _wishbone
+                        .find(".tear.lower.bottom")
+                        .attr("cx", wishboneX + 3.5 + "mm")
+                        .attr("cy", pouch.zipper.offset.value + 2.5 + "mm");
+                    _wishbone.find(".clip.heated").attr("height", pouch.zipper.offset.value + 40 + "mm");
+                    _wishbone
+                        .find(".heated.vertical")
+                        .attr("x", -10 + "mm")
+                        .attr("y", -10 + "mm")
+                        .attr("width", 25.5 + "mm")
+                        .attr("height", pouch.zipper.offset.value + 41.5 + "mm");
+                    _wishbone
+                        .find(".heated.horizontal")
+                        .attr("x1", 0 + "mm")
+                        .attr("x2", pouch.front.width.value + "mm")
+                        .attr("y1", pouch.zipper.offset.value + 17.5 + "mm")
+                        .attr("y2", pouch.zipper.offset.value + 17.5 + "mm");
+                    _wishbone
+                        .find(".outline")
+                        .attr("x", 3 + "mm")
+                        .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 2 + "mm")
+                        .attr("width", pouch.front.width.value - 3 + "mm")
+                        .attr("height", pouch.zipper.height.value + "mm");
+                    _wishbone
+                        .find(".inner")
+                        .attr("x", 3 + "mm")
+                        .attr("y", pouch.zipper.offset.value - pouch.zipper.height.value / 6 + "mm")
+                        .attr("width", pouch.front.width.value - 3 + "mm")
+                        .attr("height", pouch.zipper.height.value / 3 + "mm");
+                    let _zipperOffset = _zipper.find(".offset");
+                    _zipperOffset
+                        .find("text.value")
+                        .attr("x", pouch.zipper.offset.value / 2 - 5.5 + "mm")
+                        .attr("y", -pouch.front.width.value - 6 - _zipperOffsetShift + "mm")
+                        .text(pouch.zipper.offset.value + " mm");
+                    _zipperOffset
+                        .find(".mark.top")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
+                        .attr("y1", 0 + "mm")
+                        .attr("y2", 0 + "mm");
+                    _zipperOffset
+                        .find(".arrow.top")
+                        .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
+                        .attr("y", 0 + "mm");
+                    _zipperOffset
+                        .find("line.arrow")
+                        .attr("x1", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
+                        .attr("x2", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
+                        .attr("y1", 2 + "mm")
+                        .attr("y2", pouch.zipper.offset.value - 2 + "mm");
+                    _zipperOffset
+                        .find(".arrow.bottom")
+                        .attr("x", pouch.front.width.value + 4 + _zipperOffsetShift + "mm")
+                        .attr("y", pouch.zipper.offset.value + "mm");
+                    _zipperOffset
+                        .find(".mark.bottom")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 7 + _zipperOffsetShift + "mm")
+                        .attr("y1", pouch.zipper.offset.value + "mm")
+                        .attr("y2", pouch.zipper.offset.value + "mm");
+                    _zipperOffset
+                        .find("text.type")
+                        .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
+                        .attr("y", pouch.zipper.offset.value / 2 - 1 + "mm");
+                    _zipperOffset.find(".type tspan.upper").text(pouch.zipper.type == ZipperType.Standard ? "Standard Zipper" : pouch.zipper.type == ZipperType.EasyPull ? "Easy-Pull Zipper" : "Child-Resistant Zipper");
+                    _zipperOffset
+                        .find(".type tspan.lower")
+                        .attr("x", pouch.front.width.value + 10 + _zipperOffsetShift + "mm")
+                        .attr("dy", 3 + "mm")
+                        .text(pouch.zipper.type == ZipperType.ChildResistant ? "" : "(not child-resistant)");
+                }
+
+                function UpdateDegasser(_degasser) {
+                    _degasser
+                        .find("circle.outer")
+                        .attr("cx", __center + "mm")
+                        .attr("cy", pouch.degasser.offset.value + "mm")
+                        .attr("r", pouch.degasser.height.value / 2 + "mm");
+                    _degasser
+                        .find("circle.inner")
+                        .attr("cx", __center + "mm")
+                        .attr("cy", pouch.degasser.offset.value + "mm")
+                        .attr("r", 1.5 + "mm");
+                    let _degasserOffset = _degasser.find(".offset");
+                    _degasserOffset
+                        .find("text.value")
+                        .attr("y", __center - 6 + "mm")
+                        .attr("x", -(pouch.degasser.offset.value * 0.95 - 5.5) + "mm")
+                        .text(pouch.degasser.offset.value + " mm");
+                    _degasserOffset
+                        .find(".mark.top")
+                        .attr("x1", __center - 2.5 + "mm")
+                        .attr("x2", __center - 7.5 + "mm")
+                        .attr("y1", 0 + "mm")
+                        .attr("y2", 0 + "mm");
+                    _degasserOffset
+                        .find(".arrow.top")
+                        .attr("x", __center - 4.5 + "mm")
+                        .attr("y", 0 + "mm");
+                    _degasserOffset
+                        .find("line.arrow")
+                        .attr("x1", __center - 4.5 + "mm")
+                        .attr("x2", __center - 4.5 + "mm")
+                        .attr("y1", 2 + "mm")
+                        .attr("y2", pouch.degasser.offset.value - 2 + "mm");
+                    _degasserOffset
+                        .find(".arrow.bottom")
+                        .attr("x", __center - 4.5 + "mm")
+                        .attr("y", 0 + pouch.degasser.offset.value + "mm");
+                    _degasserOffset
+                        .find(".mark.bottom")
+                        .attr("x1", __center - 2.5 + "mm")
+                        .attr("x2", __center - 7.5 + "mm")
+                        .attr("y1", 0 + pouch.degasser.offset.value + "mm")
+                        .attr("y2", 0 + pouch.degasser.offset.value + "mm");
+                    _degasserOffset
+                        .find("text.type")
+                        .attr("x", __center - 20.5 + "mm")
+                        .attr("y", pouch.degasser.offset.value - 0.5 + "mm");
+                    _degasserOffset
+                        .find(".type tspan.lower")
+                        .attr("x", __center - 19.7 + "mm")
+                        .attr("dy", 3 + "mm");
+                }
+
+                function UpdateSeal(_seal) {
+                    let x = 0,
+                        y = 0,
+                        width = pouch.front.width.value,
+                        height = pouch.front.height.value;
+                    if (pouch.seal.placements.includes(Placement.Top)) {
+                        y += pouch.seal.width.value;
+                        height -= pouch.seal.width.value;
+                    }
+                    if (pouch.seal.placements.includes(Placement.Bottom)) {
+                        height -= pouch.seal.width.value;
+                    }
+                    if (pouch.seal.placements.includes(Placement.Left)) {
+                        x += pouch.seal.width.value;
+                        width -= pouch.seal.width.value;
+                    }
+                    if (pouch.seal.placements.includes(Placement.Right)) {
+                        width -= pouch.seal.width.value;
+                    }
+                    _seal
+                        .find(".outline")
+                        .attr("x", x + "mm")
+                        .attr("y", y + "mm")
+                        .attr("width", width + "mm")
+                        .attr("height", height + "mm");
+                    _seal
+                        .find(".curve")
+                        .attr("cx", __center + "mm")
+                        .attr("cy", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("rx", pouch.front.width.value / 2 - pouch.seal.width.value + "mm")
+                        .attr("ry", pouch.gusset.depth.value / 2 - pouch.seal.width.value + "mm");
+                    _seal
+                        .find(".clip")
+                        .attr("x", 0 + "mm")
+                        .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("width", pouch.front.width.value + "mm")
+                        .attr("height", pouch.gusset.depth.value / 2 + "mm");
+                    _seal
+                        .find(".k-corner.left")
+                        .attr("x1", x + "mm")
+                        .attr("x2", pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y2", pouch.front.height.value + "mm");
+                    _seal
+                        .find(".k-corner.right")
+                        .attr("x1", pouch.front.width.value - pouch.seal.width.value + "mm")
+                        .attr("x2", pouch.front.width.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y2", pouch.front.height.value + "mm");
+                    _seal
+                        .find("text.top")
+                        .attr("x", __center + "mm")
+                        .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
+                        .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                    _seal
+                        .find("text.right")
+                        .attr("x", -__middle + "mm")
+                        .attr("y", 0.9 + pouch.front.width.value - pouch.seal.width.value / 2 + "mm")
+                        .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                    _seal
+                        .find("text.bottom")
+                        .attr("x", __center + "mm")
+                        .attr("y", 0.9 + pouch.front.height.value - pouch.seal.width.value / 2 + "mm")
+                        .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                    if (pouch.seal.placements.includes(Placement.Bottom)) {
+                        _seal.find("text.bottom").remove();
+                    }
+                    _seal
+                        .find("text.left")
+                        .attr("x", -__middle + "mm")
+                        .attr("y", 0.9 + pouch.seal.width.value / 2 + "mm")
+                        .text(pouch.seal.width.value + " mm" + (layout.verboseLabels ? " Seal" : ""));
+                }
+
+                function UpdateMeridian(_meridian) {
+                    _meridian
+                        .find(".divide")
+                        .attr("x1", 0 + "mm")
+                        .attr("x2", pouch.front.width.value + "mm")
+                        .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y2", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
+                    let _meridianOffset = _meridian.find(".offset");
+                    _meridianOffset
+                        .find("text")
+                        .attr("y", -(pouch.front.width.value + 5) + "mm")
+                        .attr("x", pouch.front.height.value - pouch.gusset.depth.value / 4 - 5.5 + "mm")
+                        .text(pouch.gusset.depth.value / 2 + " mm");
+                    _meridianOffset
+                        .find(".mark.top")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 6 + "mm")
+                        .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm")
+                        .attr("y2", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
+                    _meridianOffset
+                        .find(".arrow.top")
+                        .attr("x", pouch.front.width.value + 3 + "mm")
+                        .attr("y", pouch.front.height.value - pouch.gusset.depth.value / 2 + "mm");
+                    _meridianOffset
+                        .find("line.arrow")
+                        .attr("x1", pouch.front.width.value + 3 + "mm")
+                        .attr("x2", pouch.front.width.value + 3 + "mm")
+                        .attr("y1", pouch.front.height.value - pouch.gusset.depth.value / 2 + 2 + "mm")
+                        .attr("y2", pouch.front.height.value - 2 + "mm");
+                    _meridianOffset
+                        .find(".arrow.bottom")
+                        .attr("x", pouch.front.width.value + 3 + "mm")
+                        .attr("y", pouch.front.height.value + "mm");
+                    _meridianOffset
+                        .find(".mark.bottom")
+                        .attr("x1", pouch.front.width.value + 1 + "mm")
+                        .attr("x2", pouch.front.width.value + 6 + "mm")
+                        .attr("y1", pouch.front.height.value + "mm")
+                        .attr("y2", pouch.front.height.value + "mm");
+                }
             }
+
             // function CreateHorizontalBezierArc(x1, x2, y, radius) {
             //     return `M ${x1} ${y} C ${x1} ${y + radius * 1.32536445942915653}, ${x2} ${y + radius * 1.32536445942915653}, ${x2} ${y}`;
             // }
+
             function UpdateSvgBack(_svg, horizSpace) {
                 let __left = pouch.right.included ? horizSpace * 3 + pouch.front.width.value + pouch.right.width.value : horizSpace * 2 + pouch.front.width.value;
                 let _front = _svg.children(".side.front");
@@ -1766,6 +1788,7 @@
                 _old.remove();
                 _new.appendTo(_svg);
             }
+
             function UpdateSvgLeft(_svg, horizSpace) {
                 let __left = horizSpace * 4 + pouch.front.width.value * 2 + pouch.right.width.value;
                 let _right = _svg.children(".side.right");
@@ -1780,6 +1803,7 @@
                 }
                 _old.remove();
             }
+
             function UpdateSvgRight(_svg, horizSpace) {
                 let __left = horizSpace * 2 + pouch.front.width.value;
                 let _front = _svg.children(".side.front");
@@ -1826,6 +1850,7 @@
                 }
                 _old.remove();
             }
+
             function UpdateSvgGusset(_svg, vertSpace) {
                 let __top = pouch.front.height.value + vertSpace * 2;
                 let _front = _svg.children(".side.front");
@@ -1846,9 +1871,10 @@
                     //face//
                     _new.find(".face .outline.upper").attr("clip-path", "");
                     _new.find(".face .outline.lower").remove();
-                    _new.find(".face .outline")
-                        .attr("height", pouch.gusset.depth.value + "mm")
-                        .attr("rx", 0);
+                    _new.find(".face .outline").attr("height", pouch.gusset.depth.value + "mm");
+                    if (pouch.gusset.type == GussetType.K) {
+                        _new.find(".face .outline").attr("rx", 0);
+                    }
 
                     //face width guides//
                     _new.find(".face .width.outer").remove();
@@ -1865,6 +1891,7 @@
                     _new.find(".face .height.inner, .face .width.inner").remove();
 
                     //seal//
+                    _new.find(".seal .k-corner").remove();
                     if (pouch.gusset.type == GussetType.Rounded) {
                         _new.find(".seal .curve")
                             .attr("cy", pouch.gusset.depth.value / 2 + "mm")
@@ -1882,6 +1909,7 @@
                         _new.find(".seal .outline").remove();
                         _new.find(".seal text.right").remove();
                         _new.find(".seal text.left").remove();
+                        _new.find(".seal text.bottom").remove();
                     }
 
                     //meridian//
@@ -1914,6 +1942,7 @@
                 }
                 _old.remove();
             }
+
             function UpdateBagFeatures(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let _features = _svg.find(".area.features");
                 _features.attr("x", designWidth + horizSpace + "mm").attr("y", vertSpace + "mm");
@@ -1945,6 +1974,7 @@
                 _features.attr("style", "");
                 //_features.attr("style", "display:none");
             }
+
             function UpdateDesignImage(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let featuresWidth = 71;
                 let left = layout.verboseLabels ? designWidth + horizSpace + featuresWidth + horizSpace : designWidth + horizSpace;
@@ -1952,6 +1982,7 @@
                     .attr("x", left + "mm")
                     .attr("y", 13 + "mm");
             }
+
             function UpdateFinishArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let _old = _svg.find(".area.finish");
                 if (layout.inkingDetails) {
@@ -1978,6 +2009,7 @@
                 }
                 _old.remove();
             }
+
             function UpdateWhiteArea(_svg, designWidth, designHeight, horizSpace, vertSpace) {
                 let _old = _svg.find(".area.white");
                 if (layout.inkingDetails) {
